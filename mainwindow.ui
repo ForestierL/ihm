@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>673</width>
-    <height>287</height>
+    <width>939</width>
+    <height>510</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -114,6 +114,9 @@ border: none;</string>
 background-color: rgb(25, 25, 25);
 border-color: rgb(83, 83, 83);</string>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="placeholderText">
          <string>Chemin...</string>
         </property>
@@ -137,6 +140,9 @@ border-color: rgb(83, 83, 83);</string>
          <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(25, 25, 25);
 border-color: rgb(83, 83, 83);</string>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
         <property name="placeholderText">
          <string>Rechercher...</string>
@@ -187,8 +193,8 @@ border: none;</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>529</width>
-           <height>210</height>
+           <width>795</width>
+           <height>432</height>
           </rect>
          </property>
         </widget>
@@ -203,7 +209,7 @@ border: none;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>673</width>
+     <width>939</width>
      <height>22</height>
     </rect>
    </property>
