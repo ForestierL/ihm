@@ -14,7 +14,8 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(25, 25, 25);</string>
+   <string notr="true">background-color: rgb(25, 25, 25);
+color: rgb(255,255,255);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -208,7 +209,7 @@ border-color: rgb(83, 83, 83);</string>
        <number>0</number>
       </property>
       <item>
-       <widget class="QTreeView" name="treeView">
+       <widget class="QTreeView" name="dirTreeView">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
@@ -217,39 +218,18 @@ border-color: rgb(83, 83, 83);</string>
         </property>
         <property name="maximumSize">
          <size>
-          <width>130</width>
+          <width>200</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgba(25, 25, 25, 25);
+         <string notr="true">background-color: rgb(46, 52, 54);
 border: none;</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QScrollArea" name="scrollArea">
-        <property name="autoFillBackground">
-         <bool>false</bool>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(32, 32, 32);
-border: none;</string>
-        </property>
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>795</width>
-           <height>432</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
+       <widget class="QListView" name="elementListView"/>
       </item>
      </layout>
     </item>
