@@ -16,14 +16,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    editionwindow.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    editionwindow.h \
     mainwindow.h
 
 FORMS += \
+    editionwindow.ui \
     mainwindow.ui
+
+OTHER_FILES += \
+    chat.jpg
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
