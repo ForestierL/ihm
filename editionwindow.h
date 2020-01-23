@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFrame>
+#include <QLabel>
 
 
 namespace Ui {
@@ -27,6 +28,13 @@ private:
 
     Ui::EditionWindow *ui;
     QString imagePath;
+    QLabel *imageLabel;
+
+    float initialImageWidth;
+    float initialImageHeigth;
+
+protected slots:
+    void resizeImage(int);
 
 
 

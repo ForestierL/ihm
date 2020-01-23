@@ -50,6 +50,9 @@ void EditionWindow::createContents()
 
         QLabel *imageLabel = new QLabel();
         imageLabel->setPixmap(QPixmap::fromImage(dstImage));
+        this->imageLabel = imageLabel;
+        this->initialImageWidth = imageLabel->pixmap()->width();
+        this->initialImageHeigth = imageLabel->pixmap()->height();
 
         QHBoxLayout *contentLayout = new QHBoxLayout();
         contentLayout->addStretch(1);
@@ -83,12 +86,15 @@ QFrame* EditionWindow::createToolBar(void)
     tempSlider->setValue(0);
 
     QLabel *tempLabel = new QLabel("0");
-    tempLabel->setFixedSize(20, 20);
+    tempLabel->setFixedSize(8, 20);
+    QLabel *temp2Label = new QLabel("/ 5");
+    temp2Label->setFixedSize(20, 20);
 
     QHBoxLayout *tempLayout = new QHBoxLayout();
     tempLayout->addWidget(tempSlider);
     tempLayout->addStretch(1);
     tempLayout->addWidget(tempLabel);
+    tempLayout->addWidget(temp2Label);
 
     connect(tempSlider, SIGNAL(valueChanged(int)), tempLabel, SLOT(setNum(int)));
     /********************************************/
@@ -124,10 +130,22 @@ QFrame* EditionWindow::createStatusBar(void)
     QSlider *zoomSlider = new QSlider();
     zoomSlider->setFixedSize(150, 20);
     zoomSlider->setOrientation(Qt::Horizontal);
-    zoomSlider->setMinimum(0);
+    zoomSlider->setMinimum(1);
     zoomSlider->setMaximum(200);
     zoomSlider->setTickInterval(1);
     zoomSlider->setValue(100);
+
+    QLabel *percentZoomLabel = new QLabel("100");
+    QLabel *percentLabel = new QLabel("%");
+
+    QHBoxLayout *zoomLayout = new QHBoxLayout();
+    zoomLayout->addWidget(percentZoomLabel);
+    zoomLayout->addWidget(percentLabel);
+    zoomLayout->addStretch(1);
+    zoomLayout->addWidget(zoomSlider);
+
+    connect(zoomSlider, SIGNAL(valueChanged(int)), percentZoomLabel, SLOT(setNum(int)));
+    connect(zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(resizeImage(int)));
     /********************************************/
 
     QFrame *statusFrame = new QFrame();
@@ -140,9 +158,17 @@ QFrame* EditionWindow::createStatusBar(void)
     hBoxLayout->addWidget(addToAlbumButton);
     hBoxLayout->addWidget(addToAlbumLabel);
     hBoxLayout->addStretch(1);
-    hBoxLayout->addWidget(zoomSlider);
+    hBoxLayout->addLayout(zoomLayout);
 
     return statusFrame;
+}
+
+void EditionWindow::resizeImage(int percent)
+{
+    float newWidth = this->initialImageWidth * percent/100;
+    float newHeigth = this->initialImageHeigth * percent/100;
+
+    this->imageLabel->setPixmap(this->imageLabel->pixmap()->scaled(newWidth, newHeigth, Qt::KeepAspectRatio));
 }
 
 
