@@ -19,48 +19,12 @@ EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 
     QFrame *toolBarFrame = createToolBar();
     ui->toolBar->insertWidget(0, toolBarFrame);
+    ui->toolBar->setMovable(true);
 
     QFrame *statusBarFrame = createStatusBar();
     ui->statusbar->insertPermanentWidget(0, statusBarFrame, 1);
 
     initBackground();
-}
-
-
-void EditionWindow::createContents()
-{
-    QImageReader *reader = new QImageReader(this->imagePath);
-    reader->setAutoTransform(true);
-    QImage srcImage(this->imagePath);
-
-
-    if (srcImage.isNull()) {
-        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
-                                 tr("Cannot load %1: %2")
-                                 .arg(QDir::toNativeSeparators(this->imagePath), reader->errorString()));
-    }
-    else {
-        delete reader;
-        reader = nullptr;
-
-        QImage dstImage(srcImage.width(), srcImage.height(), srcImage.format());
-
-        QPainter painter(&dstImage);
-        painter.drawImage(0, 0, srcImage);
-
-        QLabel *imageLabel = new QLabel();
-        imageLabel->setPixmap(QPixmap::fromImage(dstImage));
-        this->imageLabel = imageLabel;
-        this->initialImageWidth = imageLabel->pixmap()->width();
-        this->initialImageHeigth = imageLabel->pixmap()->height();
-
-        QHBoxLayout *contentLayout = new QHBoxLayout();
-        contentLayout->addStretch(1);
-        contentLayout->addWidget(imageLabel);
-        contentLayout->addStretch(1);
-
-        this->ui->centralwidget->setLayout(contentLayout);
-    }
 }
 
 
@@ -163,12 +127,53 @@ QFrame* EditionWindow::createStatusBar(void)
     return statusFrame;
 }
 
+
+void EditionWindow::createContents()
+{
+    QImageReader *reader = new QImageReader(this->imagePath);
+    reader->setAutoTransform(true);
+    QImage srcImage(this->imagePath);
+
+
+    if (srcImage.isNull()) {
+        QMessageBox::information(this,
+                                 QGuiApplication::applicationDisplayName(),
+                                 tr("Cannot load %1: %2").arg(QDir::toNativeSeparators(this->imagePath),
+                                                              reader->errorString()));
+    }
+    else {
+        delete reader;
+        reader = nullptr;
+
+        QImage dstImage(srcImage.width(), srcImage.height(), srcImage.format());
+
+        QPainter painter(&dstImage);
+        painter.drawImage(0, 0, srcImage);
+
+        QLabel *imageLabel = new QLabel();
+        imageLabel->setPixmap(QPixmap::fromImage(dstImage));
+        this->imageLabel = imageLabel;
+
+        this->initialPixMap = QPixmap::fromImage(dstImage);
+        this->initialImageWidth = imageLabel->pixmap()->width();
+        this->initialImageHeigth = imageLabel->pixmap()->height();
+
+        QHBoxLayout *contentLayout = new QHBoxLayout();
+        contentLayout->addStretch(1);
+        contentLayout->addWidget(imageLabel);
+        contentLayout->addStretch(1);
+
+        this->ui->centralwidget->setLayout(contentLayout);
+    }
+}
+
+
 void EditionWindow::resizeImage(int percent)
 {
     float newWidth = this->initialImageWidth * percent/100;
     float newHeigth = this->initialImageHeigth * percent/100;
 
-    this->imageLabel->setPixmap(this->imageLabel->pixmap()->scaled(newWidth, newHeigth, Qt::KeepAspectRatio));
+    this->imageLabel->setPixmap(this->initialPixMap.scaled(newWidth, newHeigth, Qt::KeepAspectRatio));
 }
 
 

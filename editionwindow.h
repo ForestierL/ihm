@@ -30,6 +30,7 @@ private:
     QString imagePath;
     QLabel *imageLabel;
 
+    QPixmap initialPixMap;
     float initialImageWidth;
     float initialImageHeigth;
 
