@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QFileSystemModel>
 
+#include "editionwindow.h"
+#include "ui_mainwindow.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -15,6 +18,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void setStatusBar();
 
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
