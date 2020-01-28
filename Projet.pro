@@ -18,15 +18,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     database.cpp \
+    editionwindow.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     database.h \
+    editionwindow.h \
     mainwindow.h
 
 FORMS += \
+    editionwindow.ui \
     mainwindow.ui
+
+OTHER_FILES += \
+    chat.jpg
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
