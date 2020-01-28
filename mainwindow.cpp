@@ -3,6 +3,8 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include <database.h>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -62,6 +64,15 @@ MainWindow::MainWindow(QWidget *parent)
         // Ajout du sous-layout au layout vertical de l'UI
         ui->vlAlbums->addLayout(layoutTest);
     }
+
+    Database database("C:\\Users\\Hibou\\Documents\\db.db");
+    QString filePathTest = "test.png";
+    int mark = 4;
+    QString noteTest = "test : note";
+    QString colorTest = "test : color";
+    QString feelingTest = "test : feeling";
+    database.addImage(filePathTest, mark, noteTest, colorTest, feelingTest);
+
 }
 
 MainWindow::~MainWindow()
