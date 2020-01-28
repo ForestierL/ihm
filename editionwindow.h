@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QFrame>
 #include <QLabel>
+#include <QDialog>
 
 
 namespace Ui {
@@ -31,8 +32,6 @@ private:
     QLabel *imageLabel;
 
     QPixmap initialPixMap;
-    float initialImageWidth;
-    float initialImageHeigth;
 
 protected slots:
     void resizeImage(int);

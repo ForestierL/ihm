@@ -8,6 +8,8 @@
 #include <QLabel>
 #include <QPushButton>
 
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -102,10 +104,16 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
         msgBox.setText(dirPath);
         msgBox.exec();
         //todo : ### HERE LANCER LA FENETRE 2
-        /*EditionWindow w;
+
+
+        EditionWindow w;
         w.setImage(dirPath);
         w.createContents();
-        w.show();*/
+        w.show();
+
+        QEventLoop eventLoop;
+        eventLoop.exec();
+
     }
 }
 
