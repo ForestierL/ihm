@@ -25,6 +25,7 @@ private slots:
     void on_dirTreeView_clicked(const QModelIndex &index);
 
     void on_lePath_returnPressed();
+    void showContextMenu(const QPoint&);
 
 private:
     Ui::MainWindow *ui;

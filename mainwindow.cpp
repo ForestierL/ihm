@@ -7,6 +7,7 @@
 #include <database.h>
 #include <QLabel>
 #include <QPushButton>
+#include <QMouseEvent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -36,7 +37,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->lePath->setText(mainPath);
 
-
+    ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 
     /*****
      * Initialisation de la liste en bas à gauche de la main windows
@@ -175,4 +177,23 @@ void MainWindow::setStatusBar() {
 
     ui->statusbar->addWidget(statusFrame, 1);
     ui->statusbar->setStyleSheet("background-color: rgb(0,0,0);");
+}
+
+void MainWindow::showContextMenu(const QPoint &pos)
+{
+    // Handle global position
+    QPoint globalPos = ui->elementListView->mapToGlobal(pos);
+    QModelIndex itemPos = ui->elementListView->indexAt(pos);
+    if(!itemPos.isValid()){
+        return;
+    }
+    QString filePath = ui->lePath->text() + "/" + itemPos.data().toUrl().toString();
+    qDebug() << filePath;
+    // Create menu and insert some actions
+    QMenu myMenu;
+    myMenu.addAction("Copier", this, SLOT(copyItem()));
+    myMenu.addAction("Renommer", this, SLOT(renameItem()));
+    myMenu.addAction("Supprimer", this, SLOT(eraseItem()));
+
+    myMenu.exec(globalPos);
 }
