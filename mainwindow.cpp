@@ -99,15 +99,8 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
         qDebug() << "DIR " + dirPath;
         ui->lePath->setText(dirPath);//condition si dossier ou si fichier
     } else {
-        qDebug() << "FILE " + dirPath;
-        QMessageBox msgBox;
-        msgBox.setText(dirPath);
-        msgBox.exec();
-        //todo : ### HERE LANCER LA FENETRE 2
-        /*EditionWindow w;
-        w.setImage(dirPath);
-        w.createContents();
-        w.show();*/
+        actualFile = dirPath;
+        openEditor();
     }
 }
 
@@ -187,13 +180,41 @@ void MainWindow::showContextMenu(const QPoint &pos)
     if(!itemPos.isValid()){
         return;
     }
-    QString filePath = ui->lePath->text() + "/" + itemPos.data().toUrl().toString();
-    qDebug() << filePath;
+    actualFile = ui->lePath->text() + "/" + itemPos.data().toUrl().toString();
+
     // Create menu and insert some actions
     QMenu myMenu;
-    myMenu.addAction("Copier", this, SLOT(copyItem()));
-    myMenu.addAction("Renommer", this, SLOT(renameItem()));
-    myMenu.addAction("Supprimer", this, SLOT(eraseItem()));
+    QDir pathDir(actualFile);
+    if(!pathDir.exists()){
+        myMenu.addAction("Ouvrir", this, SLOT(openEditor()));
+        myMenu.addSeparator();
+        myMenu.addAction("Ajouter à un album", this, SLOT(addToAlbum()));
+        myMenu.addAction("Informations", this, SLOT(informations()));
+        myMenu.addSeparator();
+        myMenu.addAction("Supprimer", this, SLOT(eraseItem()));
 
-    myMenu.exec(globalPos);
+        myMenu.exec(globalPos);
+    }
+}
+
+void MainWindow::openEditor(){
+    qDebug() << "Ici";
+    EditionWindow w;
+    w.setImage(actualFile);
+    w.createContents();
+    w.show();
+    QEventLoop eventLoop;
+    eventLoop.exec();
+}
+
+void MainWindow::addToAlbum(){
+    qDebug() << "AddToAlbum";
+}
+
+void MainWindow::informations(){
+    qDebug() << "Infos";
+}
+
+void MainWindow::eraseItem(){
+    qDebug() << "EraseItem";
 }
