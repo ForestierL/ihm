@@ -88,7 +88,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
 {
     QString dirPath = dirModel->fileInfo(index).absoluteFilePath();
-
+    actualFile = dirPath;
     ui->elementListView->setRootIndex(fileModel->setRootPath(dirPath));
     ui->dirTreeView->setExpanded(dirModel->setRootPath(dirPath), true);
     //ui->dirTreeView->collapse(dirModel->setRootPath(dirPath));
@@ -99,7 +99,6 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
         qDebug() << "DIR " + dirPath;
         ui->lePath->setText(dirPath);//condition si dossier ou si fichier
     } else {
-        actualFile = dirPath;
         openEditor();
     }
 }
@@ -198,7 +197,6 @@ void MainWindow::showContextMenu(const QPoint &pos)
 }
 
 void MainWindow::openEditor(){
-    qDebug() << "Ici";
     EditionWindow w;
     w.setImage(actualFile);
     w.createContents();
@@ -216,5 +214,6 @@ void MainWindow::informations(){
 }
 
 void MainWindow::eraseItem(){
-    qDebug() << "EraseItem";
+    QFile file(actualFile);
+    bool valid = file.remove();
 }
