@@ -91,14 +91,6 @@ MainWindow::MainWindow(QWidget *parent)
         ui->vlAlbums->addLayout(layoutTest);
     }
 
-    Database database("C:\\Users\\Hibou\\Documents\\db.db");
-    QString filePathTest = "test.png";
-    int mark = 4;
-    QString noteTest = "test : note";
-    QString colorTest = "test : color";
-    QString feelingTest = "test : feeling";
-    database.addImage(filePathTest, mark, noteTest, colorTest, feelingTest);
-
 }
 
 MainWindow::~MainWindow()
@@ -121,14 +113,15 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
         ui->lePath->setText(dirPath);//condition si dossier ou si fichier
     } else {
         qDebug() << "FILE " + dirPath;
-        QMessageBox msgBox;
-        msgBox.setText(dirPath);
-        msgBox.exec();
-        //todo : ### HERE LANCER LA FENETRE 2
-        /*EditionWindow w;
+
+        EditionWindow w;
         w.setImage(dirPath);
         w.createContents();
-        w.show();*/
+        w.show();
+
+        QEventLoop eventLoop;
+        eventLoop.exec();
+
     }
 }
 
