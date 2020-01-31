@@ -4,9 +4,13 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include <QStandardPaths>
+
 #include <database.h>
 #include <QLabel>
 #include <QPushButton>
+
+#include <QSplitter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -14,7 +18,26 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QString mainPath = "/";
+    QString mainPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+
+
+    /*******************/
+    QSplitter *splitter = new QSplitter(); //CQStandardPaths::writableLocation(QStandardPaths::PicturesLocation)réation d'un splitter, permettant de redimensionner l'espace occupé par les widgets enfants
+    splitter->setOrientation(Qt::Vertical); //Mettre l'orientation verticale
+    ui->leftLayout->addWidget(splitter);
+    QWidget *w1 = new QWidget();
+    ui->lAlbums->setParent(nullptr);
+    w1->setLayout(ui->lAlbums);
+    QWidget *w2 = new QWidget();
+    ui->lTree->setParent(nullptr);
+    w2->setLayout(ui->lTree);
+    splitter->addWidget(w2);
+    splitter->addWidget(w1);
+
+    ui->lAlbums->setAlignment(Qt::AlignTop);
+    /*******************/
+
+
     dirModel = new QFileSystemModel(this);
     dirModel->setRootPath(mainPath);
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
