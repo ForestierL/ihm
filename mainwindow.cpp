@@ -243,6 +243,12 @@ void MainWindow::addToAlbum(){
 
 void MainWindow::informations(){
     qDebug() << "Infos";
+    FilePropertiesWindow w;
+    //w.setImagePath(path);
+    w.createContents();
+    w.show();
+    QEventLoop eventLoop;
+    eventLoop.exec();
 }
 
 void MainWindow::eraseItem(){

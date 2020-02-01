@@ -7,6 +7,8 @@
 #include "editionwindow.h"
 #include "ui_mainwindow.h"
 
+#include "filepropertieswindow.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
