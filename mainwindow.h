@@ -5,6 +5,7 @@
 #include <QFileSystemModel>
 
 #include "editionwindow.h"
+#include "checkingwindow.h"
 #include "ui_mainwindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -31,6 +32,7 @@ private slots:
     bool removeDirectory(QString dirPath = "");
     void on_lePath_returnPressed();
     void showContextMenu(const QPoint&);
+    void checkAllPath();
 
 private:
     Ui::MainWindow *ui;

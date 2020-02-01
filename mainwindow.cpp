@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QMouseEvent>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -39,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
+
 
     /*****
      * Initialisation de la liste en bas à gauche de la main windows
@@ -193,7 +195,7 @@ void MainWindow::showContextMenu(const QPoint &pos)
         qDebug() << "Clique sur dossier";
         myMenu.addAction("Ouvrir", this, SLOT(openDirectory()));
         myMenu.addSeparator();
-        myMenu.addAction("Supprimer", this, SLOT(removeDirectory()));
+        myMenu.addAction("Supprimer", this, SLOT(checkAllPath()/*removeDirectory()*/));
 
         myMenu.exec(globalPos);
     }
@@ -226,7 +228,13 @@ void MainWindow::informations(){
 
 void MainWindow::eraseItem(){
     QFile file(actualFile);
-    bool valid = file.remove();
+
+    int reponse = QMessageBox::question(this, "Suppression", "Vous êtes sûr de vouloir supprimer cette image ?", QMessageBox ::Yes | QMessageBox::No);
+
+    if (reponse == QMessageBox::Yes)
+    {
+        bool valid = file.remove();
+    }
 }
 
 //Fonction en cours de dev
@@ -254,7 +262,11 @@ bool MainWindow::removeDirectory(QString dirPath){
     return true;
 }
 
+void MainWindow::checkAllPath(){
 
-
-
+    CheckingWindow w;
+    w.show();
+    QEventLoop eventLoop;
+    eventLoop.exec();
+}
 

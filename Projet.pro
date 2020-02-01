@@ -20,17 +20,19 @@ SOURCES += \
     database.cpp \
     editionwindow.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    checkingwindow.cpp
 
 HEADERS += \
     database.h \
     editionwindow.h \
-    mainwindow.h
+    mainwindow.h \
+    checkingwindow.h
 
 FORMS += \
     editionwindow.ui \
     mainwindow.ui \
-    notfound.ui
+    checkingwindow.ui
 
 OTHER_FILES += \
     chat.jpg

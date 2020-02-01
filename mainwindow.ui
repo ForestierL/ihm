@@ -86,7 +86,7 @@ border: none;</string>
            <x>0</x>
            <y>0</y>
            <width>650</width>
-           <height>293</height>
+           <height>292</height>
           </rect>
          </property>
         </widget>
@@ -356,13 +356,14 @@ border: none;</string>
    </property>
    <widget class="QMenu" name="menuFichier">
     <property name="title">
-     <string>Fichier</string>
+     <string>Fic&amp;hier</string>
     </property>
     <addaction name="actionEmplacement_r_cent"/>
     <addaction name="actionAlbum_r_cent"/>
-    <addaction name="actionFermer"/>
     <addaction name="actionNouveau_album"/>
     <addaction name="actionAjouter_l_album"/>
+    <addaction name="separator"/>
+    <addaction name="actionFermer"/>
    </widget>
    <widget class="QMenu" name="menuEdition">
     <property name="title">
@@ -376,7 +377,7 @@ border: none;</string>
    </widget>
    <widget class="QMenu" name="menuAffichage">
     <property name="title">
-     <string>Affichage</string>
+     <string>Afficha&amp;ge</string>
     </property>
     <addaction name="actionIcones_petites"/>
     <addaction name="actionIcones_moyennes"/>
@@ -406,87 +407,87 @@ border: 0px 0px 2px 0px</string>
   </widget>
   <action name="actionFermer">
    <property name="text">
-    <string>Fermer</string>
+    <string>&amp;Fermer</string>
    </property>
   </action>
   <action name="actionEmplacement_r_cent">
    <property name="text">
-    <string>Emplacements récents</string>
+    <string>&amp;Emplacements récents</string>
    </property>
   </action>
   <action name="actionAlbum_r_cent">
    <property name="text">
-    <string>Albums récents</string>
+    <string>&amp;Albums récents</string>
    </property>
   </action>
   <action name="actionEditer">
    <property name="text">
-    <string>Editer</string>
+    <string>&amp;Editer</string>
    </property>
   </action>
   <action name="actionRenommer">
    <property name="text">
-    <string>Renommer...</string>
+    <string>&amp;Renommer...</string>
    </property>
   </action>
   <action name="actionIcones_petites">
    <property name="text">
-    <string>Icones petites</string>
+    <string>&amp;Icones petites</string>
    </property>
   </action>
   <action name="actionIcones_moyennes">
    <property name="text">
-    <string>Icones moyennes</string>
+    <string>Icones &amp;moyennes</string>
    </property>
   </action>
   <action name="actionIcones_grandes">
    <property name="text">
-    <string>Icones grandes</string>
+    <string>Icones &amp;grandes</string>
    </property>
   </action>
   <action name="actionListe">
    <property name="text">
-    <string>Liste</string>
+    <string>&amp;Liste</string>
    </property>
   </action>
   <action name="actionIc_nes">
    <property name="text">
-    <string>Icônes</string>
+    <string>I&amp;cônes</string>
    </property>
   </action>
   <action name="actionA_propos">
    <property name="text">
-    <string>A propos</string>
+    <string>&amp;A propos</string>
    </property>
   </action>
   <action name="actionManuel">
    <property name="text">
-    <string>Manuel</string>
+    <string>&amp;Manuel</string>
    </property>
   </action>
   <action name="actionCopier">
    <property name="text">
-    <string>Copier</string>
+    <string>&amp;Copier</string>
    </property>
   </action>
   <action name="actionCouper">
    <property name="text">
-    <string>Couper</string>
+    <string>C&amp;ouper</string>
    </property>
   </action>
   <action name="actionColler">
    <property name="text">
-    <string>Coller</string>
+    <string>Co&amp;ller</string>
    </property>
   </action>
   <action name="actionNouveau_album">
    <property name="text">
-    <string>Nouveau album...</string>
+    <string>&amp;Nouveau album...</string>
    </property>
   </action>
   <action name="actionAjouter_l_album">
    <property name="text">
-    <string>Ajouter à l'album...</string>
+    <string>Ajouter &amp;à l'album...</string>
    </property>
   </action>
  </widget>
