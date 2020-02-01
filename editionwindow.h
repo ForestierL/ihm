@@ -6,9 +6,9 @@
 #include <QLabel>
 
 
-namespace Ui {
-class EditionWindow;
-}
+QT_BEGIN_NAMESPACE
+namespace Ui {class EditionWindow;}
+QT_END_NAMESPACE
 
 class EditionWindow : public QMainWindow
 {
