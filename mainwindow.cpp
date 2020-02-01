@@ -8,13 +8,30 @@
 #include <QLabel>
 #include <QPushButton>
 
-
+#include <QSplitter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    /*******************/
+    QSplitter *splitter = new QSplitter(); //Création d'un splitter, permettant de redimensionner l'espace occupé par les widgets enfants
+    splitter->setOrientation(Qt::Vertical); //Mettre l'orientation verticale
+    ui->leftLayout->addWidget(splitter);
+    QWidget *w1 = new QWidget();
+    ui->lAlbums->setParent(nullptr);
+    w1->setLayout(ui->lAlbums);
+    QWidget *w2 = new QWidget();
+    ui->lTree->setParent(nullptr);
+    w2->setLayout(ui->lTree);
+    splitter->addWidget(w2);
+    splitter->addWidget(w1);
+
+    ui->lAlbums->setAlignment(Qt::AlignTop);
+    /*******************/
+
 
     QString mainPath = "/";
     dirModel = new QFileSystemModel(this);
@@ -104,16 +121,10 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
         msgBox.setText(dirPath);
         msgBox.exec();
         //todo : ### HERE LANCER LA FENETRE 2
-
-
-        EditionWindow w;
+        /*EditionWindow w;
         w.setImage(dirPath);
         w.createContents();
-        w.show();
-
-        QEventLoop eventLoop;
-        eventLoop.exec();
-
+        w.show();*/
     }
 }
 
