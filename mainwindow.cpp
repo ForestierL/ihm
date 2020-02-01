@@ -9,6 +9,7 @@
 #include <database.h>
 #include <QLabel>
 #include <QPushButton>
+#include <QMouseEvent>
 
 #include <QSplitter>
 
@@ -56,7 +57,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     updateCurrentPath(mainPath);
 
-
+    ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 
     /*****
      * Initialisation de la liste en bas à gauche de la main windows
@@ -114,22 +116,13 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
 {
     QString dirPath = dirModel->fileInfo(index).absoluteFilePath();
 
-    QDir pathDir(dirPath);
-    if (pathDir.exists())
-    {
-        qDebug() << "DIR " + dirPath;
-        updateCurrentPath(dirPath);
-    }
-    else
-    {
-        qDebug() << "FILE " + dirPath;
-        EditionWindow w;
-        w.setImage(dirPath);
-        w.createContents();
-        w.show();
+    actualFile = dirPath;
 
-        QEventLoop eventLoop;
-        eventLoop.exec();
+    QDir pathDir(dirPath);
+    if (pathDir.exists()) {
+        openDirectory();
+    } else {
+        openEditor();
     }
 }
 
@@ -193,3 +186,96 @@ void MainWindow::setStatusBar() {
     ui->statusbar->addWidget(statusFrame, 1);
     ui->statusbar->setStyleSheet("background-color: rgb(0,0,0);");
 }
+
+void MainWindow::showContextMenu(const QPoint &pos)
+{
+    // Handle global position
+    QPoint globalPos = ui->elementListView->mapToGlobal(pos);
+    QModelIndex itemPos = ui->elementListView->indexAt(pos);
+    if(!itemPos.isValid()){
+        return;
+    }
+    actualFile = ui->lePath->text() + "/" + itemPos.data().toUrl().toString();
+
+    // Create menu and insert some actions
+    QDir pathDir(actualFile);
+    QMenu myMenu;
+
+    if(!pathDir.exists()){
+        myMenu.addAction("Ouvrir", this, SLOT(openEditor()));
+        myMenu.addSeparator();
+        myMenu.addAction("Ajouter à un album", this, SLOT(addToAlbum()));
+        myMenu.addAction("Informations", this, SLOT(informations()));
+        myMenu.addSeparator();
+        myMenu.addAction("Supprimer", this, SLOT(eraseItem()));
+
+        myMenu.exec(globalPos);
+    }else{
+        qDebug() << "Clique sur dossier";
+        myMenu.addAction("Ouvrir", this, SLOT(openDirectory()));
+        myMenu.addSeparator();
+        myMenu.addAction("Supprimer", this, SLOT(removeDirectory()));
+
+        myMenu.exec(globalPos);
+    }
+}
+
+void MainWindow::openEditor(){
+    EditionWindow w;
+    w.setImage(actualFile);
+    w.createContents();
+    w.show();
+    QEventLoop eventLoop;
+    eventLoop.exec();
+}
+
+void MainWindow::openDirectory(){
+    ui->elementListView->setRootIndex(fileModel->setRootPath(actualFile));
+    ui->dirTreeView->setExpanded(dirModel->setRootPath(actualFile), true);
+    //ui->dirTreeView->collapse(dirModel->setRootPath(dirPath));
+    ui->dirTreeView->setCurrentIndex(dirModel->setRootPath(actualFile));
+    ui->lePath->setText(actualFile);
+}
+
+void MainWindow::addToAlbum(){
+    qDebug() << "AddToAlbum";
+}
+
+void MainWindow::informations(){
+    qDebug() << "Infos";
+}
+
+void MainWindow::eraseItem(){
+    QFile file(actualFile);
+    bool valid = file.remove();
+}
+
+//Fonction en cours de dev
+bool MainWindow::removeDirectory(QString dirPath){
+    if(dirPath == "")
+        dirPath = actualFile;
+    QDir folder(dirPath);
+    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
+    foreach (QFileInfo fileInfo, folder.entryInfoList()) {
+        if(fileInfo.isDir()){
+            if(!removeDirectory(fileInfo.filePath()))
+                return false;
+        }
+        else if(fileInfo.isFile()){
+            if(!QFile::remove(fileInfo.filePath())){
+                qDebug() << "Unable to remove file : " << fileInfo.filePath();
+                return false;
+            }
+        }
+    }
+
+    if(!folder.rmdir(dirPath)){
+        return false;
+    }
+    return true;
+}
+
+
+
+
+

@@ -33,6 +33,7 @@ FORMS += \
     editionwindow.ui \
     mainwindow.ui \
     filepropertieswindow.ui
+    notfound.ui
 
 OTHER_FILES += \
     chat.jpg
