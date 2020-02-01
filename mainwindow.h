@@ -24,11 +24,19 @@ public:
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
     void on_dirTreeView_clicked(const QModelIndex &index);
+    void openEditor();
+    void openDirectory();
+    void addToAlbum();
+    void informations();
+    void eraseItem();
+    bool removeDirectory(QString dirPath = "");
     void on_lePath_returnPressed();
+    void showContextMenu(const QPoint&);
 
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *dirModel;
     QFileSystemModel *fileModel;
+    QString actualFile;
 };
 #endif // MAINWINDOW_H
