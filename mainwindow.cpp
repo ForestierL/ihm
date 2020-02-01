@@ -18,10 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-
-    QString mainPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
-
-
     /*******************/
     QSplitter *splitter = new QSplitter(); //CQStandardPaths::writableLocation(QStandardPaths::PicturesLocation)réation d'un splitter, permettant de redimensionner l'espace occupé par les widgets enfants
     splitter->setOrientation(Qt::Vertical); //Mettre l'orientation verticale
@@ -38,26 +34,27 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lAlbums->setAlignment(Qt::AlignTop);
     /*******************/
 
+    QString mainPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
     dirModel = new QFileSystemModel(this);
-    dirModel->setRootPath(mainPath);
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
+
     ui->dirTreeView->setModel(dirModel);
-//    ui->treeView->setStyleSheet("color:white;");
+
     ui->dirTreeView->setHeaderHidden(true);
     for (int i = 1; i < dirModel->columnCount(); ++i)
         ui->dirTreeView->hideColumn(i);
-
 
     fileModel = new QFileSystemModel(this);
     fileModel->setFilter(QDir::NoDotAndDotDot | QDir::Files | QDir::AllDirs);
     QStringList sDriveFilters;
     sDriveFilters << "*.png" << "*.jpeg" << "*.jpg" << "*.gif" << "*.bmp" << "*.jpe" << "*.jfif" << "*.rle" << "*.tga" << "*.tif" << "*.tiff" ;
+
     fileModel->setNameFilters(sDriveFilters);
     fileModel->setNameFilterDisables(false);
-    fileModel->setRootPath(mainPath);
+
     ui->elementListView->setModel(fileModel);
 
-    ui->lePath->setText(mainPath);
+    updateCurrentPath(mainPath);
 
 
 
@@ -98,24 +95,35 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+bool MainWindow::updateCurrentPath(QString path) {
+    QListView *elementListView = ui->elementListView;
+    QTreeView *dirTreeView = ui->dirTreeView;
+    QLineEdit *lineEditPath = ui->lePath;
+
+    elementListView->setRootIndex(fileModel->setRootPath(path));
+
+    dirTreeView->setExpanded(dirModel->setRootPath(path), true);
+    dirTreeView->setCurrentIndex(dirModel->setRootPath(path));
+
+    lineEditPath->setText(path);
+
+    return true;
+}
+
 void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
 {
     QString dirPath = dirModel->fileInfo(index).absoluteFilePath();
 
-    ui->elementListView->setRootIndex(fileModel->setRootPath(dirPath));
-    ui->dirTreeView->setExpanded(dirModel->setRootPath(dirPath), true);
-    //ui->dirTreeView->collapse(dirModel->setRootPath(dirPath));
-    ui->dirTreeView->setCurrentIndex(dirModel->setRootPath(dirPath));
-
     QDir pathDir(dirPath);
-    if (pathDir.exists()) {
+    if (pathDir.exists())
+    {
         qDebug() << "DIR " + dirPath;
-        ui->lePath->setText(dirPath);//condition si dossier ou si fichier
-    } else {
+        updateCurrentPath(dirPath);
+    }
+    else
+    {
         qDebug() << "FILE " + dirPath;
-
         EditionWindow w;
-
         w.setImage(dirPath);
         w.createContents();
         w.show();
@@ -125,24 +133,17 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
 void MainWindow::on_dirTreeView_clicked(const QModelIndex &index)
 {
     QString dirPath = dirModel->fileInfo(index).absoluteFilePath();
-    ui->elementListView->setRootIndex(fileModel->setRootPath(dirPath));
-    ui->dirTreeView->setExpanded(dirModel->setRootPath(dirPath), true);
-    //ui->dirTreeView->collapse(dirModel->setRootPath(dirPath));
-    ui->dirTreeView->setCurrentIndex(dirModel->setRootPath(dirPath));
-    ui->lePath->setText(dirPath);
+    updateCurrentPath(dirPath);
 }
 
 void MainWindow::on_lePath_returnPressed()
 {
     QString dirPath = ui->lePath->text();
-    QDir pathDir(dirPath);
 
+    QDir pathDir(dirPath);
     if (pathDir.exists()) {
         qDebug() << "DIR " + dirPath;
-
-        ui->elementListView->setRootIndex(fileModel->setRootPath(dirPath));
-        ui->dirTreeView->setExpanded(dirModel->setRootPath(dirPath), true);
-        ui->dirTreeView->setCurrentIndex(dirModel->setRootPath(dirPath));
+        updateCurrentPath(dirPath);
     }
 }
 

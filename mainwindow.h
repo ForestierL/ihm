@@ -19,11 +19,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void setStatusBar();
+    bool updateCurrentPath(QString);
 
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
     void on_dirTreeView_clicked(const QModelIndex &index);
-
     void on_lePath_returnPressed();
 
 private:
