@@ -25,6 +25,7 @@ EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
     QFrame *statusBarFrame = createStatusBar();
     ui->statusbar->insertPermanentWidget(0, statusBarFrame, 1);
 
+    //ui->centralwidget->setStyleSheet("background-color: rgb(0, 0, 0);");
     initBackground();
 }
 
@@ -135,7 +136,6 @@ void EditionWindow::createContents()
     reader->setAutoTransform(true);
     QImage srcImage(this->imagePath);
 
-
     if (srcImage.isNull()) {
         QMessageBox::information(this,
                                  QGuiApplication::applicationDisplayName(),
@@ -146,8 +146,15 @@ void EditionWindow::createContents()
         delete reader;
         reader = nullptr;
 
+        QImage dstImage(srcImage.width(), srcImage.height(), srcImage.format());
+
+        QPainter painter(&dstImage);
+
+        painter.drawImage(0, 0, srcImage);
+
         QLabel *imageLabel = new QLabel();
-        imageLabel->setPixmap(QPixmap::fromImage(srcImage));
+        imageLabel->setPixmap(QPixmap::fromImage(dstImage));
+
         this->imageLabel = imageLabel;
 
         this->initialPixMap = QPixmap::fromImage(srcImage);

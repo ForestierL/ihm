@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include <QStandardPaths>
+
 #include <database.h>
 #include <QLabel>
 #include <QPushButton>
@@ -16,8 +18,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+
+    QString mainPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+
+
     /*******************/
-    QSplitter *splitter = new QSplitter(); //Création d'un splitter, permettant de redimensionner l'espace occupé par les widgets enfants
+    QSplitter *splitter = new QSplitter(); //CQStandardPaths::writableLocation(QStandardPaths::PicturesLocation)réation d'un splitter, permettant de redimensionner l'espace occupé par les widgets enfants
     splitter->setOrientation(Qt::Vertical); //Mettre l'orientation verticale
     ui->leftLayout->addWidget(splitter);
     QWidget *w1 = new QWidget();
@@ -32,8 +38,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lAlbums->setAlignment(Qt::AlignTop);
     /*******************/
 
-
-    QString mainPath = "/";
     dirModel = new QFileSystemModel(this);
     dirModel->setRootPath(mainPath);
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
@@ -87,14 +91,6 @@ MainWindow::MainWindow(QWidget *parent)
         ui->vlAlbums->addLayout(layoutTest);
     }
 
-    Database database("C:\\Users\\Hibou\\Documents\\db.db");
-    QString filePathTest = "test.png";
-    int mark = 4;
-    QString noteTest = "test : note";
-    QString colorTest = "test : color";
-    QString feelingTest = "test : feeling";
-    database.addImage(filePathTest, mark, noteTest, colorTest, feelingTest);
-
 }
 
 MainWindow::~MainWindow()
@@ -117,14 +113,12 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
         ui->lePath->setText(dirPath);//condition si dossier ou si fichier
     } else {
         qDebug() << "FILE " + dirPath;
-        QMessageBox msgBox;
-        msgBox.setText(dirPath);
-        msgBox.exec();
-        //todo : ### HERE LANCER LA FENETRE 2
-        /*EditionWindow w;
+
+        EditionWindow w;
+
         w.setImage(dirPath);
         w.createContents();
-        w.show();*/
+        w.show();
     }
 }
 
