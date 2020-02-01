@@ -29,7 +29,8 @@ HEADERS += \
 
 FORMS += \
     editionwindow.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    notfound.ui
 
 OTHER_FILES += \
     chat.jpg

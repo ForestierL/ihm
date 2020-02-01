@@ -89,15 +89,10 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
 {
     QString dirPath = dirModel->fileInfo(index).absoluteFilePath();
     actualFile = dirPath;
-    ui->elementListView->setRootIndex(fileModel->setRootPath(dirPath));
-    ui->dirTreeView->setExpanded(dirModel->setRootPath(dirPath), true);
-    //ui->dirTreeView->collapse(dirModel->setRootPath(dirPath));
-    ui->dirTreeView->setCurrentIndex(dirModel->setRootPath(dirPath));
 
     QDir pathDir(dirPath);
     if (pathDir.exists()) {
-        qDebug() << "DIR " + dirPath;
-        ui->lePath->setText(dirPath);//condition si dossier ou si fichier
+        openDirectory();
     } else {
         openEditor();
     }
@@ -182,8 +177,9 @@ void MainWindow::showContextMenu(const QPoint &pos)
     actualFile = ui->lePath->text() + "/" + itemPos.data().toUrl().toString();
 
     // Create menu and insert some actions
-    QMenu myMenu;
     QDir pathDir(actualFile);
+    QMenu myMenu;
+
     if(!pathDir.exists()){
         myMenu.addAction("Ouvrir", this, SLOT(openEditor()));
         myMenu.addSeparator();
@@ -191,6 +187,13 @@ void MainWindow::showContextMenu(const QPoint &pos)
         myMenu.addAction("Informations", this, SLOT(informations()));
         myMenu.addSeparator();
         myMenu.addAction("Supprimer", this, SLOT(eraseItem()));
+
+        myMenu.exec(globalPos);
+    }else{
+        qDebug() << "Clique sur dossier";
+        myMenu.addAction("Ouvrir", this, SLOT(openDirectory()));
+        myMenu.addSeparator();
+        myMenu.addAction("Supprimer", this, SLOT(removeDirectory()));
 
         myMenu.exec(globalPos);
     }
@@ -205,6 +208,14 @@ void MainWindow::openEditor(){
     eventLoop.exec();
 }
 
+void MainWindow::openDirectory(){
+    ui->elementListView->setRootIndex(fileModel->setRootPath(actualFile));
+    ui->dirTreeView->setExpanded(dirModel->setRootPath(actualFile), true);
+    //ui->dirTreeView->collapse(dirModel->setRootPath(dirPath));
+    ui->dirTreeView->setCurrentIndex(dirModel->setRootPath(actualFile));
+    ui->lePath->setText(actualFile);
+}
+
 void MainWindow::addToAlbum(){
     qDebug() << "AddToAlbum";
 }
@@ -217,3 +228,33 @@ void MainWindow::eraseItem(){
     QFile file(actualFile);
     bool valid = file.remove();
 }
+
+//Fonction en cours de dev
+bool MainWindow::removeDirectory(QString dirPath){
+    if(dirPath == "")
+        dirPath = actualFile;
+    QDir folder(dirPath);
+    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
+    foreach (QFileInfo fileInfo, folder.entryInfoList()) {
+        if(fileInfo.isDir()){
+            if(!removeDirectory(fileInfo.filePath()))
+                return false;
+        }
+        else if(fileInfo.isFile()){
+            if(!QFile::remove(fileInfo.filePath())){
+                qDebug() << "Unable to remove file : " << fileInfo.filePath();
+                return false;
+            }
+        }
+    }
+
+    if(!folder.rmdir(dirPath)){
+        return false;
+    }
+    return true;
+}
+
+
+
+
+
