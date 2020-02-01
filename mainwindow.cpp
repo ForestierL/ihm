@@ -127,6 +127,9 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
         w.setImage(dirPath);
         w.createContents();
         w.show();
+
+        QEventLoop eventLoop;
+        eventLoop.exec();
     }
 }
 
