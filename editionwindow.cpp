@@ -14,18 +14,16 @@
 
 
 EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::EditionWindow)
-
 {
     ui->setupUi(this);
 
     QFrame *toolBarFrame = createToolBar();
     ui->toolBar->insertWidget(0, toolBarFrame);
-    ui->toolBar->setMovable(false);
+    ui->toolBar->setMovable(true);
 
     QFrame *statusBarFrame = createStatusBar();
     ui->statusbar->insertPermanentWidget(0, statusBarFrame, 1);
 
-    //ui->centralwidget->setStyleSheet("background-color: rgb(0, 0, 0);");
     initBackground();
 }
 
@@ -149,7 +147,6 @@ void EditionWindow::createContents()
         QImage dstImage(srcImage.width(), srcImage.height(), srcImage.format());
 
         QPainter painter(&dstImage);
-
         painter.drawImage(0, 0, srcImage);
 
         QLabel *imageLabel = new QLabel();
@@ -157,7 +154,9 @@ void EditionWindow::createContents()
 
         this->imageLabel = imageLabel;
 
-        this->initialPixMap = QPixmap::fromImage(srcImage);
+        this->initialPixMap = QPixmap::fromImage(dstImage);
+        this->initialImageWidth = imageLabel->pixmap()->width();
+        this->initialImageHeigth = imageLabel->pixmap()->height();
 
         QHBoxLayout *contentLayout = new QHBoxLayout();
         contentLayout->addStretch(1);
@@ -171,8 +170,8 @@ void EditionWindow::createContents()
 
 void EditionWindow::resizeImage(int percent)
 {
-    float newWidth = this->initialPixMap.width() * percent/100;
-    float newHeigth = this->initialPixMap.height() * percent/100;
+    float newWidth = this->initialImageWidth * percent/100;
+    float newHeigth = this->initialImageHeigth * percent/100;
 
     this->imageLabel->setPixmap(this->initialPixMap.scaled(newWidth, newHeigth, Qt::KeepAspectRatio));
 }

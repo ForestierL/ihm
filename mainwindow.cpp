@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "qhoversensitivebutton.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -13,9 +14,8 @@
 
 #include <QSplitter>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -61,6 +61,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
+
+
+
+
     /*****
      * Initialisation de la liste en bas à gauche de la main windows
      * Ceci est codé en dur pour le moment (pas de bdd)
@@ -79,8 +83,7 @@ MainWindow::MainWindow(QWidget *parent)
         layoutTest->addWidget(testLabel);
 
         // Création du bouton
-        QPushButton *test = new QPushButton();
-        test->setText("x");
+        QHoverSensitiveButton *test = new QHoverSensitiveButton(this, "delete");
         test->setMaximumSize(20,20);
         test->setStyleSheet("color:red;");
         //todo : ajouter l'intération
@@ -136,48 +139,69 @@ void MainWindow::on_dirTreeView_clicked(const QModelIndex &index)
 void MainWindow::on_lePath_returnPressed()
 {
     QString dirPath = ui->lePath->text();
-
     QDir pathDir(dirPath);
-    if (pathDir.exists()) {
+    if (pathDir.exists())
+	{
         qDebug() << "DIR " + dirPath;
         updateCurrentPath(dirPath);
     }
 }
 
+void MainWindow::setNavButtons(){
+    QFrame *navFrame = new QFrame();
+    navFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    navFrame->setMaximumWidth(96);
+
+    QHBoxLayout *layout = new QHBoxLayout(navFrame);
+    layout->setContentsMargins(0,0,0,0);
+    layout->setSpacing(0);
+
+    QHoverSensitiveButton *previous = new QHoverSensitiveButton(navFrame, "arrow-l");
+    previous->setMaximumWidth(24);
+    previous->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    connect(previous, SIGNAL(clicked()), this, SLOT(previous_clicked()));
+
+    QHoverSensitiveButton *next = new QHoverSensitiveButton(navFrame, "arrow-r");
+    next->setMaximumWidth(24);
+    next->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    connect(next, SIGNAL(clicked()), this, SLOT(next_clicked()));
+
+    QHoverSensitiveButton *home = new QHoverSensitiveButton(navFrame, "home");
+    home->setMaximumWidth(24);
+    home->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    connect(home, SIGNAL(clicked()), this, SLOT(home_clicked()));
+
+    QHoverSensitiveButton *up = new QHoverSensitiveButton(navFrame, "arrow-u");
+    up->setMaximumWidth(24);
+    up->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    connect(up, SIGNAL(clicked()), this, SLOT(up_clicked()));
+
+    layout->addWidget(previous);
+    layout->addWidget(next);
+    layout->addWidget(home);
+    layout->addWidget(up);
+
+    ui->lePath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    ui->navBar->insertWidget(0, navFrame);
+}
+
 void MainWindow::setStatusBar() {
     QFrame *statusFrame = new QFrame();
     statusFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    statusFrame->setStyleSheet("background-color: rgb(0, 0, 0);"
-                               "border: 0px;"
-                               "margin: 0px;"
-                               "padding: 0px;");
 
     QHBoxLayout *layout = new QHBoxLayout(statusFrame);
     layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(0);
 
     QLabel *statusMessage = new QLabel("0 élement selectionné", statusFrame);
-    statusMessage->setStyleSheet("color: white");
+    //statusMessage->setStyleSheet("color: white");
 
     QFrame *frame = new QFrame(statusFrame);
     frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    frame->setStyleSheet("background-color: rgb(0, 0, 0);"
-                         "border: 0px;"
-                         "margin: 0px;"
-                         "padding: 0px;");
 
-    QPushButton *liste = new QPushButton("Liste", statusFrame);
-    liste->setStyleSheet("background-color: rgb(51, 51, 51);"
-                         "color: rgb(140, 140, 140);"
-                         "border: 0px;"
-                         "margin: 0px;"
-                         "padding: 0px;");
-    QPushButton *icone = new QPushButton("Icone", statusFrame);
-    icone->setStyleSheet("background-color: rgb(51, 51, 51);"
-                         "color: rgb(140, 140, 140);"
-                         "border: 0px;"
-                         "margin: 0px;"
-                         "padding: 0px;");
+    QHoverSensitiveButton *liste = new QHoverSensitiveButton(statusFrame, "list");
+
+    QHoverSensitiveButton *icone = new QHoverSensitiveButton(statusFrame, "icon");
 
     layout->addWidget(statusMessage);
     layout->addWidget(frame);
@@ -185,8 +209,8 @@ void MainWindow::setStatusBar() {
     layout->addWidget(icone);
 
     ui->statusbar->addWidget(statusFrame, 1);
-    ui->statusbar->setStyleSheet("background-color: rgb(0,0,0);");
 }
+
 
 void MainWindow::showContextMenu(const QPoint &pos)
 {
@@ -227,7 +251,7 @@ void MainWindow::showContextMenu(const QPoint &pos)
 
 void MainWindow::openEditor()
 {
-    EditionWindow w;
+    EditionWindow w(this);
     w.setImage(actualFile);
     w.createContents();
     w.show();
@@ -265,7 +289,7 @@ void MainWindow::informations()
 void MainWindow::eraseItem()
 {
     QFile file(actualFile);
-    bool valid = file.remove(); //todo: remove or use that unused variable
+    file.remove(); //todo: remove or use that unused variable
 }
 
 //Fonction en cours de dev
@@ -298,9 +322,29 @@ bool MainWindow::removeDirectory(QString dirPath)
     return true;
 }
 
-void MainWindow::on_topButton_clicked()
+
+void MainWindow::home_clicked()
 {
-    QString path = ui->lePath->text();
+	QString path = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+    pathVisit->addPath(path);
+    updateCurrentPath(path);
+}
+
+void MainWindow::previous_clicked()
+{
+	QString path = pathVisit->back();
+    updateCurrentPath(path);
+}
+
+void MainWindow::next_clicked()
+{
+	QString path = pathVisit->forward();
+    updateCurrentPath(path);
+}
+
+void MainWindow::up_clicked()
+{
+	QString path = ui->lePath->text();
     QStringList pathList = path.split('/');
     pathList.removeLast();
     path = "";
@@ -309,24 +353,5 @@ void MainWindow::on_topButton_clicked()
         path += temp + "/";
     }
     path.resize(path.size()-1);
-    updateCurrentPath(path);
-}
-
-void MainWindow::on_homeButton_clicked()
-{
-    QString path = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
-    pathVisit->addPath(path);
-    updateCurrentPath(path);
-}
-
-void MainWindow::on_forwardButton_clicked()
-{
-    QString path = pathVisit->forward();
-    updateCurrentPath(path);
-}
-
-void MainWindow::on_backwardButton_clicked()
-{
-    QString path = pathVisit->back();
     updateCurrentPath(path);
 }

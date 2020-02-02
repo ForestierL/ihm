@@ -24,6 +24,7 @@ public:
     ~MainWindow();
     void setStatusBar();
     bool updateCurrentPath(QString);
+    void setNavButtons();
 
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
@@ -34,12 +35,12 @@ private slots:
     void informations();
     void eraseItem();
     bool removeDirectory(QString dirPath = "");
-    void on_lePath_returnPressed();
     void showContextMenu(const QPoint&);
-    void on_topButton_clicked();
-    void on_homeButton_clicked();
-    void on_forwardButton_clicked();
-    void on_backwardButton_clicked();
+    void on_lePath_returnPressed();
+    void home_clicked();
+    void previous_clicked();
+    void next_clicked();
+    void up_clicked();
 
 private:
     Ui::MainWindow *ui;
