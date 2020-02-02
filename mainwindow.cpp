@@ -268,9 +268,34 @@ bool MainWindow::removeDirectory(QString dirPath){
     return true;
 }
 
-void MainWindow::checkAllPath(){
+void MainWindow::checkAllPath()
+{
+    QVector<QString> *missingFilesPath = new QVector<QString>();
+    /*
+    condition : on parse la bdd, si le path n'existe pas sur le pc alors on ajoute à missingFilePath
+    */
+    //DEBUG
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
 
-    CheckingWindow w;
+    CheckingWindow w(this);
+    w.initMissingFilesPath(missingFilesPath);
     w.show();
     QEventLoop eventLoop;
     eventLoop.exec();

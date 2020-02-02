@@ -5,24 +5,68 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
+#include <QSpacerItem>
+
 CheckingWindow::CheckingWindow(QWidget *parent): QDialog(parent), ui(new Ui::CheckingWindow)
 {
-    int nb = 0;
-
-    for(int i = 0; i < nb; i++){
-        QLabel *name = new QLabel("test");
-        QPushButton *bYes = new QPushButton("Relocaliser");
-        QPushButton *bNo = new QPushButton("Supprimer");
-        ui->gridLayout->addWidget(name,i,0);
-        ui->gridLayout->addWidget(bYes,i,1);
-        ui->gridLayout->addWidget(bNo,i,2);
-    }
-
     ui->setupUi(this);
+    setFixedSize(this->size()); //fixed size
 }
 
-void CheckingWindow::initializeList(QString list[]){
+CheckingWindow::~CheckingWindow()
+{
+    delete ui;
+}
 
+QString getNameFromPath(QString path)
+{
+    QStringList qStringList = path.split("/");
+    return qStringList.last();
+}
+
+void CheckingWindow::initMissingFilesPath(QVector<QString>* missingFilesPath)
+{
+    this->missingFilesPath = missingFilesPath;
+    buttonsIgnore = new QVector<QPushButton*>();
+    buttonsRelocate = new QVector<QPushButton*>();
+
+    QLayout* vlMissingList = new QVBoxLayout();
+    vlMissingList->setAlignment(Qt::AlignTop);
+
+    for(int i=0; i < this->missingFilesPath->length(); i++)
+    {
+        buttonsRelocate->append(new QPushButton("Relocate"));
+        buttonsIgnore->append(new QPushButton("Ignore"));
+
+        QLayout *layoutH = new QHBoxLayout();
+
+        QLabel *path = new QLabel(getNameFromPath(this->missingFilesPath->at(i)));
+        path->setToolTip(this->missingFilesPath->at(i));
+
+        // Ajout du label au sous-layout
+        layoutH->addWidget(path);
+        layoutH->addItem(new QSpacerItem(20,5));
+
+        QLayout *layoutHB = new QHBoxLayout();
+        // Ajout du bouton au sous-layout
+        layoutHB->addWidget(buttonsRelocate->at(i));
+        // Ajout du bouton au sous-layout
+        layoutHB->addWidget(buttonsIgnore->at(i));
+
+        layoutH->addItem(layoutHB);
+
+        // Ajout du sous-layout au layout vertical de l'UI
+        vlMissingList->addItem(layoutH);
+    }
+    ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    ui->scrollArea->setWidgetResizable(false);
+
+    QWidget *temp = new QWidget();
+    temp->setLayout(vlMissingList);
+    ui->scrollArea->setWidget(temp);
+    ui->scrollArea->setAlignment(Qt::AlignCenter);
+    //ui->scrollAreaWidgetContents->setLayout(vlMissingList);
 }
 
 QString CheckingWindow::relocate(){
@@ -40,10 +84,7 @@ QString CheckingWindow::relocate(){
 
 void CheckingWindow::on_pushButton_2_clicked()
 {
+    //LUCAS tu me changes cette fonction (nom)
     //Requête de suppression de toutes les images dans la bdd
 }
 
-CheckingWindow::~CheckingWindow()
-{
-    delete ui;
-}

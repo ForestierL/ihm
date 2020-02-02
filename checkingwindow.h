@@ -2,6 +2,7 @@
 #define CHECKINGWINDOW_H
 
 #include <QDialog>
+#include <QVector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,11 +17,14 @@ class CheckingWindow : public QDialog
 public:
     CheckingWindow(QWidget *parent = nullptr);
     ~CheckingWindow();
-    void initializeList(QString[]);
     QString relocate();
+    void initMissingFilesPath(QVector<QString>* missingFilesPath);
 
 private:
     Ui::CheckingWindow *ui;
+    QVector<QString> *missingFilesPath;
+    QVector<QPushButton*> *buttonsRelocate;
+    QVector<QPushButton*> *buttonsIgnore;
 
 protected slots:
 
