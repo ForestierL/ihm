@@ -16,9 +16,9 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>30</y>
-     <width>299</width>
+     <x>50</x>
+     <y>20</y>
+     <width>367</width>
      <height>250</height>
     </rect>
    </property>
@@ -31,7 +31,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QListView" name="listView"/>
+     <layout class="QGridLayout" name="gridLayout"/>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -39,16 +39,16 @@
        <number>40</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>Relocaliser</string>
+         <string>Ignorer</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="pushButton_2">
         <property name="text">
-         <string>Annuler</string>
+         <string>Tout Supprimer</string>
         </property>
        </widget>
       </item>

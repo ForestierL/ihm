@@ -24,6 +24,8 @@ private:
 
 protected slots:
 
+private slots:
+    void on_pushButton_2_clicked();
 };
 
 #endif // CHECKINGWINDOW_H

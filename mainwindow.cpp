@@ -79,7 +79,6 @@ MainWindow::MainWindow(QWidget *parent)
     QString colorTest = "test : color";
     QString feelingTest = "test : feeling";
     database.addImage(filePathTest, mark, noteTest, colorTest, feelingTest);
-
 }
 
 MainWindow::~MainWindow()
@@ -195,7 +194,7 @@ void MainWindow::showContextMenu(const QPoint &pos)
         qDebug() << "Clique sur dossier";
         myMenu.addAction("Ouvrir", this, SLOT(openDirectory()));
         myMenu.addSeparator();
-        myMenu.addAction("Supprimer", this, SLOT(checkAllPath()/*removeDirectory()*/));
+        myMenu.addAction("Supprimer", this, SLOT(removeDirectory()));
 
         myMenu.exec(globalPos);
     }
@@ -229,7 +228,7 @@ void MainWindow::informations(){
 void MainWindow::eraseItem(){
     QFile file(actualFile);
 
-    int reponse = QMessageBox::question(this, "Suppression", "Vous êtes sûr de vouloir supprimer cette image ?", QMessageBox ::Yes | QMessageBox::No);
+    int reponse = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer cette image ?", QMessageBox ::Yes | QMessageBox::No);
 
     if (reponse == QMessageBox::Yes)
     {
@@ -239,8 +238,13 @@ void MainWindow::eraseItem(){
 
 //Fonction en cours de dev
 bool MainWindow::removeDirectory(QString dirPath){
-    if(dirPath == "")
+    if(dirPath == ""){
+        int valid = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer ce dossier et tout les documents qu'il contient ?", QMessageBox ::Yes | QMessageBox::No);
+        if(valid == QMessageBox::No){
+            return false;
+        }
         dirPath = actualFile;
+    }
     QDir folder(dirPath);
     folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
     foreach (QFileInfo fileInfo, folder.entryInfoList()) {
