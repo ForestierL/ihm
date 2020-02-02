@@ -80,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
     QString feelingTest = "test : feeling";
     database.addImage(filePathTest, mark, noteTest, colorTest, feelingTest);
 
-    checkAllPath();
+    //checkAllPath();
 }
 
 MainWindow::~MainWindow()
@@ -238,7 +238,6 @@ void MainWindow::eraseItem(){
     }
 }
 
-//Fonction en cours de dev
 bool MainWindow::removeDirectory(QString dirPath){
     if(dirPath == ""){
         int valid = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer ce dossier et tout les documents qu'il contient ?", QMessageBox ::Yes | QMessageBox::No);

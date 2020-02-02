@@ -35,8 +35,8 @@ void CheckingWindow::initMissingFilesPath(QVector<QString>* missingFilesPath)
 
     for(int i=0; i < this->missingFilesPath->length(); i++)
     {
-        buttonsRelocate->append(new QPushButton("Relocate"));
-        buttonsIgnore->append(new QPushButton("Ignore"));
+        buttonsRelocate->append(new QPushButton("Relocaliser"));
+        buttonsIgnore->append(new QPushButton("Ignorer"));
 
         QLayout *layoutH = new QHBoxLayout();
 
