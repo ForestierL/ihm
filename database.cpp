@@ -26,7 +26,7 @@ Database::Database(const QString& path)
 Database* Database::getInstance()
 {
     if(Database::instance == nullptr){
-        Database::instance = new Database("/Users/romaincolonnadistria/Desktop/ihm/lumipic.db");
+        Database::instance = new Database("/Users/romaincolonnadistria/Desktop/ihm/lumipic.db"); //todo: modifier
     }
 
     return Database::instance;
@@ -199,6 +199,7 @@ int Database::getImageId(QString &filePath)
         } else {
             Database::lastErrorMessage = __FUNCTION__;
             Database::lastErrorMessage.append(": Plusieurs images correspondent au nom de fichier.");
+            return -1; //ajouté par loic
         }
     } else {
         Database::lastErrorMessage = __FUNCTION__;
@@ -253,8 +254,25 @@ void Database::checkDBBeenCreated()
 }
 
 
-static int getImagePosition(int imageId, int albumId);
+int Database::getImagePosition(int imageId, int albumId)
+{
+    checkDBBeenCreated();
 
+    QSqlQuery query;
+    query.prepare("SELECT positionInAlbum FROM linkImageAlbum WHERE idAlbum = :idAlbum AND idImage = :idImage;");
+    query.bindValue(":idAlbum", albumId);
+    query.bindValue("idImage", imageId);
+
+    if(query.exec()){
+        qDebug() << query.value(0).toInt();
+        return query.value(0).toInt();
+    } else {
+        QString error = __FUNCTION__;
+        error.append(" : Erreur lors de la requête.");
+        lastErrorMessage = error;
+        return -1;
+    }
+}
 
 int sqlQuerySize(QSqlQuery &query)
 {
