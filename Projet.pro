@@ -20,21 +20,57 @@ SOURCES += \
     database.cpp \
     editionwindow.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    filepropertieswindow.cpp \
+    pathvisit.cpp \
+    qhoversensitivebutton.cpp
 
 HEADERS += \
     database.h \
     editionwindow.h \
-    mainwindow.h
+    mainwindow.h \
+    filepropertieswindow.h \
+    pathvisit.h \
+	qhoversensitivebutton.h
 
 FORMS += \
     editionwindow.ui \
-    mainwindow.ui
-
-OTHER_FILES += \
-    chat.jpg
+    mainwindow.ui \
+    filepropertieswindow.ui \
+    notfound.ui
+    
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    arrow-d-w.png \
+    arrow-l-b.png \
+    arrow-l-w.png \
+    arrow-r-b.png \
+    arrow-r-w.png \
+    arrow-u-b.png \
+    arrow-u-w.png \
+    crop-w.png \
+    delete-b.png \
+    delete-r.png \
+    delete-w.png \
+    home-b.png \
+    home-w.png \
+    icon-b.png \
+    icon-w.png \
+    list-b.png \
+    list-w.png \
+    next-w.png \
+    previous-w.png \
+    resize-w.png \
+    rotate-w.png \
+    save-w.png \
+    star-empty-w.png \
+    star-full-w.png \
+    star-half-w.png
+
+RESOURCES += \
+    icons.qrc

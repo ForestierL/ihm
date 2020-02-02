@@ -134,7 +134,6 @@ void EditionWindow::createContents()
     reader->setAutoTransform(true);
     QImage srcImage(this->imagePath);
 
-
     if (srcImage.isNull()) {
         QMessageBox::information(this,
                                  QGuiApplication::applicationDisplayName(),
@@ -152,6 +151,7 @@ void EditionWindow::createContents()
 
         QLabel *imageLabel = new QLabel();
         imageLabel->setPixmap(QPixmap::fromImage(dstImage));
+
         this->imageLabel = imageLabel;
 
         this->initialPixMap = QPixmap::fromImage(dstImage);

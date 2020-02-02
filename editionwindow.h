@@ -5,10 +5,10 @@
 #include <QFrame>
 #include <QLabel>
 
+QT_BEGIN_NAMESPACE
+namespace Ui {class EditionWindow;}
+QT_END_NAMESPACE
 
-namespace Ui {
-class EditionWindow;
-}
 
 class EditionWindow : public QMainWindow
 {

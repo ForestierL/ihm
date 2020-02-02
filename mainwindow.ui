@@ -86,7 +86,7 @@ border: none;</string>
            <x>0</x>
            <y>0</y>
            <width>650</width>
-           <height>293</height>
+           <height>292</height>
           </rect>
          </property>
         </widget>
@@ -100,100 +100,7 @@ border: none;</string>
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(25, 25, 25);
-color: rgb(255, 255, 255);
-border: none;</string>
-        </property>
-        <property name="text">
-         <string>◄</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(25, 25, 25);
-color: rgb(255, 255, 255);
-border: none;</string>
-        </property>
-        <property name="text">
-         <string>►</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_3">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(25, 25, 25);
-color: rgb(255, 255, 255);
-border: none;</string>
-        </property>
-        <property name="text">
-         <string>⌂</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_4">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(25, 25, 25);
-color: rgb(255, 255, 255);
-border: none;</string>
-        </property>
-        <property name="text">
-         <string>▲</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="navBar"/>
       </item>
       <item>
        <widget class="QLineEdit" name="lePath">
@@ -226,7 +133,7 @@ border-color: rgb(83, 83, 83);</string>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="leSearch">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -255,82 +162,96 @@ border-color: rgb(83, 83, 83);</string>
      </layout>
     </item>
     <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
+     <layout class="QHBoxLayout" name="horizontalLayoutCenter" stretch="0,0">
       <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QVBoxLayout" name="leftLayout">
         <property name="sizeConstraint">
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
         <item>
-         <widget class="QTreeView" name="dirTreeView">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>200</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(46, 52, 54);
-border: none;</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QVBoxLayout" name="lTree">
           <item>
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Albums</string>
+           <widget class="QTreeView" name="dirTreeView">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pbAddAlbum">
             <property name="maximumSize">
              <size>
-              <width>20</width>
-              <height>20</height>
+              <width>200</width>
+              <height>16777215</height>
              </size>
             </property>
-            <property name="autoFillBackground">
-             <bool>false</bool>
-            </property>
             <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string>+</string>
+             <string notr="true">background-color: rgb(46, 52, 54);
+border: none;</string>
             </property>
            </widget>
           </item>
          </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="vlAlbums">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetDefaultConstraint</enum>
-          </property>
-          <property name="leftMargin">
-           <number>1</number>
-          </property>
-          <property name="topMargin">
-           <number>1</number>
-          </property>
-          <property name="rightMargin">
-           <number>1</number>
-          </property>
-          <property name="bottomMargin">
-           <number>1</number>
-          </property>
+         <layout class="QVBoxLayout" name="lAlbums">
+          <item>
+           <layout class="QHBoxLayout" name="hlTitleAlbum">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Albums</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pbAddAlbum">
+              <property name="maximumSize">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>+</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="vlAlbums">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetDefaultConstraint</enum>
+            </property>
+            <property name="leftMargin">
+             <number>1</number>
+            </property>
+            <property name="topMargin">
+             <number>1</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <property name="bottomMargin">
+             <number>1</number>
+            </property>
+           </layout>
+          </item>
          </layout>
         </item>
        </layout>
