@@ -38,10 +38,8 @@ private slots:
     void showContextMenu(const QPoint&);
     void on_pushButton_2_clicked(); //test fleche gauche
     void on_pushButton_clicked(); //test fleche droite
-
-    void on_pushButton_3_clicked();
-
-    void on_pushButton_4_clicked();
+    void on_pushButton_3_clicked(); //home
+    void on_pushButton_4_clicked(); //up
 
 private:
     Ui::MainWindow *ui;

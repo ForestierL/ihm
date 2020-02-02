@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->dirTreeView->setHeaderHidden(true);
     for (int i = 1; i < dirModel->columnCount(); ++i)
         ui->dirTreeView->hideColumn(i);
+    // https://stackoverflow.com/questions/14158191/qt-qtreeview-and-custom-model-with-checkbox-columns => ajouter des colones custom (note, feeling)
 
     fileModel = new QFileSystemModel(this);
     fileModel->setFilter(QDir::NoDotAndDotDot | QDir::Files | QDir::AllDirs);
@@ -253,7 +254,7 @@ void MainWindow::addToAlbum()
 void MainWindow::informations()
 {
     qDebug() << "Infos";
-    FilePropertiesWindow w;
+    FilePropertiesWindow w(this, actualFile);
     //w.setImagePath(path);
     w.createContents();
     w.show();
@@ -264,7 +265,7 @@ void MainWindow::informations()
 void MainWindow::eraseItem()
 {
     QFile file(actualFile);
-    bool valid = file.remove();
+    bool valid = file.remove(); //todo: remove or use that unused variable
 }
 
 //Fonction en cours de dev
