@@ -9,11 +9,10 @@ CheckingWindow::CheckingWindow(QWidget *parent): QDialog(parent), ui(new Ui::Che
 {
     int nb = 0;
 
-    QLabel *name = new QLabel("test");
-    QPushButton *bYes = new QPushButton("Relocaliser");
-    QPushButton *bNo = new QPushButton("Supprimer");
-
     for(int i = 0; i < nb; i++){
+        QLabel *name = new QLabel("test");
+        QPushButton *bYes = new QPushButton("Relocaliser");
+        QPushButton *bNo = new QPushButton("Supprimer");
         ui->gridLayout->addWidget(name,i,0);
         ui->gridLayout->addWidget(bYes,i,1);
         ui->gridLayout->addWidget(bNo,i,2);

@@ -79,6 +79,8 @@ MainWindow::MainWindow(QWidget *parent)
     QString colorTest = "test : color";
     QString feelingTest = "test : feeling";
     database.addImage(filePathTest, mark, noteTest, colorTest, feelingTest);
+
+    checkAllPath();
 }
 
 MainWindow::~MainWindow()
