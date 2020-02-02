@@ -19,7 +19,7 @@ EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 
     QFrame *toolBarFrame = createToolBar();
     ui->toolBar->insertWidget(0, toolBarFrame);
-    ui->toolBar->setMovable(true);
+    ui->toolBar->setMovable(false);
 
     QFrame *statusBarFrame = createStatusBar();
     ui->statusbar->insertPermanentWidget(0, statusBarFrame, 1);

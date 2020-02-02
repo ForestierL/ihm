@@ -5,6 +5,7 @@
 #include <QFileSystemModel>
 
 #include "editionwindow.h"
+#include "checkingwindow.h"
 #include "ui_mainwindow.h"
 
 #include "filepropertieswindow.h"
@@ -41,6 +42,7 @@ private slots:
     void previous_clicked();
     void next_clicked();
     void up_clicked();
+    void checkAllPath();
 
 private:
     Ui::MainWindow *ui;

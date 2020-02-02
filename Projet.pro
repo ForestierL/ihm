@@ -24,7 +24,8 @@ SOURCES += \
     mainwindow.cpp \
     filepropertieswindow.cpp \
     pathvisit.cpp \
-    qhoversensitivebutton.cpp
+    qhoversensitivebutton.cpp \
+    checkingwindow.cpp
 
 HEADERS += \
     addtoalbumwindow.h \
@@ -33,15 +34,15 @@ HEADERS += \
     mainwindow.h \
     filepropertieswindow.h \
     pathvisit.h \
-	qhoversensitivebutton.h
+	qhoversensitivebutton.h \
+    checkingwindow.h
 
 FORMS += \
     addtoalbumwindow.ui \
     editionwindow.ui \
     mainwindow.ui \
     filepropertieswindow.ui \
-    notfound.ui
-    
+    checkingwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

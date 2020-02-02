@@ -11,6 +11,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QMouseEvent>
+#include <QFileDialog>
 
 #include <QSplitter>
 
@@ -64,7 +65,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
 
-
     /*****
      * Initialisation de la liste en bas à gauche de la main windows
      * Ceci est codé en dur pour le moment (pas de bdd)
@@ -93,6 +93,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         // Ajout du sous-layout au layout vertical de l'UI
         ui->vlAlbums->addLayout(layoutTest);
     }
+
+
+    //checkAllPath(); //pour test => Lucas, pense à remove
 }
 
 MainWindow::~MainWindow()
@@ -289,14 +292,24 @@ void MainWindow::informations()
 void MainWindow::eraseItem()
 {
     QFile file(actualFile);
-    file.remove(); //todo: remove or use that unused variable
+
+    int reponse = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer cette image ?", QMessageBox ::Yes | QMessageBox::No);
+
+    if (reponse == QMessageBox::Yes)
+    {
+        //bool valid = file.remove(); //modif loic => var unused
+        file.remove();
+    }
 }
 
-//Fonction en cours de dev
-bool MainWindow::removeDirectory(QString dirPath)
-{
-    if(dirPath == "")
+bool MainWindow::removeDirectory(QString dirPath){
+    if(dirPath == ""){
+        int valid = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer ce dossier et tout les documents qu'il contient ?", QMessageBox ::Yes | QMessageBox::No);
+        if(valid == QMessageBox::No){
+            return false;
+        }
         dirPath = actualFile;
+    }
     QDir folder(dirPath);
     folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
     foreach (QFileInfo fileInfo, folder.entryInfoList())
@@ -321,7 +334,6 @@ bool MainWindow::removeDirectory(QString dirPath)
     }
     return true;
 }
-
 
 void MainWindow::home_clicked()
 {
@@ -354,4 +366,37 @@ void MainWindow::up_clicked()
     }
     path.resize(path.size()-1);
     updateCurrentPath(path);
+}
+
+void MainWindow::checkAllPath()
+{
+    QVector<QString> *missingFilesPath = new QVector<QString>();
+    /*
+    condition : on parse la bdd, si le path n'existe pas sur le pc alors on ajoute à missingFilePath
+    */
+    //DEBUG
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    missingFilesPath->append("C:/UnHibou.png");
+    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
+    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+
+    CheckingWindow w(this);
+    w.initMissingFilesPath(missingFilesPath);
+    w.show();
+    QEventLoop eventLoop;
+    eventLoop.exec();
 }

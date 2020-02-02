@@ -237,14 +237,18 @@ bool Database::isImageInAlbum(int imageId, int albumId)
     query.bindValue(":idAlbum", albumId);
     query.bindValue("idImage", imageId);
 
-    if(query.exec()){
+    if(query.exec())
+    {
         if(query.next() > 0)
-        return true;
-    } else {
+            return true;
+    }
+    else
+    {
         Database::lastErrorMessage = __FUNCTION__;
         Database::lastErrorMessage.append(" : Erreur lors de la requête.");
         return false;
     }
+    return false; // ajout : loic => warning, on pouvait ne rien retourner
 }
 
 void Database::checkDBBeenCreated()
