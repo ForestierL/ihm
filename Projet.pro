@@ -1,4 +1,5 @@
 QT       += core gui
+QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,29 +17,56 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    database.cpp \
+    editionwindow.cpp \
     main.cpp \
     mainwindow.cpp \
     qhoversensitivebutton.cpp
 
 HEADERS += \
-<<<<<<< Updated upstream
-    mainwindow.h
-=======
     database.h \
     editionwindow.h \
     mainwindow.h \
     qhoversensitivebutton.h
->>>>>>> Stashed changes
 
 FORMS += \
+    editionwindow.ui \
     mainwindow.ui
+
+OTHER_FILES += \
+    chat.jpg
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES +=
+DISTFILES += \
+    arrow-d-w.png \
+    arrow-l-b.png \
+    arrow-l-w.png \
+    arrow-r-b.png \
+    arrow-r-w.png \
+    arrow-u-b.png \
+    arrow-u-w.png \
+    crop-w.png \
+    delete-b.png \
+    delete-r.png \
+    delete-w.png \
+    home-b.png \
+    home-w.png \
+    icon-b.png \
+    icon-w.png \
+    list-b.png \
+    list-w.png \
+    next-w.png \
+    previous-w.png \
+    resize-w.png \
+    rotate-w.png \
+    save-w.png \
+    star-empty-w.png \
+    star-full-w.png \
+    star-half-w.png
 
 RESOURCES += \
     icons.qrc

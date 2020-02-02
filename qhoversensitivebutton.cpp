@@ -6,24 +6,26 @@ QString icon;
 QHoverSensitiveButton::QHoverSensitiveButton(QWidget *parent, QString _icon) : QPushButton(parent)
 {
     icon = _icon;
+    setIcon(QIcon(":/Ressources/" + icon + "-w.png"));
     setMouseTracking(true);
     setAttribute(Qt::WA_Hover);
 }
 
 void QHoverSensitiveButton::hoverEnter(QHoverEvent *)
 {
-    setIcon(QIcon("E:\\Documents\\GitHub\\ihm\\" + icon + "-b.png"));
+    setIcon(QIcon(":/Ressources/" + icon + "-b.png"));
     repaint();
 }
 
 void QHoverSensitiveButton::hoverLeave(QHoverEvent *)
 {
-    setIcon(QIcon("E:\\Documents\\GitHub\\ihm\\" + icon + "-w.png"));
+    setIcon(QIcon(":/Ressources/" + icon + "-w.png"));
     repaint();
 }
 
 void QHoverSensitiveButton::hoverMove(QHoverEvent *)
 {
+    repaint();
 }
 
 bool QHoverSensitiveButton::event(QEvent *event)
