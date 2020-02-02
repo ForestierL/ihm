@@ -1,0 +1,35 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Ressources/arrow-d-b.png</file>
+        <file>Ressources/arrow-d-w.png</file>
+        <file>Ressources/arrow-l-b.png</file>
+        <file>Ressources/arrow-l-w.png</file>
+        <file>Ressources/arrow-r-b.png</file>
+        <file>Ressources/arrow-r-w.png</file>
+        <file>Ressources/arrow-u-b.png</file>
+        <file>Ressources/arrow-u-w.png</file>
+        <file>Ressources/crop-w.png</file>
+        <file>Ressources/delete-b.png</file>
+        <file>Ressources/delete-r.png</file>
+        <file>Ressources/delete-w.png</file>
+        <file>Ressources/home-b.png</file>
+        <file>Ressources/home-w.png</file>
+        <file>Ressources/icon-b.png</file>
+        <file>Ressources/icon-w.png</file>
+        <file>Ressources/list-b.png</file>
+        <file>Ressources/list-w.png</file>
+        <file>Ressources/next-w.png</file>
+        <file>Ressources/previous-w.png</file>
+        <file>Ressources/resize-w.png</file>
+        <file>Ressources/rotate-w.png</file>
+        <file>Ressources/save-w.png</file>
+        <file>Ressources/star-empty-w.png</file>
+        <file>Ressources/star-full-w.png</file>
+        <file>Ressources/star-half-w.png</file>
+        <file>Ressources/close-b.png</file>
+        <file>Ressources/close-w.png</file>
+        <file>Ressources/open-b.png</file>
+        <file>Ressources/open-w.png</file>
+        <file>Ressources/white-theme.qss</file>
+    </qresource>
+</RCC>
