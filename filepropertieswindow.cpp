@@ -24,6 +24,7 @@ void FilePropertiesWindow::createContents()
     setEditMode(false);
 
     ui->name->setText(getNameFromPath(itemPath));
+    ui->path->setText(itemPath);
 
     ui->editColor->setText(ui->color->text());
     ui->editFeelings->setCurrentText(ui->feelings->text());
