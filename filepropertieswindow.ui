@@ -52,38 +52,38 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="pushButton">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Principal color : </string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>_feelings_</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="pushButton_2">
         <property name="text">
          <string>edit</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="label_7">
+      <item row="3" column="2">
+       <widget class="QPushButton" name="pushButton_3">
         <property name="text">
-         <string>_remarque_</string>
+         <string>recalculate</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
+      <item row="4" column="2">
+       <widget class="QPushButton" name="pushButton_4">
         <property name="text">
-         <string>Name : </string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="name">
-        <property name="text">
-         <string>_name_</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Feelings : </string>
+         <string>edit</string>
         </property>
        </widget>
       </item>
@@ -122,52 +122,49 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <widget class="QPushButton" name="pushButton_3">
-        <property name="text">
-         <string>recalculate</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2">
-       <widget class="QPushButton" name="pushButton_4">
+      <item row="1" column="2">
+       <widget class="QPushButton" name="pushButton">
         <property name="text">
          <string>edit</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_4">
+      <item row="2" column="1">
+       <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Principal color : </string>
+         <string>_remarque_</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QLabel" name="label_9">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>_feelings_</string>
+         <string>Name : </string>
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
-       <widget class="QPushButton" name="pushButton_2">
+      <item row="0" column="1">
+       <widget class="QLabel" name="name">
         <property name="text">
-         <string>edit</string>
+         <string>_name_</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Feelings : </string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QPushButton" name="buttonOk">
+        <property name="text">
+         <string>Ok</string>
         </property>
        </widget>
       </item>
      </layout>
-    </item>
-    <item>
-     <widget class="QDialogButtonBox" name="bottomButtonBox">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="standardButtons">
-       <set>QDialogButtonBox::Ok</set>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>
@@ -175,34 +172,18 @@
  <resources/>
  <connections>
   <connection>
-   <sender>bottomButtonBox</sender>
-   <signal>accepted()</signal>
+   <sender>buttonOk</sender>
+   <signal>clicked()</signal>
    <receiver>FilePropertiesWindow</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>259</x>
+     <y>358</y>
     </hint>
     <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>bottomButtonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>FilePropertiesWindow</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
+     <x>134</x>
+     <y>352</y>
     </hint>
    </hints>
   </connection>

@@ -9,6 +9,8 @@
 
 #include "filepropertieswindow.h"
 
+#include "pathvisit.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -34,11 +36,14 @@ private slots:
     bool removeDirectory(QString dirPath = "");
     void on_lePath_returnPressed();
     void showContextMenu(const QPoint&);
+    void on_pushButton_2_clicked(); //test fleche gauche
+    void on_pushButton_clicked(); //test fleche droite
 
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *dirModel;
     QFileSystemModel *fileModel;
     QString actualFile;
+    PathVisit *pathVisit;
 };
 #endif // MAINWINDOW_H

@@ -21,13 +21,15 @@ SOURCES += \
     editionwindow.cpp \
     main.cpp \
     mainwindow.cpp \
-    filepropertieswindow.cpp
+    filepropertieswindow.cpp \
+    pathvisit.cpp
 
 HEADERS += \
     database.h \
     editionwindow.h \
     mainwindow.h \
-    filepropertieswindow.h
+    filepropertieswindow.h \
+    pathvisit.h
 
 FORMS += \
     editionwindow.ui \
