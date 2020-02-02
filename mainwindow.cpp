@@ -298,34 +298,7 @@ bool MainWindow::removeDirectory(QString dirPath)
     return true;
 }
 
-
-
-
-
-//fleche gauche
-void MainWindow::on_pushButton_2_clicked()
-{
-    QString path = pathVisit->back();
-    updateCurrentPath(path);
-}
-
-//fleche droite
-void MainWindow::on_pushButton_clicked()
-{
-    QString path = pathVisit->forward();
-    updateCurrentPath(path);
-}
-
-//home
-void MainWindow::on_pushButton_3_clicked()
-{
-    QString path = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
-    pathVisit->addPath(path);
-    updateCurrentPath(path);
-}
-
-//up
-void MainWindow::on_pushButton_4_clicked()
+void MainWindow::on_topButton_clicked()
 {
     QString path = ui->lePath->text();
     QStringList pathList = path.split('/');
@@ -336,5 +309,24 @@ void MainWindow::on_pushButton_4_clicked()
         path += temp + "/";
     }
     path.resize(path.size()-1);
+    updateCurrentPath(path);
+}
+
+void MainWindow::on_homeButton_clicked()
+{
+    QString path = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+    pathVisit->addPath(path);
+    updateCurrentPath(path);
+}
+
+void MainWindow::on_forwardButton_clicked()
+{
+    QString path = pathVisit->forward();
+    updateCurrentPath(path);
+}
+
+void MainWindow::on_backwardButton_clicked()
+{
+    QString path = pathVisit->back();
     updateCurrentPath(path);
 }

@@ -36,10 +36,10 @@ private slots:
     bool removeDirectory(QString dirPath = "");
     void on_lePath_returnPressed();
     void showContextMenu(const QPoint&);
-    void on_pushButton_2_clicked(); //test fleche gauche
-    void on_pushButton_clicked(); //test fleche droite
-    void on_pushButton_3_clicked(); //home
-    void on_pushButton_4_clicked(); //up
+    void on_topButton_clicked();
+    void on_homeButton_clicked();
+    void on_forwardButton_clicked();
+    void on_backwardButton_clicked();
 
 private:
     Ui::MainWindow *ui;
