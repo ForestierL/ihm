@@ -94,7 +94,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         ui->vlAlbums->addLayout(layoutTest);
     }
 
-
+    Database::getInstance();
+    QVector<QString> v = Database::getAlbumLast();
+    for(int i = 0; i < v.size(); i++){
+        qDebug() << v[i];
+    }
     //checkAllPath(); //pour test => Lucas, pense à remove
 }
 
