@@ -44,6 +44,26 @@ private slots:
     void up_clicked();
     void checkAllPath();
 
+    void recent_folder();
+    void recent_album();
+    void new_album();
+    void add_to_album();
+    void close();
+    void edit();
+    void rename();
+    void copy();
+    void cut();
+    void paste();
+    void small_icons();
+    void medium_icons();
+    void big_icons();
+    void list();
+    void icons();
+    void dark_theme();
+    void light_theme();
+    void about();
+    void manual();
+
     void on_pbAddAlbum_clicked();
     void generateCreateAlbumLine();
 
@@ -54,5 +74,7 @@ private:
     QString actualFile;
     PathVisit *pathVisit;
     bool newAlbum = false;
+
+    void createActions();
 };
 #endif // MAINWINDOW_H

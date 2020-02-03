@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     w.show();
 
     // Load an application style
-    QFile styleFile(":/Ressources/dark-theme.qss");
+    QFile styleFile(":/Ressources/white-theme.qss");
     styleFile.open(QFile::ReadOnly);
 
     // Apply the loaded stylesheet
