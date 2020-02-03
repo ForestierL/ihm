@@ -15,7 +15,6 @@
 
 #include <QSplitter>
 
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -68,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     /*****
      * Initialisation de la liste en bas à gauche de la main windows
      * Ceci est codé en dur pour le moment (pas de bdd)
-     * Il n'y a pas de limite à l'expension du layout (en hauteur)
+     * Il n'y a pas de limite à l'expansion du layout (en hauteur)
      * ça va prendre une place énorme si on ajoute trop d'élément.
      * Il va faloir réfléchir au scroll et à la position du bouton x...
      */
@@ -404,3 +403,51 @@ void MainWindow::checkAllPath()
     QEventLoop eventLoop;
     eventLoop.exec();
 }
+
+void MainWindow::on_pbAddAlbum_clicked()
+{
+    generateCreateAlbumLine();
+}
+
+void MainWindow::generateCreateAlbumLine(){
+    if(!newAlbum){
+        newAlbum = true;
+        // Création du sous-layout horizontal => label + bouton
+        QLayout *layoutTest = new QHBoxLayout();
+
+        // Création du label
+        QLineEdit *albumTitle = new QLineEdit();
+        albumTitle->setPlaceholderText("Titre");
+        // Ajout du label au sous-layout
+        layoutTest->addWidget(albumTitle);
+
+        // Création du bouton
+        QHoverSensitiveButton *test = new QHoverSensitiveButton(this, "ok");
+        test->setMaximumSize(20,20);
+        layoutTest->addWidget(test);
+
+        // Ajout du sous-layout au layout vertical de l'UI
+        ui->vlAlbums->addLayout(layoutTest);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

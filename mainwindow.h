@@ -44,11 +44,15 @@ private slots:
     void up_clicked();
     void checkAllPath();
 
+    void on_pbAddAlbum_clicked();
+    void generateCreateAlbumLine();
+
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *dirModel;
     QFileSystemModel *fileModel;
     QString actualFile;
     PathVisit *pathVisit;
+    bool newAlbum = false;
 };
 #endif // MAINWINDOW_H
