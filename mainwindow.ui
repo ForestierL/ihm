@@ -86,7 +86,7 @@ border: none;</string>
            <x>0</x>
            <y>0</y>
            <width>650</width>
-           <height>292</height>
+           <height>297</height>
           </rect>
          </property>
         </widget>
@@ -306,6 +306,9 @@ border: none;</string>
     <addaction name="separator"/>
     <addaction name="actionListe"/>
     <addaction name="actionIc_nes"/>
+    <addaction name="separator"/>
+    <addaction name="actionTh_me_sombre"/>
+    <addaction name="actionTh_me_clair"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -411,7 +414,18 @@ border: 0px 0px 2px 0px</string>
     <string>Ajouter &amp;à l'album...</string>
    </property>
   </action>
+  <action name="actionTh_me_clair">
+   <property name="text">
+    <string>Thème clair</string>
+   </property>
+  </action>
+  <action name="actionTh_me_sombre">
+   <property name="text">
+    <string>Thème sombre</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
 </ui>
+
