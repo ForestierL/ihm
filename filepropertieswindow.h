@@ -12,7 +12,7 @@ class FilePropertiesWindow : public QDialog
     Q_OBJECT
 
 public:
-    FilePropertiesWindow(QWidget *parent = nullptr, QString itemPath = "a/b/default");
+    FilePropertiesWindow(QWidget *parent = nullptr, QString itemPath = "");
     ~FilePropertiesWindow();
     void createContents(void);
     void setEditMode(bool);

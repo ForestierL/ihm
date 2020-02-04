@@ -173,10 +173,69 @@ void MainWindow::icons(){
 
 }
 void MainWindow::dark_theme(){
+    qDebug() << "DARK";
+    // Load an application style
+    QFile styleFile(":/Ressources/dark-theme.qss");
+    styleFile.open(QFile::ReadOnly);
 
+    // Apply the loaded stylesheet
+    QString style(styleFile.readAll());
+    qApp->setStyleSheet(style);
+    qDebug() << qApp->styleSheet();
+
+    for(int i=0; i < this->children().size(); i++)
+    {
+        qDebug() << "qApp child name : " << this->children().at(i)->metaObject()->className();
+        if(QWidget *wi = qobject_cast<QWidget*>(this->children().at(i))){
+            qDebug() << "Converted";
+            wi->setStyleSheet(style);
+        }
+        qDebug() << "Entering qApp child nbr " << i;
+        getChildAndSetStyle(this->children().at(i), "dark-theme.qss");
+    }
 }
 void MainWindow::light_theme(){
+    qDebug() << "LIGHT";
+    // Load an application style
+    QFile styleFile(":/Ressources/light-theme.qss");
+    styleFile.open(QFile::ReadOnly);
 
+    // Apply the loaded stylesheet
+    QString style(styleFile.readAll());
+    qApp->setStyleSheet(style);
+    qDebug() << qApp->styleSheet();
+
+    for(int i=0; i < this->children().size(); i++)
+    {
+        qDebug() << "qApp child name : " << this->children().at(i)->metaObject()->className();
+        if(QWidget *wi = qobject_cast<QWidget*>(this->children().at(i))){
+            qDebug() << "Converted";
+            wi->setStyleSheet(style);
+        }
+        qDebug() << "Entering qApp child nbr " << i;
+        getChildAndSetStyle(this->children().at(i), "light-theme.qss");
+    }
+}
+void MainWindow::getChildAndSetStyle(QObject *obj, QString theme){
+    QFile styleFile(":/Ressources/" + theme);
+    styleFile.open(QFile::ReadOnly);
+
+    // Apply the loaded stylesheet
+    QString style(styleFile.readAll());
+    for(int i=0; i < obj->children().size(); i++)
+    {
+        qDebug() << "obj child name : " << obj->children().at(i)->metaObject()->className();
+        if(QWidget *wi = qobject_cast<QWidget*>(obj->children().at(i))){
+            qDebug() << "Converted";
+            qobject_cast<QWidget*>(obj->children().at(i))->setStyleSheet(style);
+            qDebug() << qobject_cast<QWidget*>(obj->children().at(i));
+            wi->setStyleSheet(style);
+            qDebug() << wi->styleSheet();
+        }
+        if(obj->children().at(i)->children().size() > 0){
+            getChildAndSetStyle(obj->children().at(i), theme);
+        }
+    }
 }
 void MainWindow::about(){
 
@@ -370,6 +429,13 @@ void MainWindow::informations()
     qDebug() << "Infos";
     FilePropertiesWindow w(this, actualFile);
     //w.setImagePath(path);
+
+//    QFile styleFile(":/Ressources/" + theme);
+//    styleFile.open(QFile::ReadOnly);
+
+    // Apply the loaded stylesheet
+    // ////QString style(this->styleSheet());
+
     w.createContents();
     w.show();
     QEventLoop eventLoop;

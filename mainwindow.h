@@ -26,6 +26,8 @@ public:
     void setStatusBar();
     bool updateCurrentPath(QString);
     void setNavButtons();
+    void getChildAndSetStyle(QObject *, QString);
+
 
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
