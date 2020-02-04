@@ -46,16 +46,54 @@ QHoverSensitiveButton#liste, QHoverSensitiveButton#icone {
 
 
 
+QTreeView::branch:open:has-children {       /*o 1*/
+    background-color: lime;
+}
+
+QTreeView::branch:open:!has-children {      /*o 0*/
+    background-color: white;
+}
+
+QTreeView::branch:open:!has-siblings:has-children {     /*o 0 1*/
+    background-color: blue;
+}
+
+QTreeView::branch:open:!has-siblings:!has-children {    /*o 0 0*/
+    background-color: cyan;
+}
+
+QTreeView::branch:open:has-siblings:!has-children {     /*o 1 0*/
+    background-color: green;
+}
+
+QTreeView::branch:open:has-siblings:has-children {      /*o 1 1*/
+    background-color: grey;
+}
 
 
+QTreeView::branch:closed:has-children {       /*c 1*/
+    background-color: brown;
+}
 
+QTreeView::branch:closed:!has-children {      /*c 0*/
+    background-color: olive;
+}
 
+QTreeView::branch:closed:!has-siblings:has-children {     /*c 0 1*/
+    background-color: beige;
+}
 
+QTreeView::branch:closed:!has-siblings:!has-children {    /*c 0 0*/
+    background-color: orange;
+}
 
+QTreeView::branch:closed:has-siblings:!has-children {     /*c 1 0*/
+    background-color: yellow;
+}
 
-
-
-
+QTreeView::branch:closed:has-siblings:has-children {      /*c 1 1*/
+    background-color: purple;
+}
 
 
 

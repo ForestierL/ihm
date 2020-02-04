@@ -15,7 +15,6 @@
 
 #include <QSplitter>
 
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -68,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     /*****
      * Initialisation de la liste en bas à gauche de la main windows
      * Ceci est codé en dur pour le moment (pas de bdd)
-     * Il n'y a pas de limite à l'expension du layout (en hauteur)
+     * Il n'y a pas de limite à l'expansion du layout (en hauteur)
      * ça va prendre une place énorme si on ajoute trop d'élément.
      * Il va faloir réfléchir au scroll et à la position du bouton x...
      */
@@ -94,8 +93,110 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         ui->vlAlbums->addLayout(layoutTest);
     }
 
+    Database::getInstance();
+    QVector<QString> v = Database::getAlbumLast();
+    for(int i = 0; i < v.size(); i++){
+        qDebug() << v[i];
+    }
+
+    createActions();
 
     //checkAllPath(); //pour test => Lucas, pense à remove
+}
+
+void MainWindow::createActions(){
+    connect(ui->actionEmplacement_r_cent, SIGNAL(triggered()), this, SLOT(recent_folder()));
+    connect(ui->actionAlbum_r_cent, SIGNAL(triggered()), this, SLOT(recent_album()));
+    connect(ui->actionNouveau_album, SIGNAL(triggered()), this, SLOT(new_Album()));
+    connect(ui->actionAjouter_l_album, SIGNAL(triggered()), this, SLOT(add_to_album()));
+    connect(ui->actionFermer, SIGNAL(triggered()), this, SLOT(close()));
+    connect(ui->actionEditer, SIGNAL(triggered()), this, SLOT(edit()));
+    connect(ui->actionRenommer, SIGNAL(triggered()), this, SLOT(rename()));
+    connect(ui->actionCopier, SIGNAL(triggered()), this, SLOT(copy()));
+    connect(ui->actionCouper, SIGNAL(triggered()), this, SLOT(cut()));
+    connect(ui->actionColler, SIGNAL(triggered()), this, SLOT(paste()));
+    connect(ui->actionIcones_petites, SIGNAL(triggered()), this, SLOT(small_icons()));
+    connect(ui->actionIcones_moyennes, SIGNAL(triggered()), this, SLOT(medium_icons()));
+    connect(ui->actionIcones_grandes, SIGNAL(triggered()), this, SLOT(big_icons()));
+    connect(ui->actionListe, SIGNAL(triggered()), this, SLOT(list()));
+    connect(ui->actionIc_nes, SIGNAL(triggered()), this, SLOT(icons()));
+    connect(ui->actionTh_me_sombre, SIGNAL(triggered()), this, SLOT(dark_theme()));
+    connect(ui->actionTh_me_clair, SIGNAL(triggered()), this, SLOT(light_theme()));
+    connect(ui->actionA_propos, SIGNAL(triggered()), this, SLOT(about()));
+    connect(ui->actionManuel, SIGNAL(triggered()), this, SLOT(manual()));
+
+}
+
+void MainWindow::recent_folder(){
+
+}
+void MainWindow::recent_album(){
+
+}
+void MainWindow::new_album(){
+
+}
+void MainWindow::add_to_album(){
+
+}
+void MainWindow::close(){
+
+}
+void MainWindow::edit(){
+
+}
+void MainWindow::rename(){
+
+}
+void MainWindow::copy(){
+
+}
+void MainWindow::cut(){
+
+}
+void MainWindow::paste(){
+
+}
+void MainWindow::small_icons(){
+
+}
+void MainWindow::medium_icons(){
+
+}
+void MainWindow::big_icons(){
+
+}
+void MainWindow::list(){
+
+}
+void MainWindow::icons(){
+
+}
+void MainWindow::dark_theme(){
+    qDebug() << "DARK";
+    // Load an application style
+    QFile styleFile(":/Ressources/dark-theme.qss");
+    styleFile.open(QFile::ReadOnly);
+
+    // Apply the loaded stylesheet
+    QString style(styleFile.readAll());
+    qApp->setStyleSheet(style);
+}
+void MainWindow::light_theme(){
+    qDebug() << "LIGHT";
+    // Load an application style
+    QFile styleFile(":/Ressources/white-theme.qss");
+    styleFile.open(QFile::ReadOnly);
+
+    // Apply the loaded stylesheet
+    QString style(styleFile.readAll());
+    qApp->setStyleSheet(style);
+}
+void MainWindow::about(){
+
+}
+void MainWindow::manual(){
+
 }
 
 MainWindow::~MainWindow()
@@ -400,3 +501,51 @@ void MainWindow::checkAllPath()
     QEventLoop eventLoop;
     eventLoop.exec();
 }
+
+void MainWindow::on_pbAddAlbum_clicked()
+{
+    generateCreateAlbumLine();
+}
+
+void MainWindow::generateCreateAlbumLine(){
+    if(!newAlbum){
+        newAlbum = true;
+        // Création du sous-layout horizontal => label + bouton
+        QLayout *layoutTest = new QHBoxLayout();
+
+        // Création du label
+        QLineEdit *albumTitle = new QLineEdit();
+        albumTitle->setPlaceholderText("Titre");
+        // Ajout du label au sous-layout
+        layoutTest->addWidget(albumTitle);
+
+        // Création du bouton
+        QHoverSensitiveButton *test = new QHoverSensitiveButton(this, "ok");
+        test->setMaximumSize(20,20);
+        layoutTest->addWidget(test);
+
+        // Ajout du sous-layout au layout vertical de l'UI
+        ui->vlAlbums->addLayout(layoutTest);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
