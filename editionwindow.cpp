@@ -40,7 +40,6 @@ QFrame* EditionWindow::createToolBar(void)
     QPushButton *trimButton = new QPushButton("f");
     QPushButton *resizeButton = new QPushButton("g");
 
-
     QSlider *tempSlider = new QSlider();
     tempSlider->setFixedSize(150, 20);
     tempSlider->setOrientation(Qt::Horizontal);

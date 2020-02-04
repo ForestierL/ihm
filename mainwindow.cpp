@@ -94,8 +94,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         ui->vlAlbums->addLayout(layoutTest);
     }
 
-
-    //checkAllPath(); //pour test => Lucas, pense à remove
+    checkAllPath(); //pour test => Lucas
 }
 
 MainWindow::~MainWindow()

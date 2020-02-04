@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QSignalMapper>
 
 #include <QSpacerItem>
 
@@ -30,12 +31,22 @@ void CheckingWindow::initMissingFilesPath(QVector<QString>* missingFilesPath)
 
     for(int i=0; i < this->missingFilesPath->length(); i++)
     {
-        buttonsRelocate->append(new QPushButton("Relocaliser"));
+        QPushButton *relocate = new QPushButton("Relocaliser");
+
+        //connect(relocate, SIGNAL(clicked()), this, SLOT(relocate()));
+
+        buttonsRelocate->append(relocate);
         buttonsIgnore->append(new QPushButton("Ignorer"));
 
         QLayout *layoutH = new QHBoxLayout();
         QLabel *path = new QLabel(this->missingFilesPath->at(i).split("/").last());
         path->setToolTip(this->missingFilesPath->at(i));
+
+        QSignalMapper *mapper = new QSignalMapper();
+
+        connect(relocate, SIGNAL(clicked()), mapper, SLOT(map()));
+        mapper->setMapping(relocate, this->missingFilesPath->at(i));
+        connect(mapper, SIGNAL(mapped(const QString &)), this, SLOT(relocate(const QString &)));
 
         // Ajout du label au sous-layout
         layoutH->addWidget(path);
@@ -63,7 +74,12 @@ void CheckingWindow::initMissingFilesPath(QVector<QString>* missingFilesPath)
     //ui->scrollAreaWidgetContents->setLayout(vlMissingList);
 }
 
-QString CheckingWindow::relocate(){
+void CheckingWindow::relocate(const QString path){
+
+    qDebug() << path;
+
+    QPushButton *button = (QPushButton *)sender();
+
     QString fichier = QFileDialog::getOpenFileName(this, "Ouvrir un fichier", QString());
     if(fichier!="")
     {
@@ -73,12 +89,11 @@ QString CheckingWindow::relocate(){
     {
         QMessageBox::information(this, "Fichier", "Vous n'avez sélectionné aucun fichier");
     }
-    return fichier;
 }
 
-void CheckingWindow::on_pushButton_2_clicked()
+
+
+void CheckingWindow::on_relocateAll_clicked()
 {
-    //LUCAS tu me changes cette fonction (nom)
-    //Requête de suppression de toutes les images dans la bdd
-}
 
+}

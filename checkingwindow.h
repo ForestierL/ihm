@@ -17,7 +17,6 @@ class CheckingWindow : public QDialog
 public:
     CheckingWindow(QWidget *parent = nullptr);
     ~CheckingWindow();
-    QString relocate();
     void initMissingFilesPath(QVector<QString>* missingFilesPath);
 
 private:
@@ -29,7 +28,8 @@ private:
 protected slots:
 
 private slots:
-    void on_pushButton_2_clicked();
+    void relocate(const QString);
+    void on_relocateAll_clicked();
 };
 
 #endif // CHECKINGWINDOW_H

@@ -31,7 +31,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Missing files :</string>
+        <string>Images non trouvées :</string>
        </property>
       </widget>
      </item>
@@ -70,16 +70,16 @@
         <number>40</number>
        </property>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="relocateAll">
          <property name="text">
-          <string>Relocate all</string>
+          <string>Tout Relocaliser</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="i">
          <property name="text">
-          <string>Ignore all</string>
+          <string>Tout Ignorer</string>
          </property>
         </widget>
        </item>
@@ -92,18 +92,18 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>i</sender>
    <signal>clicked()</signal>
    <receiver>CheckingWindow</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>309</x>
-     <y>265</y>
+     <x>375</x>
+     <y>281</y>
     </hint>
     <hint type="destinationlabel">
-     <x>401</x>
-     <y>293</y>
+     <x>309</x>
+     <y>281</y>
     </hint>
    </hints>
   </connection>
