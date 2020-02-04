@@ -15,17 +15,24 @@ public:
     static bool removeAlbum(int id);
     static bool updateNameAlbum(QString &newName,int &id);
     static bool updateLastModifDate(int &id);
-    static QVector<QString> getAlbum();
-    static QVector<QString> getAlbumLast();
+    static QVector<QString> getAlbumsOrderByName();
+    static QVector<QString> getAlbumsOrderByLastModification();
 
     static int getImageId(QString &filePath);
-    static int addImage(QString &albumName, QString &filePath, int score, QString &comment, QString &color, QString &feeling);
+    static bool addImage(QString &filePath, int score, QString &comment, QString &color, QString &feeling);
+    static bool addImageToAlbum(int imageId, int albumId);
     static bool removeImage(int imageId);
+    static int getLastImagePosition(int albumId);
+    bool imageExistFromPath(QString &path);
 
+    static bool updateImage(int idImage, QString &filePath, int score, QString &comment, QString &dominantColor, QString &feeling);
+    static bool updateImagePath(int idImage, QString &filePath);
+    static QVector<QString> getAllImagePath(void);
+    static bool updatePositionInAlbum(int imageId, int albumId, int newPosition);
     static int getImagePosition(int imageId, int albumId);
     static bool isImageInAlbum(int imageId, int albumId);
 
-    static void checkDBBeenCreated(void);
+    static QString getLastErrorMessage(void);
 
 
 
