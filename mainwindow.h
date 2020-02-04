@@ -43,6 +43,8 @@ private slots:
     void next_clicked();
     void up_clicked();
     void checkAllPath();
+    void createNewButtonAlbum(QString name);
+    void create_album();
 
     void recent_folder();
     void recent_album();

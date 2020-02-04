@@ -93,12 +93,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         ui->vlAlbums->addLayout(layoutTest);
     }
 
-    Database::getInstance();
-    QVector<QString> v = Database::getAlbumLast();
-    for(int i = 0; i < v.size(); i++){
-        qDebug() << v[i];
-    }
-
     createActions();
 
     //checkAllPath(); //pour test => Lucas, pense à remove
@@ -507,26 +501,84 @@ void MainWindow::on_pbAddAlbum_clicked()
     generateCreateAlbumLine();
 }
 
+void MainWindow::createNewButtonAlbum(QString name)
+{
+    QLayout *layoutTest = new QHBoxLayout();
+
+    QPushButton *testLabel = new QPushButton();
+    testLabel->setText(name);
+
+    // Ajout du label au sous-layout
+    layoutTest->addWidget(testLabel);
+
+    // Création du bouton
+    QHoverSensitiveButton *test = new QHoverSensitiveButton(this, "delete");
+    test->setMaximumSize(20,20);
+    test->setStyleSheet("color:red;");
+    //todo : ajouter l'intération
+    // Ajout du bouton au sous-layout
+    layoutTest->addWidget(test);
+
+    // Ajout du sous-layout au layout vertical de l'UI
+    ui->vlAlbums->addLayout(layoutTest);
+}
+
+static QLineEdit *albumTitle = nullptr;
+
 void MainWindow::generateCreateAlbumLine(){
     if(!newAlbum){
         newAlbum = true;
         // Création du sous-layout horizontal => label + bouton
-        QLayout *layoutTest = new QHBoxLayout();
+        QLayout *layout = new QHBoxLayout();
+        //this->newLayoutAlbumNameTemp = new QHBoxLayout();
 
         // Création du label
-        QLineEdit *albumTitle = new QLineEdit();
+//        QLineEdit *albumTitle = new QLineEdit();
+        albumTitle = new QLineEdit();
+
         albumTitle->setPlaceholderText("Titre");
         // Ajout du label au sous-layout
-        layoutTest->addWidget(albumTitle);
+        layout->addWidget(albumTitle);
 
         // Création du bouton
-        QHoverSensitiveButton *test = new QHoverSensitiveButton(this, "ok");
-        test->setMaximumSize(20,20);
-        layoutTest->addWidget(test);
+        QHoverSensitiveButton *createNewAlbumButton = new QHoverSensitiveButton(this, "ok");
+        createNewAlbumButton->setMaximumSize(20,20);
+        layout->addWidget(createNewAlbumButton);
+
+        /*
+        QSignalMapper *mapper = new QSignalMapper();
+        connect(albumTitle, SIGNAL(editingFinished()), mapper, SLOT(map()));
+        mapper->setMapping(albumTitle, layout);
+        connect(mapper, SIGNAL(mapped(const QLayout&)), this, SLOT(create_album(QLayout&)));
+        */
+
+        /*
+        connect(albumTitle, SIGNAL(textChanged(const QString&)), this, SLOT(update_temp_name(QString)));
+        */
+        connect(createNewAlbumButton, SIGNAL(clicked()), this, SLOT(create_album()));
+
 
         // Ajout du sous-layout au layout vertical de l'UI
-        ui->vlAlbums->addLayout(layoutTest);
+        ui->vlAlbums->addLayout(layout);
     }
+}
+
+/*
+void MainWindow::update_temp_name(QString newName)
+{
+    this->newAlbumNameTemp = newName;
+    qDebug() << this->newAlbumNameTemp;
+}
+*/
+
+void MainWindow::create_album(){
+    //qDebug() << "-----------------------------" << ((QLineEdit*) this->newLayoutAlbumNameTemp->children().at(0))->text();
+    qDebug() << sender() << albumTitle->text();
+    createNewButtonAlbum(albumTitle->text());
+    //delete albumTitle;
+    //albumTitle = nullptr;
+
+    this->newAlbum = false;
 }
 
 
