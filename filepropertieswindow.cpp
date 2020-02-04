@@ -2,6 +2,8 @@
 #include "ui_filepropertieswindow.h"
 #include <QMessageBox>
 
+#include "database.h"
+
 FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : QDialog(parent), ui(new Ui::FilePropertiesWindow)
 {
     ui->setupUi(this);
@@ -84,6 +86,7 @@ bool FilePropertiesWindow::save()
     ui->feelings->setText(ui->editFeelings->currentText());
     ui->name->setText(ui->editName->text());
     ui->note->setText(QString::number(ui->editNote->value()));
+//    Database::up
     return true;
 }
 
