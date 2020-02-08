@@ -44,7 +44,7 @@ private slots:
     void up_clicked();
     void checkAllPath();
     void createNewButtonAlbum(QString name);
-    void create_album();
+    void create_album(const QString&);
 
     void recent_folder();
     void recent_album();

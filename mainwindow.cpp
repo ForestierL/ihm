@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qhoversensitivebutton.h"
+#include "albumline.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -86,7 +87,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 void MainWindow::createActions(){
     connect(ui->actionEmplacement_r_cent, SIGNAL(triggered()), this, SLOT(recent_folder()));
     connect(ui->actionAlbum_r_cent, SIGNAL(triggered()), this, SLOT(recent_album()));
-    connect(ui->actionNouveau_album, SIGNAL(triggered()), this, SLOT(new_Album()));
+    connect(ui->actionNouveau_album, SIGNAL(triggered()), this, SLOT(new_album()));
     connect(ui->actionAjouter_l_album, SIGNAL(triggered()), this, SLOT(add_to_album()));
     connect(ui->actionFermer, SIGNAL(triggered()), this, SLOT(close()));
     connect(ui->actionEditer, SIGNAL(triggered()), this, SLOT(edit()));
@@ -518,62 +519,24 @@ void MainWindow::createNewButtonAlbum(QString name)
     ui->vlAlbums->addLayout(layoutTest);
 }
 
-static QLineEdit *albumTitle = nullptr;
-static QHoverSensitiveButton *createNewAlbumButton = nullptr;
+
 void MainWindow::generateCreateAlbumLine(){
     if(!newAlbum){
         newAlbum = true;
         // Création du sous-layout horizontal => label + bouton
-        QLayout *layout = new QHBoxLayout();
-        //this->newLayoutAlbumNameTemp = new QHBoxLayout();
+        AlbumLine *layout = new AlbumLine();//QHBoxLayout();
 
-        // Création du label
-//        QLineEdit *albumTitle = new QLineEdit();
-        albumTitle = new QLineEdit();
-
-        albumTitle->setPlaceholderText("Titre");
-        // Ajout du label au sous-layout
-        layout->addWidget(albumTitle);
-
-        // Création du bouton
-        createNewAlbumButton = new QHoverSensitiveButton(this, "ok");
-        createNewAlbumButton->setMaximumSize(20,20);
-        layout->addWidget(createNewAlbumButton);
-
-        /*
-        QSignalMapper *mapper = new QSignalMapper();
-        connect(albumTitle, SIGNAL(editingFinished()), mapper, SLOT(map()));
-        mapper->setMapping(albumTitle, layout);
-        connect(mapper, SIGNAL(mapped(const QLayout&)), this, SLOT(create_album(QLayout&)));
-        */
-
-        /*
-        connect(albumTitle, SIGNAL(textChanged(const QString&)), this, SLOT(update_temp_name(QString)));
-        */
-        connect(createNewAlbumButton, SIGNAL(clicked()), this, SLOT(create_album()));
-
+        connect(layout, SIGNAL(validated(const QString&)), this, SLOT(create_album(const QString&)));
 
         // Ajout du sous-layout au layout vertical de l'UI
         ui->vlAlbums->addLayout(layout);
     }
 }
 
-/*
-void MainWindow::update_temp_name(QString newName)
-{
-    this->newAlbumNameTemp = newName;
-    qDebug() << this->newAlbumNameTemp;
-}
-*/
 
-void MainWindow::create_album(){
-    //qDebug() << "-----------------------------" << ((QLineEdit*) this->newLayoutAlbumNameTemp->children().at(0))->text();
-    createNewButtonAlbum(albumTitle->text());
-    delete albumTitle;
-    albumTitle = nullptr;
-    delete createNewAlbumButton;
-    createNewAlbumButton = nullptr;
-
+void MainWindow::create_album(const QString& albumName){
+    createNewButtonAlbum(albumName);
+    delete sender();
     this->newAlbum = false;
 }
 

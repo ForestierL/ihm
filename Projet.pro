@@ -25,7 +25,8 @@ SOURCES += \
     filepropertieswindow.cpp \
     pathvisit.cpp \
     qhoversensitivebutton.cpp \
-    checkingwindow.cpp
+    checkingwindow.cpp \
+    albumline.cpp
 
 HEADERS += \
     addtoalbumwindow.h \
@@ -34,8 +35,9 @@ HEADERS += \
     mainwindow.h \
     filepropertieswindow.h \
     pathvisit.h \
-	qhoversensitivebutton.h \
-    checkingwindow.h
+    qhoversensitivebutton.h \
+    checkingwindow.h \
+    albumline.h
 
 FORMS += \
     addtoalbumwindow.ui \
