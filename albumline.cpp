@@ -3,7 +3,7 @@
 AlbumLine::AlbumLine(QObject *parent) : QHBoxLayout()
 {
     albumTitle = new QLineEdit();
-    valideNewAlbumButton = new QHoverSensitiveButton(NULL, "ok");
+    valideNewAlbumButton = new QHoverSensitiveButton(NULL, "validate");
 
     albumTitle->setPlaceholderText("Titre");
     valideNewAlbumButton->setMaximumSize(20,20);

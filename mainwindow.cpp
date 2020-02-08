@@ -63,25 +63,26 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 
+    displayAlbum();
+    createActions();
 
+    //checkAllPath(); //pour test => Lucas, pense à remove
+}
 
-    /*****
-     * Initialisation de la liste en bas à gauche de la main windows
-     * Ceci est codé en dur pour le moment (pas de bdd)
-     * Il n'y a pas de limite à l'expansion du layout (en hauteur)
-     * ça va prendre une place énorme si on ajoute trop d'élément.
-     * Il va faloir réfléchir au scroll et à la position du bouton x...
-     */
-
+void MainWindow::displayAlbum(){
     QVector<QString> albums = Database::getAlbumsOrderByName();
 
     for (int i = 0; i<albums.size();i++)
         createNewButtonAlbum(albums[i]);
+}
 
-
-    createActions();
-
-    checkAllPath(); //pour test => Lucas, pense à remove
+void MainWindow::clearVlAlbums(){
+    int nbChildren = ui->vlAlbums->children().size();
+    for(int i=0; i < nbChildren ; i++)
+    {
+       qDebug() << i;
+       ui->vlAlbums->removeItem(ui->vlAlbums->itemAt(0));
+    }
 }
 
 void MainWindow::createActions(){
@@ -225,7 +226,7 @@ void MainWindow::on_lePath_returnPressed()
     QString dirPath = ui->lePath->text();
     QDir pathDir(dirPath);
     if (pathDir.exists())
-	{
+    {
         qDebug() << "DIR " + dirPath;
         updateCurrentPath(dirPath);
     }
@@ -418,26 +419,26 @@ bool MainWindow::removeDirectory(QString dirPath){
 
 void MainWindow::home_clicked()
 {
-	QString path = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+    QString path = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
     pathVisit->addPath(path);
     updateCurrentPath(path);
 }
 
 void MainWindow::previous_clicked()
 {
-	QString path = pathVisit->back();
+    QString path = pathVisit->back();
     updateCurrentPath(path);
 }
 
 void MainWindow::next_clicked()
 {
-	QString path = pathVisit->forward();
+    QString path = pathVisit->forward();
     updateCurrentPath(path);
 }
 
 void MainWindow::up_clicked()
 {
-	QString path = ui->lePath->text();
+    QString path = ui->lePath->text();
     QStringList pathList = path.split('/');
     pathList.removeLast();
     path = "";
@@ -466,25 +467,6 @@ void MainWindow::checkAllPath()
         }
     }
 
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-
     CheckingWindow w(this);
     w.initMissingFilesPath(missingFilesPath);
     w.show();
@@ -499,24 +481,28 @@ void MainWindow::on_pbAddAlbum_clicked()
 
 void MainWindow::createNewButtonAlbum(QString name)
 {
-    QLayout *layoutTest = new QHBoxLayout();
+    QLayout *layoutAlbum = new QHBoxLayout();
 
-    QPushButton *testLabel = new QPushButton();
-    testLabel->setText(name);
+    QPushButton *nameAlbum = new QPushButton();
+    nameAlbum->setText(name);
 
     // Ajout du label au sous-layout
-    layoutTest->addWidget(testLabel);
+    layoutAlbum->addWidget(nameAlbum);
 
     // Création du bouton
-    QHoverSensitiveButton *test = new QHoverSensitiveButton(this, "delete");
-    test->setMaximumSize(20,20);
-    test->setStyleSheet("color:red;");
-    //todo : ajouter l'intération
+    QHoverSensitiveButton *deleteAlbum = new QHoverSensitiveButton(this, "delete");
+    deleteAlbum->setMaximumSize(20,20);
+    deleteAlbum->setStyleSheet("color:red;");
+
+    QSignalMapper *mapperDelete = new QSignalMapper();
+    connect(deleteAlbum, SIGNAL(clicked()), mapperDelete, SLOT(map()));
+    mapperDelete->setMapping(deleteAlbum, name);
+    connect(mapperDelete, SIGNAL(mapped(const QString &)), this, SLOT(delete_album(const QString &)));
     // Ajout du bouton au sous-layout
-    layoutTest->addWidget(test);
+    layoutAlbum->addWidget(deleteAlbum);
 
     // Ajout du sous-layout au layout vertical de l'UI
-    ui->vlAlbums->addLayout(layoutTest);
+    ui->vlAlbums->addLayout(layoutAlbum);
 }
 
 
@@ -535,10 +521,24 @@ void MainWindow::generateCreateAlbumLine(){
 
 
 void MainWindow::create_album(const QString& albumName){
-    createNewButtonAlbum(albumName);
+
     delete sender();
+    clearVlAlbums();
     this->newAlbum = false;
 }
+
+void MainWindow::delete_album(QString nameAlbum){
+    int reponse = QMessageBox::question(this, "Supprimer Album", "Êtes-vous sûr de supprimer cette album ?", QMessageBox ::Yes | QMessageBox::No);
+    if (reponse == QMessageBox::Yes)
+    {
+        int idAlbum = Database::getAlbumId(nameAlbum);
+        Database::removeAlbum(idAlbum);
+        clearVlAlbums();
+        displayAlbum();
+    }
+
+}
+
 
 
 

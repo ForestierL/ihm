@@ -31,5 +31,7 @@
         <file>Ressources/open-b.png</file>
         <file>Ressources/open-w.png</file>
         <file>Ressources/white-theme.qss</file>
+        <file>Ressources/validate-b.png</file>
+        <file>Ressources/validate-w.png</file>
     </qresource>
 </RCC>
