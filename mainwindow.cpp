@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     }
 
     Database::getInstance();
-    QVector<QString> v = Database::getAlbumLast();
+    QVector<QString> v = Database::getAlbumsOrderByLastModification();
     for(int i = 0; i < v.size(); i++){
         qDebug() << v[i];
     }
