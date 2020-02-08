@@ -31,7 +31,7 @@ Database* Database::getInstance()
         QString db_path = QDir::currentPath();
         qDebug() <<db_path;    //current path
         db_path =  db_path + QString("/lumipic.db");
-        Database::instance = new Database(db_path); //todo: modifier
+        Database::instance = new Database("C:\\ihm\\lumipic.db"); //todo: modifier
     }
 
     return Database::instance;
@@ -100,11 +100,12 @@ bool Database::createAlbum(QString &name){
     }
 
     QSqlQuery query;
-    query.prepare("INSERT INTO Album (name, creationDate,lastModifDate)"
-                  "VALUES (:name, :creationDate,:lastModifDate)");
+    query.prepare("INSERT INTO Album (name, creationDate, lastModifDate)"
+                  "VALUES (:name, :creationDate, :lastModifDate)");
     query.bindValue(":name", name);
     query.bindValue(":creationDate", QDateTime::currentDateTime());
     query.bindValue(":lastModifDate", QDateTime::currentDateTime());
+
 
     if(query.exec()){
         return true;
