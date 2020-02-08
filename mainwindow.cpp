@@ -558,7 +558,6 @@ void MainWindow::update_temp_name(QString newName)
 
 void MainWindow::create_album(){
     //qDebug() << "-----------------------------" << ((QLineEdit*) this->newLayoutAlbumNameTemp->children().at(0))->text();
-    Database
     createNewButtonAlbum(albumTitle->text());
     delete albumTitle;
     albumTitle = nullptr;
