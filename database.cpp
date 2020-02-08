@@ -2,6 +2,8 @@
 #include <QDebug>
 #include <QDateTime>
 
+#include <QSqlError>
+
 
 int sqlQuerySize(QSqlQuery &query);
 
@@ -26,7 +28,10 @@ Database::Database(const QString& path)
 Database* Database::getInstance()
 {
     if(Database::instance == nullptr){
-        Database::instance = new Database("/Users/romaincolonnadistria/Desktop/ihm/lumipic.db"); //todo: modifier
+        QString db_path = QDir::currentPath();
+        qDebug() <<db_path;    //current path
+        db_path =  db_path + QString("/lumipic.db");
+        Database::instance = new Database("C:\\Documents\\IHM\\ihm\\lumipic.db"); //todo: modifier
     }
 
     return Database::instance;
@@ -35,7 +40,7 @@ Database* Database::getInstance()
 /***************************************** ALBUM *********************************************/
 int Database::getAlbumId(QString &name)
 {
-    Database::checkDBBeenCreated();
+    Database::getInstance();
 
     QSqlQuery query("SELECT idAlbum FROM Album WHERE name = '"+name+"'");
 
@@ -49,10 +54,10 @@ int Database::getAlbumId(QString &name)
     }
 }
 
-QVector<QString> Database::getAlbum()
+QVector<QString> Database::getAlbumsOrderByName()
 {
+    Database::getInstance();
     QVector<QString> result;
-    Database::checkDBBeenCreated();
 
     QSqlQuery query("SELECT name FROM Album ORDER BY Upper(name)");
 
@@ -67,10 +72,10 @@ QVector<QString> Database::getAlbum()
 }
 
 
-QVector<QString> Database::getAlbumLast()
+QVector<QString> Database::getAlbumsOrderByLastModification()
 {
+    Database::getInstance();
     QVector<QString> result;
-    Database::checkDBBeenCreated();
 
     QSqlQuery query("SELECT name FROM Album ORDER BY lastModifDate ");
 
@@ -86,7 +91,7 @@ QVector<QString> Database::getAlbumLast()
 
 
 bool Database::createAlbum(QString &name){
-    Database::checkDBBeenCreated();
+    Database::getInstance();
 
     int albumId;
     if((albumId = getAlbumId(name)) > 0){
@@ -95,51 +100,68 @@ bool Database::createAlbum(QString &name){
     }
 
     QSqlQuery query;
-    query.prepare("INSERT INTO Album (name, creationDate,lastModifDate)"
-                  "VALUES (:name, :creationDate,:lastModifDate)");
+    query.prepare("INSERT INTO Album (name, creationDate, lastModifDate)"
+                  "VALUES (:name, :creationDate, :lastModifDate)");
     query.bindValue(":name", name);
     query.bindValue(":creationDate", QDateTime::currentDateTime());
     query.bindValue(":lastModifDate", QDateTime::currentDateTime());
 
+
     if(query.exec()){
         return true;
-    }else {
+    } else {
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(": Erreur lors de la création de l'album.");
         return false;
     }
 }
 
 bool Database::removeAlbum(int id){
-    Database::checkDBBeenCreated();
+    Database::getInstance();
+
     QSqlQuery query;
     query.prepare("DELETE FROM Album WHERE idAlbum = :idAlbum");
     query.bindValue(":idAlbum", id);
+
     if(query.exec()){
         return true;
-    }else {
+    } else {
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(": Erreur lors de la suppression.");
         return false;
     }
 }
 
 bool Database::updateNameAlbum(QString &newName,int &id){
+    Database::getInstance();
+
     QSqlQuery query;
     query.prepare("UPDATE Album SET name = :name WHERE idAlbum = :idAlbum");
     query.bindValue(":name", newName);
     query.bindValue(":idAlbum", id);
+
     if(query.exec()){
         return true;
-    }else {
+    } else {
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(": Erreur lors de la requête.");
         return false;
     }
 }
 
 bool Database::updateLastModifDate(int &id){
+    Database::getInstance();
+
     QSqlQuery query;
     query.prepare("UPDATE Album SET lastModifDate = :lastModifDate WHERE idAlbum = :idAlbum");
     query.bindValue(":lastModifDate", QDateTime::currentDateTime());
     query.bindValue(":idAlbum", id);
+
     if(query.exec()){
         return true;
-    }else {
+    } else {
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(": Erreur lors de la requête.");
         return false;
     }
 }
@@ -148,19 +170,15 @@ bool Database::updateLastModifDate(int &id){
 
 
 /***************************************** IMAGE *********************************************/
-int Database::addImage(QString &albumName, QString &imagePath, int score, QString &comment, QString &dominantColor, QString &feeling)
+bool Database::addImage(QString &imagePath, int score, QString &comment, QString &dominantColor, QString &feeling)
 {
-    Database::checkDBBeenCreated();
+    Database::getInstance();
 
-    // vérifi que l'image n'est pas déja presente dans l'album
     int imageId;
-    if((imageId = getImageId(imagePath)) > 0){ //sinon image non présente dans la bdd
-        int albumId = getAlbumId(albumName);
-        if(isImageInAlbum(imageId, albumId)){
-            Database::lastErrorMessage = __FUNCTION__;
-            Database::lastErrorMessage.append(": L'image est déja présente dans l'album.");
-            return false;
-        }
+    if((imageId = getImageId(imagePath)) > 0){// vérifi que l'image n'est pas déja presente dans la BDD
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(": Image déja présente en base de données.");
+        return false;
     }
 
     QSqlQuery query;
@@ -181,11 +199,38 @@ int Database::addImage(QString &albumName, QString &imagePath, int score, QStrin
     }
 }
 
+bool Database::addImageToAlbum(int imageId, int albumId)
+{
+    Database::getInstance();
 
+    if(isImageInAlbum(imageId, albumId)){
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(": Image déja présente dans l'album.");
+        return false;
+    }
+
+    int lastImagePosition = Database::getLastImagePosition(albumId) + 1;
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO linkImageAlbum (idAlbum, idImage, positionInAlbum) "
+                  "VALUES (:albumId, :imageId, :position)");
+    query.bindValue(":albumId", albumId);
+    query.bindValue(":imageId", imageId);
+    query.bindValue(":position", lastImagePosition);
+
+    if(query.exec()){
+        return true;
+    } else {
+        //QSqlError error = query.lastError();
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(": Erreur lors de l'insertion.");
+        return false;
+    }
+}
 
 int Database::getImageId(QString &filePath)
 {
-    Database::checkDBBeenCreated();
+    Database::getInstance();
 
     QSqlQuery query("SELECT idImage FROM Image WHERE filePath = '" + filePath + "';");
 
@@ -208,10 +253,9 @@ int Database::getImageId(QString &filePath)
     }
 }
 
-
 bool Database::removeImage(int imageId)
 {
-    Database::checkDBBeenCreated();
+    Database::getInstance();
 
     QSqlQuery query;
     query.prepare("DELETE FROM Image WHERE idImage = :idImage");
@@ -225,22 +269,54 @@ bool Database::removeImage(int imageId)
         return false;
     }
 }
-/*********************************************************************************************/
 
-
-bool Database::isImageInAlbum(int imageId, int albumId)
+int Database::getLastImagePosition(int albumId)
 {
-    Database::checkDBBeenCreated();
+    Database::getInstance();
 
     QSqlQuery query;
-    query.prepare("SELECT COUNT(*) FROM linkImageAlbum WHERE idAlbum = :idAlbum AND idImage = :idImage;");
-    query.bindValue(":idAlbum", albumId);
-    query.bindValue("idImage", imageId);
+    query.prepare("SELECT MAX(positionInAlbum) FROM linkImageAlbum WHERE idAlbum = :albumId");
+    query.bindValue(":albumId", albumId);
+
+    if(query.exec()) {
+        if(query.next() > 0)
+            return true;
+    } else {
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(" : Erreur lors de la requête.");
+    }
+
+    return false;
+}
+
+bool Database::updateImage(int idImage, QString &filePath, int score, QString &comment, QString &dominantColor, QString &feeling)
+{
+    if(idImage == -1)
+        return false;
+
+    Database::getInstance();
+
+    QSqlQuery query;
+    query.prepare("UPDATE Image "
+                  "SET filePath =  :filePath,"
+                  "score = :score,"
+                  "comment = :comment,"
+                  "dominantColor = :dominantColor,"
+                  "feeling = :feeling "
+                  "WHERE idImage = :idImage;");
+    query.bindValue(":filePath", filePath);
+    query.bindValue(":score", score);
+    query.bindValue(":comment", comment);
+    query.bindValue(":dominantColor", dominantColor);
+    query.bindValue(":feeling", feeling);
+    query.bindValue(":idImage", idImage);
 
     if(query.exec())
     {
         if(query.next() > 0)
             return true;
+        else
+            return false;
     }
     else
     {
@@ -248,19 +324,86 @@ bool Database::isImageInAlbum(int imageId, int albumId)
         Database::lastErrorMessage.append(" : Erreur lors de la requête.");
         return false;
     }
-    return false; // ajout : loic => warning, on pouvait ne rien retourner
 }
 
-void Database::checkDBBeenCreated()
+bool Database::updateImagePath(int idImage, QString &filePath)
 {
-    if(Database::instance == nullptr)
-        Database::lastErrorMessage = "Aucune connection à la base de données.";
+    if(idImage == -1)
+        return false;
+
+    Database::getInstance();
+
+    qDebug() << idImage << " : " << filePath;
+    QSqlQuery query;
+    query.prepare("UPDATE Image "
+                  "SET filePath =  :filePath,"
+                  "score = score,"
+                  "comment = comment,"
+                  "dominantColor = dominantColor,"
+                  "feeling = feeling "
+                  "WHERE idImage = :idImage;");
+    query.bindValue(":filePath", filePath);
+    query.bindValue(":idImage", idImage);
+
+    if(query.exec())
+    {
+        return true;
+    }
+    else
+    {
+        qDebug() << query.lastError();
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(" : Erreur lors de la requête.");
+        return false;
+    }
+}
+/*********************************************************************************************/
+
+
+
+QVector<QString> Database::getAllImagePath()
+{//TODO: tester
+    Database::getInstance();
+
+    QVector<QString> result;
+
+    QSqlQuery query("SELECT filePath FROM Image");
+
+    if(query.exec()){
+        while (query.next()) {
+            result.push_back(query.value(0).toString());
+        }
+    }
+
+    return result;
+}
+
+bool Database::isImageInAlbum(int imageId, int albumId)
+{
+    Database::getInstance();
+
+    QSqlQuery query;
+    query.prepare("SELECT COUNT(*) FROM linkImageAlbum WHERE idAlbum = :idAlbum AND idImage = :idImage;");
+    query.bindValue(":idAlbum", albumId);
+    query.bindValue("idImage", imageId);
+
+    if(query.exec()) {
+        query.next();
+        if(query.value(0).toInt() > 0){
+            return true;
+        }
+    } else {
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(" : Erreur lors de la requête.");
+    }
+
+    return false;
 }
 
 
 int Database::getImagePosition(int imageId, int albumId)
 {
-    checkDBBeenCreated();
+    Database::getInstance();
 
     QSqlQuery query;
     query.prepare("SELECT positionInAlbum FROM linkImageAlbum WHERE idAlbum = :idAlbum AND idImage = :idImage;");
@@ -268,7 +411,6 @@ int Database::getImagePosition(int imageId, int albumId)
     query.bindValue("idImage", imageId);
 
     if(query.exec()){
-        qDebug() << query.value(0).toInt();
         return query.value(0).toInt();
     } else {
         QString error = __FUNCTION__;
@@ -276,6 +418,11 @@ int Database::getImagePosition(int imageId, int albumId)
         lastErrorMessage = error;
         return -1;
     }
+}
+
+QString Database::getLastErrorMessage()
+{
+    return Database::lastErrorMessage;
 }
 
 int sqlQuerySize(QSqlQuery &query)
@@ -312,7 +459,7 @@ CREATE TABLE Image (idImage INTEGER CONSTRAINT pk_idImage PRIMARY KEY AUTOINCREM
 
 CREATE TABLE linkImageAlbum (idAlbum INTEGER NOT NULL,
                              idImage INTEGER NOT NULL,
-                             positionInAlbum INTEGER,
+                             positionInAlbum INTEGER NOT NULL,
                              CONSTRAINT pk_link PRIMARY KEY (idAlbum, idImage),
                              FOREIGN KEY (idAlbum) REFERENCES Album(idAlbum),
                              FOREIGN KEY (idImage) REFERENCES Album(idImage));

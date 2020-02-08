@@ -26,6 +26,7 @@ public:
     void setStatusBar();
     bool updateCurrentPath(QString);
     void setNavButtons();
+    void checkAllPath();
 
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
@@ -42,7 +43,7 @@ private slots:
     void previous_clicked();
     void next_clicked();
     void up_clicked();
-    void checkAllPath();
+    void foundAllPictures(QString);
 
 private:
     Ui::MainWindow *ui;

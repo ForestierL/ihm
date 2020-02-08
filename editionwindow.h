@@ -36,7 +36,7 @@ private:
 
 protected slots:
     void resizeImage(int);
-
+    void cropImage();
 
 
 }; //class EditionWindow

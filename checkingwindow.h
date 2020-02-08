@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QVector>
+#include <QLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,12 +25,15 @@ private:
     QVector<QString> *missingFilesPath;
     QVector<QPushButton*> *buttonsRelocate;
     QVector<QPushButton*> *buttonsIgnore;
+    QLayout* vlMissingList;
 
 protected slots:
 
 private slots:
-    void relocate(const QString);
+    void relocate(const int);
+    void ignore(const int, bool all = false);
     void on_relocateAll_clicked();
+    void on_ignoreAll_clicked();
 };
 
 #endif // CHECKINGWINDOW_H

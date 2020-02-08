@@ -13,6 +13,8 @@ int main(int argc, char *argv[])
     w.setNavButtons();
     w.show();
 
+    w.checkAllPath();
+
     // Load an application style
     QFile styleFile(":/Ressources/white-theme.qss");
     styleFile.open(QFile::ReadOnly);

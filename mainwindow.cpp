@@ -93,8 +93,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         // Ajout du sous-layout au layout vertical de l'UI
         ui->vlAlbums->addLayout(layoutTest);
     }
-
-    checkAllPath(); //pour test => Lucas
 }
 
 MainWindow::~MainWindow()
@@ -274,6 +272,7 @@ void MainWindow::openDirectory()
 
 void MainWindow::addToAlbum()
 {
+    foundAllPictures(ui->lePath->text());
     qDebug() << "AddToAlbum";
 }
 
@@ -303,7 +302,7 @@ void MainWindow::eraseItem()
 
 bool MainWindow::removeDirectory(QString dirPath){
     if(dirPath == ""){
-        int valid = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer ce dossier et tout les documents qu'il contient ?", QMessageBox ::Yes | QMessageBox::No);
+        int valid = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer ce dossier et tout les documents qu'il contient ? \n ATTENTION ! Ces fichiers ne pourront pas être récupérés.", QMessageBox ::Yes | QMessageBox::No);
         if(valid == QMessageBox::No){
             return false;
         }
@@ -370,9 +369,16 @@ void MainWindow::up_clicked()
 void MainWindow::checkAllPath()
 {
     QVector<QString> *missingFilesPath = new QVector<QString>();
-    /*
-    condition : on parse la bdd, si le path n'existe pas sur le pc alors on ajoute à missingFilePath
-    */
+    QVector<QString> allPath = Database::getAllImagePath();
+
+    for(int i=0; i <allPath.size();i++){
+        QDir pathDir(allPath[i]);
+        if (!pathDir.exists())
+        {
+            missingFilesPath->append(allPath[i]);
+        }
+    }
+
     //DEBUG
     missingFilesPath->append("C:/UnHibou.png");
     missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
@@ -393,9 +399,39 @@ void MainWindow::checkAllPath()
     missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
     missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
 
-    CheckingWindow w(this);
-    w.initMissingFilesPath(missingFilesPath);
-    w.show();
-    QEventLoop eventLoop;
-    eventLoop.exec();
+    if(missingFilesPath->size() != 0){
+        CheckingWindow w(this);
+        w.initMissingFilesPath(missingFilesPath);
+        w.show();
+        QEventLoop eventLoop;
+        eventLoop.exec();
+    }
+}
+
+void MainWindow::foundAllPictures(QString path)
+{
+//    QDir folder(path);
+//    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
+//    foreach (QFileInfo fileInfo, folder.entryInfoList())
+//    {
+//        if(fileInfo.isDir()){
+//            if(!removeDirectory(fileInfo.filePath()))
+//                return false;
+//        }
+//        else if(fileInfo.isFile())
+//        {
+//            if(!QFile::remove(fileInfo.filePath()))
+//            {
+//                qDebug() << "Unable to remove file : " << fileInfo.filePath();
+//                return false;
+//            }
+//        }
+//    }
+
+//    if(!folder.rmdir(dirPath))
+//    {
+//        return false;
+//    }
+//    return true;
+    QVector<QString*> *allPath = new QVector<QString*>();
 }

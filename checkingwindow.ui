@@ -77,7 +77,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="i">
+        <widget class="QPushButton" name="ignoreAll">
          <property name="text">
           <string>Tout Ignorer</string>
          </property>
@@ -90,22 +90,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>i</sender>
-   <signal>clicked()</signal>
-   <receiver>CheckingWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>375</x>
-     <y>281</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>309</x>
-     <y>281</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

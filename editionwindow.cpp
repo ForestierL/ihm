@@ -38,6 +38,7 @@ QFrame* EditionWindow::createToolBar(void)
     QPushButton *horizontalMirrorButton = new QPushButton("d");
     QPushButton *verticalMirrorButton = new QPushButton("e");
     QPushButton *trimButton = new QPushButton("f");
+    connect(trimButton, SIGNAL(clicked()), this, SLOT(cropImage()));
     QPushButton *resizeButton = new QPushButton("g");
 
     QSlider *tempSlider = new QSlider();
@@ -166,7 +167,6 @@ void EditionWindow::createContents()
     }
 }
 
-
 void EditionWindow::resizeImage(int percent)
 {
     float newWidth = this->initialImageWidth * percent/100;
@@ -174,7 +174,6 @@ void EditionWindow::resizeImage(int percent)
 
     this->imageLabel->setPixmap(this->initialPixMap.scaled(newWidth, newHeigth, Qt::KeepAspectRatio));
 }
-
 
 void EditionWindow::initBackground()
 {
@@ -187,12 +186,16 @@ void EditionWindow::initBackground()
     setPalette(palette);
 }
 
-
 void EditionWindow::setImage(const QString &fileName)
 {
     this->imagePath = fileName;
 }
 
+void EditionWindow::cropImage(){
+    QRect rect(0, 0, 500, 500);
+    QPixmap cropped = this->initialPixMap.copy(rect);
+    this->imageLabel->setPixmap(cropped);
+}
 
 EditionWindow::~EditionWindow()
 {
