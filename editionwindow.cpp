@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QPainter>
+#include <QPixmap>
 
 
 EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::EditionWindow)

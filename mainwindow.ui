@@ -14,8 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(25, 25, 25);
-color: rgb(255,255,255);</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -73,10 +72,6 @@ border: none;</string>
         <property name="autoFillBackground">
          <bool>false</bool>
         </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(32, 32, 32);
-border: none;</string>
-        </property>
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
@@ -85,8 +80,8 @@ border: none;</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>650</width>
-           <height>297</height>
+           <width>648</width>
+           <height>295</height>
           </rect>
          </property>
         </widget>
@@ -116,11 +111,6 @@ border: none;</string>
           <height>24</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">color: rgb(255, 255, 255);
-background-color: rgb(25, 25, 25);
-border-color: rgb(83, 83, 83);</string>
-        </property>
         <property name="dragEnabled">
          <bool>true</bool>
         </property>
@@ -145,11 +135,6 @@ border-color: rgb(83, 83, 83);</string>
           <width>200</width>
           <height>24</height>
          </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: rgb(255, 255, 255);
-background-color: rgb(25, 25, 25);
-border-color: rgb(83, 83, 83);</string>
         </property>
         <property name="dragEnabled">
          <bool>true</bool>
@@ -186,10 +171,6 @@ border-color: rgb(83, 83, 83);</string>
               <width>200</width>
               <height>16777215</height>
              </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(46, 52, 54);
-border: none;</string>
             </property>
            </widget>
           </item>
@@ -272,9 +253,6 @@ border: none;</string>
      <height>22</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);</string>
-   </property>
    <widget class="QMenu" name="menuFichier">
     <property name="title">
      <string>Fic&amp;hier</string>
@@ -322,13 +300,7 @@ border: none;</string>
    <addaction name="menuAffichage"/>
    <addaction name="menuAide"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar">
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(51, 51, 51);
-border-color: rgb(255, 255, 255);
-border: 0px 0px 2px 0px</string>
-   </property>
-  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <action name="actionFermer">
    <property name="text">
     <string>&amp;Fermer</string>
@@ -428,4 +400,3 @@ border: 0px 0px 2px 0px</string>
  <resources/>
  <connections/>
 </ui>
-
