@@ -108,11 +108,6 @@ void CheckingWindow::ignore(const int id, bool all){
     }
 }
 
-void CheckingWindow::on_relocateAll_clicked()
-{
-
-}
-
 void CheckingWindow::on_ignoreAll_clicked()
 {
     int reponse = QMessageBox::question(this, "Tout ignorer", "Êtes-vous sûr de vouloir ignorer toutes ces images ?\nElle seront définitivement supprimées de tout vos albums.", QMessageBox ::Yes | QMessageBox::No);

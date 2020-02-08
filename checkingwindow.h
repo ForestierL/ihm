@@ -32,7 +32,6 @@ protected slots:
 private slots:
     void relocate(const int);
     void ignore(const int, bool all = false);
-    void on_relocateAll_clicked();
     void on_ignoreAll_clicked();
 };
 

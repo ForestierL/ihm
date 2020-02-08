@@ -70,14 +70,13 @@
         <number>40</number>
        </property>
        <item>
-        <widget class="QPushButton" name="relocateAll">
-         <property name="text">
-          <string>Tout Relocaliser</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="ignoreAll">
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="text">
           <string>Tout Ignorer</string>
          </property>
