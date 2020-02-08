@@ -80,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     createActions();
 
-    //checkAllPath(); //pour test => Lucas, pense à remove
+    checkAllPath(); //pour test => Lucas, pense à remove
 }
 
 void MainWindow::createActions(){
@@ -455,6 +455,16 @@ void MainWindow::checkAllPath()
     condition : on parse la bdd, si le path n'existe pas sur le pc alors on ajoute à missingFilePath
     */
     //DEBUG
+    QVector<QString> allPath = Database::getAllImagePath();
+
+    for(int i=0; i <allPath.size();i++){
+        QDir pathDir(allPath[i]);
+        if (!pathDir.exists())
+        {
+            missingFilesPath->append(allPath[i]);
+        }
+    }
+
     missingFilesPath->append("C:/UnHibou.png");
     missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
     missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
