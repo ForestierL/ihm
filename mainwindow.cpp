@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qhoversensitivebutton.h"
+#include "themeapplier.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -12,13 +13,13 @@
 #include <QPushButton>
 #include <QMouseEvent>
 #include <QFileDialog>
+#include <QSettings>
 
 #include <QSplitter>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     /*******************/
     QSplitter *splitter = new QSplitter(); //CQStandardPaths::writableLocation(QStandardPaths::PicturesLocation)réation d'un splitter, permettant de redimensionner l'espace occupé par les widgets enfants
     splitter->setOrientation(Qt::Vertical); //Mettre l'orientation verticale
@@ -62,8 +63,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 
-
-
+    ui->elementListView->setViewMode(QListView::IconMode);
+    ui->elementListView->setMovement(QListView::Static);
     /*****
      * Initialisation de la liste en bas à gauche de la main windows
      * Ceci est codé en dur pour le moment (pas de bdd)
@@ -173,69 +174,14 @@ void MainWindow::icons(){
 
 }
 void MainWindow::dark_theme(){
-    qDebug() << "DARK";
-    // Load an application style
-    QFile styleFile(":/Ressources/dark-theme.qss");
-    styleFile.open(QFile::ReadOnly);
-
-    // Apply the loaded stylesheet
-    QString style(styleFile.readAll());
-    qApp->setStyleSheet(style);
-    qDebug() << qApp->styleSheet();
-
-    for(int i=0; i < this->children().size(); i++)
-    {
-        qDebug() << "qApp child name : " << this->children().at(i)->metaObject()->className();
-        if(QWidget *wi = qobject_cast<QWidget*>(this->children().at(i))){
-            qDebug() << "Converted";
-            wi->setStyleSheet(style);
-        }
-        qDebug() << "Entering qApp child nbr " << i;
-        getChildAndSetStyle(this->children().at(i), "dark-theme.qss");
-    }
+    QSettings s("config.ini",QSettings::IniFormat);
+    s.setValue("theme", "dark-theme.qss");
+    new themeApplier(*this);
 }
 void MainWindow::light_theme(){
-    qDebug() << "LIGHT";
-    // Load an application style
-    QFile styleFile(":/Ressources/light-theme.qss");
-    styleFile.open(QFile::ReadOnly);
-
-    // Apply the loaded stylesheet
-    QString style(styleFile.readAll());
-    qApp->setStyleSheet(style);
-    qDebug() << qApp->styleSheet();
-
-    for(int i=0; i < this->children().size(); i++)
-    {
-        qDebug() << "qApp child name : " << this->children().at(i)->metaObject()->className();
-        if(QWidget *wi = qobject_cast<QWidget*>(this->children().at(i))){
-            qDebug() << "Converted";
-            wi->setStyleSheet(style);
-        }
-        qDebug() << "Entering qApp child nbr " << i;
-        getChildAndSetStyle(this->children().at(i), "light-theme.qss");
-    }
-}
-void MainWindow::getChildAndSetStyle(QObject *obj, QString theme){
-    QFile styleFile(":/Ressources/" + theme);
-    styleFile.open(QFile::ReadOnly);
-
-    // Apply the loaded stylesheet
-    QString style(styleFile.readAll());
-    for(int i=0; i < obj->children().size(); i++)
-    {
-        qDebug() << "obj child name : " << obj->children().at(i)->metaObject()->className();
-        if(QWidget *wi = qobject_cast<QWidget*>(obj->children().at(i))){
-            qDebug() << "Converted";
-            qobject_cast<QWidget*>(obj->children().at(i))->setStyleSheet(style);
-            qDebug() << qobject_cast<QWidget*>(obj->children().at(i));
-            wi->setStyleSheet(style);
-            qDebug() << wi->styleSheet();
-        }
-        if(obj->children().at(i)->children().size() > 0){
-            getChildAndSetStyle(obj->children().at(i), theme);
-        }
-    }
+    QSettings s("config.ini",QSettings::IniFormat);
+    s.setValue("theme", "light-theme.qss");
+    new themeApplier(*this);
 }
 void MainWindow::about(){
 
@@ -430,13 +376,6 @@ void MainWindow::informations()
     FilePropertiesWindow w(this, actualFile);
     //w.setImagePath(path);
 
-//    QFile styleFile(":/Ressources/" + theme);
-//    styleFile.open(QFile::ReadOnly);
-
-    // Apply the loaded stylesheet
-    // ////QString style(this->styleSheet());
-
-    w.createContents();
     w.show();
     QEventLoop eventLoop;
     eventLoop.exec();

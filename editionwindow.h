@@ -19,7 +19,7 @@ public:
     ~EditionWindow();
     void createContents(void);
     void setImage(const QString &fileName);
-
+    void showEvent(QShowEvent *);
 
 private:
     QFrame* createStatusBar(void);

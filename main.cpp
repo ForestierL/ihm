@@ -3,6 +3,8 @@
 
 #include <QApplication>
 #include <QLabel>
+#include <QSettings>
+#include "themeapplier.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,10 +13,12 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.setStatusBar();
     w.setNavButtons();
+    new themeApplier(w);
     w.show();
 
     // Load an application style
-    QFile styleFile(":/Ressources/dark-theme.qss");
+    QSettings s("config.ini",QSettings::IniFormat);
+    QFile styleFile(":/Ressources/" + s.value("theme").toString());
     styleFile.open(QFile::ReadOnly);
 
     // Apply the loaded stylesheet

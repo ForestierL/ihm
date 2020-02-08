@@ -18,6 +18,9 @@ public:
     void setEditMode(bool);
     void editSwitch();
     bool save();
+    void setTheme();
+    void getChildAndSetStyle(QObject *obj, QString theme);
+    void showEvent(QShowEvent *);
 
 private:
     Ui::FilePropertiesWindow *ui;

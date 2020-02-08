@@ -3,12 +3,20 @@
 #include <QMessageBox>
 
 #include "database.h"
+#include <QDebug>
+#include <QSettings>
+#include "themeapplier.h"
 
 FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : QDialog(parent), ui(new Ui::FilePropertiesWindow)
 {
     ui->setupUi(this);
     this->itemPath = itemPath;
     createContents();
+}
+
+void FilePropertiesWindow::showEvent(QShowEvent* event){
+    QDialog::showEvent(event);
+    new themeApplier(*this);
 }
 
 QString getNameFromPath(QString path)

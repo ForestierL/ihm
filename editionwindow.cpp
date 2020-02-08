@@ -1,5 +1,6 @@
 #include "editionwindow.h"
 #include "ui_editionwindow.h"
+#include "themeapplier.h"
 
 #include <QLabel>
 #include <QPushButton>
@@ -27,6 +28,10 @@ EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
     initBackground();
 }
 
+void EditionWindow::showEvent(QShowEvent* event){
+    QMainWindow::showEvent(event);
+    new themeApplier(*this);
+}
 
 QFrame* EditionWindow::createToolBar(void)
 {
