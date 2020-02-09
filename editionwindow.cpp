@@ -11,24 +11,30 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QPainter>
+#include <QFileDialog>
 
 
 EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::EditionWindow)
 {
     ui->setupUi(this);
 
-    QFrame *toolBarFrame = createToolBar();
+    _window_width = parent->width();
+    _window_heigth = parent->height();
+
+    QFrame *toolBarFrame = create_tool_bar();
     ui->toolBar->insertWidget(0, toolBarFrame);
     ui->toolBar->setMovable(false);
 
-    QFrame *statusBarFrame = createStatusBar();
+    QFrame *statusBarFrame = create_status_bar();
     ui->statusbar->insertPermanentWidget(0, statusBarFrame, 1);
 
-    initBackground();
+    init_background();
+
+    init_connects();
 }
 
 
-QFrame* EditionWindow::createToolBar(void)
+QFrame* EditionWindow::create_tool_bar(void)
 {
     /********* Composant de la tool bar *********/
     QPushButton *returnButton = new QPushButton("a");
@@ -85,19 +91,19 @@ QFrame* EditionWindow::createToolBar(void)
 }
 
 
-QFrame* EditionWindow::createStatusBar(void)
+QFrame* EditionWindow::create_status_bar(void)
 {
     /******** Composant de la status bar ********/
     QPushButton *addToAlbumButton = new QPushButton("+");
     QLabel *addToAlbumLabel = new QLabel("Ajouter à un album");
 
-    QSlider *zoomSlider = new QSlider();
-    zoomSlider->setFixedSize(150, 20);
-    zoomSlider->setOrientation(Qt::Horizontal);
-    zoomSlider->setMinimum(1);
-    zoomSlider->setMaximum(200);
-    zoomSlider->setTickInterval(1);
-    zoomSlider->setValue(100);
+    _zoom_slider = new QSlider();
+    _zoom_slider->setFixedSize(150, 20);
+    _zoom_slider->setOrientation(Qt::Horizontal);
+    _zoom_slider->setMinimum(1);
+    _zoom_slider->setMaximum(200);
+    _zoom_slider->setTickInterval(1);
+    _zoom_slider->setValue(100);
 
     QLabel *percentZoomLabel = new QLabel("100");
     QLabel *percentLabel = new QLabel("%");
@@ -106,10 +112,10 @@ QFrame* EditionWindow::createStatusBar(void)
     zoomLayout->addWidget(percentZoomLabel);
     zoomLayout->addWidget(percentLabel);
     zoomLayout->addStretch(1);
-    zoomLayout->addWidget(zoomSlider);
+    zoomLayout->addWidget(_zoom_slider);
 
-    connect(zoomSlider, SIGNAL(valueChanged(int)), percentZoomLabel, SLOT(setNum(int)));
-    connect(zoomSlider, SIGNAL(valueChanged(int)), this, SLOT(resizeImage(int)));
+    connect(_zoom_slider, SIGNAL(valueChanged(int)), percentZoomLabel, SLOT(setNum(int)));
+    connect(_zoom_slider, SIGNAL(valueChanged(int)), this, SLOT(resize_image(int)));
     /********************************************/
 
     QFrame *statusFrame = new QFrame();
@@ -128,35 +134,30 @@ QFrame* EditionWindow::createStatusBar(void)
 }
 
 
-void EditionWindow::createContents()
+void EditionWindow::create_contents()
 {
-    QImageReader *reader = new QImageReader(this->imagePath);
+    QImageReader *reader = new QImageReader(this->_image_path);
     reader->setAutoTransform(true);
-    QImage srcImage(this->imagePath);
+
+    QImage srcImage = reader->read();
 
     if (srcImage.isNull()) {
         QMessageBox::information(this,
                                  QGuiApplication::applicationDisplayName(),
-                                 tr("Cannot load %1: %2").arg(QDir::toNativeSeparators(this->imagePath),
+                                 tr("Cannot load %1: %2").arg(QDir::toNativeSeparators(this->_image_path),
                                                               reader->errorString()));
     }
     else {
-        delete reader;
-        reader = nullptr;
-
-        QImage dstImage(srcImage.width(), srcImage.height(), srcImage.format());
-
-        QPainter painter(&dstImage);
-        painter.drawImage(0, 0, srcImage);
-
         QLabel *imageLabel = new QLabel();
-        imageLabel->setPixmap(QPixmap::fromImage(dstImage));
+        imageLabel->setPixmap(QPixmap::fromImage(srcImage));
 
-        this->imageLabel = imageLabel;
+        this->_image_label = imageLabel;
+        this->_initial_image = srcImage;
 
-        this->initialPixMap = QPixmap::fromImage(dstImage);
-        this->initialImageWidth = imageLabel->pixmap()->width();
-        this->initialImageHeigth = imageLabel->pixmap()->height();
+        if(_window_width < _initial_image.width() || _window_heigth < _initial_image.height()){
+        _zoom_slider->setValue((100 * _window_width) / srcImage.width());
+        _image_label->setPixmap(QPixmap::fromImage(_initial_image).scaled(_window_width, _window_heigth, Qt::KeepAspectRatio));
+        }
 
         QHBoxLayout *contentLayout = new QHBoxLayout();
         contentLayout->addStretch(1);
@@ -165,19 +166,13 @@ void EditionWindow::createContents()
 
         this->ui->centralwidget->setLayout(contentLayout);
     }
+
+    delete reader;
+    reader = nullptr;
 }
 
 
-void EditionWindow::resizeImage(int percent)
-{
-    float newWidth = this->initialImageWidth * percent/100;
-    float newHeigth = this->initialImageHeigth * percent/100;
-
-    this->imageLabel->setPixmap(this->initialPixMap.scaled(newWidth, newHeigth, Qt::KeepAspectRatio));
-}
-
-
-void EditionWindow::initBackground()
+void EditionWindow::init_background()
 {
     QColor color;
     color.setRgb(99, 99, 99);
@@ -189,13 +184,68 @@ void EditionWindow::initBackground()
 }
 
 
-void EditionWindow::setImage(const QString &fileName)
+void EditionWindow::init_connects(){
+    connect(ui->saveAct, SIGNAL(triggered()), this, SLOT(save()));
+    connect(ui->saveAsAct, SIGNAL(triggered()), this, SLOT(save_as()));
+}
+
+
+void EditionWindow::set_image(const QString &fileName)
 {
-    this->imagePath = fileName;
+    this->_image_path = fileName;
 }
 
 
 EditionWindow::~EditionWindow()
 {
     delete ui;
+    delete _image_label;
+    delete _zoom_slider;
+
+    ui = nullptr;
+    _image_label = nullptr;
+    _zoom_slider = nullptr;
 }
+
+
+/************************************* SLOT *************************************/
+void EditionWindow::resize_image(int percent)
+{
+    float newWidth = this->_initial_image.width() * percent/100;
+    float newHeigth = this->_initial_image.height() * percent/100;
+
+    this->_image_label->setPixmap(QPixmap::fromImage(_initial_image).scaled(newWidth, newHeigth, Qt::KeepAspectRatio));
+}
+
+void EditionWindow::save()
+{
+    QImage finalImage = _image_label->pixmap()->toImage();
+    QFile initiaImageFile(_image_path);
+
+    if(!initiaImageFile.remove()){
+        QMessageBox::information(this, "Erreur", "Erreur lors de la sauvegarde l'image");
+        return;
+    }
+
+    if(!finalImage.save(_image_path)){
+        QMessageBox::information(this, "Erreur", "Erreur lors de la sauvegarde l'image");
+    }
+}
+
+void EditionWindow::save_as()
+{
+    QString filename = QFileDialog::getSaveFileName(this);
+    qDebug() << "FileName: " << filename;
+
+    QImage finalImage = _image_label->pixmap()->toImage();
+
+    QStringList list = _image_path.split(".");
+    QString finalName = filename;
+    finalName.append('.');
+    finalName.append(list.last());
+
+    if(!finalImage.save(finalName)){
+        QMessageBox::information(this, "Erreur", "Erreur lors de la sauvegarde l'image");
+    }
+}
+

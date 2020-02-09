@@ -80,10 +80,16 @@
    <property name="text">
     <string>enregistrer</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="saveAsAct">
    <property name="text">
     <string>enregistrer sous</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="closeAct">

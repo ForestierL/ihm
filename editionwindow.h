@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QFrame>
 #include <QLabel>
+#include <QSlider>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class EditionWindow;}
@@ -17,26 +18,37 @@ class EditionWindow : public QMainWindow
 public:
     explicit EditionWindow(QWidget *parent = nullptr);
     ~EditionWindow();
-    void createContents(void);
-    void setImage(const QString &fileName);
+    void create_contents(void);
+    void set_image(const QString &fileName);
 
 
-private:
-    QFrame* createStatusBar(void);
-    QFrame* createToolBar(void);
-    void initBackground(void);
-
+private: //données membres
     Ui::EditionWindow *ui;
-    QString imagePath;
-    QLabel *imageLabel;
 
-    QPixmap initialPixMap;
-    float initialImageWidth;
-    float initialImageHeigth;
+    int _window_width;
+    int _window_heigth;
+
+    QString _image_path;
+    QLabel* _image_label;
+    QImage _initial_image;
+
+    QSlider* _zoom_slider;
+
+private: //méthodes
+    QFrame* create_status_bar(void);
+    QFrame* create_tool_bar(void);
+
+    void init_background(void);
+    void init_connects(void);
+
+
+
+
 
 protected slots:
-    void resizeImage(int);
-
+    void resize_image(int);
+    void save();
+    void save_as();
 
 
 }; //class EditionWindow
