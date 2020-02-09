@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "qhoversensitivebutton.h"
 #include "albumline.h"
+#include "albumbutton.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -66,6 +67,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     displayAlbum();
     createActions();
 
+//    QString test = "aaaa";
+//    QString test2 = "bbbb";
+//    QString test3 = "cccc";
+//    QString test4 = "dddd";
+//    QString test5 = "eeee";
+
+//    Database::createAlbum(test);
+//    Database::createAlbum(test2);
+//    Database::createAlbum(test3);
+//    Database::createAlbum(test4);
+//    Database::createAlbum(test5);
+
     //checkAllPath(); //pour test => Lucas, pense à remove
 }
 
@@ -73,7 +86,7 @@ void MainWindow::displayAlbum(){
     QVector<QString> albums = Database::getAlbumsOrderByName();
 
     for (int i = 0; i<albums.size();i++)
-        createNewButtonAlbum(albums[i]);
+        createNewButtonAlbum(albums[i],i);
 }
 
 void MainWindow::clearVlAlbums(){
@@ -81,7 +94,8 @@ void MainWindow::clearVlAlbums(){
     for(int i=0; i < nbChildren ; i++)
     {
        qDebug() << i;
-       ui->vlAlbums->removeItem(ui->vlAlbums->itemAt(0));
+       delete  ui->vlAlbums->takeAt(0);
+       //ui->vlAlbums->removeItem(ui->vlAlbums->itemAt(0));
     }
 }
 
@@ -479,28 +493,30 @@ void MainWindow::on_pbAddAlbum_clicked()
     generateCreateAlbumLine();
 }
 
-void MainWindow::createNewButtonAlbum(QString name)
+void MainWindow::createNewButtonAlbum(QString name, int i)
 {
-    QLayout *layoutAlbum = new QHBoxLayout();
+//    QLayout *layoutAlbum = new QHBoxLayout();
 
-    QPushButton *nameAlbum = new QPushButton();
-    nameAlbum->setText(name);
+//    QPushButton *nameAlbum = new QPushButton();
+//    nameAlbum->setText(name);
 
-    // Ajout du label au sous-layout
-    layoutAlbum->addWidget(nameAlbum);
+//    // Ajout du label au sous-layout
+//    layoutAlbum->addWidget(nameAlbum);
 
-    // Création du bouton
-    QHoverSensitiveButton *deleteAlbum = new QHoverSensitiveButton(this, "delete");
-    deleteAlbum->setMaximumSize(20,20);
-    deleteAlbum->setStyleSheet("color:red;");
+//    // Création du bouton
+//    QHoverSensitiveButton *deleteAlbum = new QHoverSensitiveButton(this, "delete");
+//    deleteAlbum->setMaximumSize(20,20);
+//    deleteAlbum->setStyleSheet("color:red;");
 
-    QSignalMapper *mapperDelete = new QSignalMapper();
-    connect(deleteAlbum, SIGNAL(clicked()), mapperDelete, SLOT(map()));
-    mapperDelete->setMapping(deleteAlbum, name);
-    connect(mapperDelete, SIGNAL(mapped(const QString &)), this, SLOT(delete_album(const QString &)));
-    // Ajout du bouton au sous-layout
-    layoutAlbum->addWidget(deleteAlbum);
+//    QSignalMapper *mapperDelete = new QSignalMapper();
+//    connect(deleteAlbum, SIGNAL(clicked()), mapperDelete, SLOT(map()));
+//    mapperDelete->setMapping(deleteAlbum, i);
+//    connect(mapperDelete, SIGNAL(mapped(int)), this, SLOT(delete_album(int)));
+//    // Ajout du bouton au sous-layout
+//    layoutAlbum->addWidget(deleteAlbum);
 
+    AlbumButton *layoutAlbum = new AlbumButton(name);
+    connect(layoutAlbum, SIGNAL(validated(const QString&)), this, SLOT(delete_album(const QString&)));
     // Ajout du sous-layout au layout vertical de l'UI
     ui->vlAlbums->addLayout(layoutAlbum);
 }
@@ -519,24 +535,35 @@ void MainWindow::generateCreateAlbumLine(){
     }
 }
 
-
+// Il faut modifier les messages
 void MainWindow::create_album(const QString& albumName){
-
-    delete sender();
-    clearVlAlbums();
-    this->newAlbum = false;
+    QString name = albumName;
+    if(name == ""){
+        QMessageBox::question(this, "Nom invalide", "Veuillez entrer un nom", QMessageBox ::Yes);
+    }else{
+        bool result = Database::createAlbum(name);
+        if(!result){
+            QMessageBox::question(this, "Nom invalide", "Le nom de l'album existe deja ou est invalide", QMessageBox ::Yes);
+        }else {
+            delete sender();
+            clearVlAlbums();
+            displayAlbum();
+            this->newAlbum = false;
+        }
+    }
 }
 
-void MainWindow::delete_album(QString nameAlbum){
+void MainWindow::delete_album(const QString& albumName){
     int reponse = QMessageBox::question(this, "Supprimer Album", "Êtes-vous sûr de supprimer cette album ?", QMessageBox ::Yes | QMessageBox::No);
     if (reponse == QMessageBox::Yes)
     {
-        int idAlbum = Database::getAlbumId(nameAlbum);
-        Database::removeAlbum(idAlbum);
-        clearVlAlbums();
-        displayAlbum();
+        qDebug()<< albumName;
+//          delete sender();
+//        int idAlbum = Database::getAlbumId(nameAlbum);
+//        Database::removeAlbum(idAlbum);
+//        clearVlAlbums();
+//        displayAlbum();
     }
-
 }
 
 

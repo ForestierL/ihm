@@ -45,7 +45,7 @@ private slots:
     void next_clicked();
     void up_clicked();
     void checkAllPath();
-    void createNewButtonAlbum(QString name);
+    void createNewButtonAlbum(QString name, int i);
     void create_album(const QString&);
 
     void recent_folder();
@@ -71,7 +71,7 @@ private slots:
     void on_pbAddAlbum_clicked();
     void generateCreateAlbumLine();
 
-    void delete_album(QString nameAlbum);
+    void delete_album(const QString&);
     void clearVlAlbums();
 
 private:

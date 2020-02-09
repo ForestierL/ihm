@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     addtoalbumwindow.cpp \
+    albumbutton.cpp \
     database.cpp \
     editionwindow.cpp \
     main.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 
 HEADERS += \
     addtoalbumwindow.h \
+    albumbutton.h \
     database.h \
     editionwindow.h \
     mainwindow.h \
