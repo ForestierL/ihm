@@ -81,4 +81,5 @@ DISTFILES += \
     star-half-w.png
 
 RESOURCES += \
-    icons.qrc
+    icons.qrc \
+    lumipic.db

@@ -1,13 +1,16 @@
-#ifndef ALBUMBUTTON_H
-#define ALBUMBUTTON_H
+#ifndef ALBUMBUTTON2_H
+#define ALBUMBUTTON2_H
 
+#include <QObject>
+#include <QHBoxLayout>
+#include "qhoversensitivebutton.h"
 #include <QLineEdit>
-#include <qhoversensitivebutton.h>
 
 class AlbumButton : public QHBoxLayout
 {
+    Q_OBJECT
 public:
-    explicit AlbumButton(QString name);
+    explicit AlbumButton(QString &name);
     ~AlbumButton();
 
     QHoverSensitiveButton* getButton(void);
@@ -25,9 +28,8 @@ private slots:
     //void emitSignalEnter(void);
 
 signals:
-    void validated(QString albumName);
+    void validated(const QString &albumName);
 
+};
 
-}; //class AlbumButton
-
-#endif // ALBUMBUTTON_H
+#endif // ALBUMBUTTON2_H

@@ -1,11 +1,11 @@
 #include "albumbutton.h"
 
-AlbumButton::AlbumButton(QString name) : QHBoxLayout()
+AlbumButton::AlbumButton(QString &name) : QHBoxLayout()
 {
     albumTitle = new QPushButton();
     deleteAlbum = new QHoverSensitiveButton(NULL, "delete");
 
-    albumTitle->setText(name);
+    albumTitle->setText("name");
     deleteAlbum->setMaximumSize(20,20);
 
     addWidget(albumTitle);
@@ -20,12 +20,11 @@ AlbumButton::AlbumButton(QString name) : QHBoxLayout()
 
 void AlbumButton::emitSignalClick()
 {
-    QString name = getAlbumTitleString();
-    //emit this->validated(name);
+    emit this->validated(getAlbumTitleString());
 }
 
 /*
-void AlbumButton::emitSignalEnter()
+void AlbumLine::emitSignalEnter()
 {
     emit this->validated(getAlbumTitleString());
 }
