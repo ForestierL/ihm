@@ -444,6 +444,21 @@ int Database::getImagePosition(int imageId, int albumId)
     }
 }
 
+QVector<int> Database::getAlbumInImageOrderByPosition(int albumId){
+    QSqlQuery query;
+    QVector<int> result;
+    query.prepare("SELECT idImage FROM linkImageAlbum WHERE idAlbum = :idAlbum ORDER BY positionInAlbum");
+    query.bindValue(":idAlbum", albumId);
+
+    if(query.exec()){
+        while (query.next()) {
+            result.push_back(query.value(0).toInt());
+        }
+    }
+
+    return result;
+}
+
 QString Database::getLastErrorMessage()
 {
     return Database::lastErrorMessage;

@@ -33,6 +33,8 @@ public:
     static bool isImageInAlbum(int imageId, int albumId);
     static QVector<QString> getInfoImage(int idImage);
 
+    static QVector<int> getAlbumInImageOrderByPosition(int albumId);
+
     static QString getLastErrorMessage(void);
 
 

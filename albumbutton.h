@@ -25,10 +25,11 @@ private:
 
 private slots:
     void emitSignalClick(void);
-    //void emitSignalEnter(void);
+    void emitSignalOpenAlbum(void);
 
 signals:
     void validated(const QString &albumName);
+    void openAlbum(const QString &albumName);
 
 };
 

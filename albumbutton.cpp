@@ -5,7 +5,7 @@ AlbumButton::AlbumButton(QString &name) : QHBoxLayout()
     albumTitle = new QPushButton();
     deleteAlbum = new QHoverSensitiveButton(NULL, "delete");
 
-    albumTitle->setText("name");
+    albumTitle->setText(name);
     deleteAlbum->setMaximumSize(20,20);
 
     addWidget(albumTitle);
@@ -13,6 +13,7 @@ AlbumButton::AlbumButton(QString &name) : QHBoxLayout()
 
     connect(getButton(), SIGNAL(clicked()), this, SLOT(emitSignalClick()));
     //connect(getLineEdit(), SIGNAL(returnPressed()), this, SLOT(emitSignalEnter()));
+    connect(getPushButton(),SIGNAL(clicked()),this,SLOT(emitSignalOpenAlbum()));
 }
 
 
@@ -23,12 +24,11 @@ void AlbumButton::emitSignalClick()
     emit this->validated(getAlbumTitleString());
 }
 
-/*
-void AlbumLine::emitSignalEnter()
+
+void AlbumButton::emitSignalOpenAlbum()
 {
-    emit this->validated(getAlbumTitleString());
+    emit this->openAlbum(getAlbumTitleString());
 }
-*/
 
 
 QHoverSensitiveButton* AlbumButton::getButton()
@@ -43,8 +43,7 @@ QPushButton* AlbumButton::getPushButton(void)
 
 QString AlbumButton::getAlbumTitleString()
 {
-    QString name = albumTitle->text();
-    return name;
+    return albumTitle->text();
 }
 
 

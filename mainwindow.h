@@ -45,7 +45,7 @@ private slots:
     void next_clicked();
     void up_clicked();
     void checkAllPath();
-    void createNewButtonAlbum(QString name, int i);
+    void createNewButtonAlbum(QString name);
     void create_album(const QString&);
 
     void recent_folder();
@@ -72,7 +72,7 @@ private slots:
     void generateCreateAlbumLine();
 
     void delete_album(const QString&);
-    void clearVlAlbums();
+    void open_album(const QString&);
 
 private:
     Ui::MainWindow *ui;
