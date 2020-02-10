@@ -79,6 +79,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 //    Database::createAlbum(test4);
 //    Database::createAlbum(test5);
 
+    QString path ="C:\\Users\\elias albert\\Pictures";
+//    int score = 4;
+//    QString comment = "GTA RP";
+//    QString color = "Noir";
+//    QString feeling = "cool";
+
+//    Database::addImage(path,score,comment,color,feeling);
+    int idImage = Database::getImageId(path);
+    qDebug()<< idImage;
+    QVector<QString> result = Database::getInfoImage(idImage);
+    qDebug()<< result;
+    for(int i =0 ; i<result.size(); i++)
+        qDebug() << result[i];
     //checkAllPath(); //pour test => Lucas, pense à remove
 }
 

@@ -31,6 +31,7 @@ public:
     static bool updatePositionInAlbum(int imageId, int albumId, int newPosition);
     static int getImagePosition(int imageId, int albumId);
     static bool isImageInAlbum(int imageId, int albumId);
+    static QVector<QString> getInfoImage(int idImage);
 
     static QString getLastErrorMessage(void);
 

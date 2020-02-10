@@ -378,6 +378,30 @@ QVector<QString> Database::getAllImagePath()
     return result;
 }
 
+
+QVector<QString> Database::getInfoImage(int imageId)
+{
+    Database::getInstance();
+
+    QVector<QString> result;
+
+    QSqlQuery query;
+    query.prepare("SELECT * FROM Image WHERE idImage = :idImage");
+    query.bindValue(":idImage", imageId);
+    if(query.exec()){
+        while (query.next()) {
+            result.push_back(query.value(2).toString());
+            result.push_back(query.value(3).toString());
+            result.push_back(query.value(4).toString());
+            result.push_back(query.value(5).toString());
+        }
+    }else{
+        qDebug() << "rip";
+    }
+
+    return result;
+}
+
 bool Database::isImageInAlbum(int imageId, int albumId)
 {
     Database::getInstance();
@@ -385,7 +409,7 @@ bool Database::isImageInAlbum(int imageId, int albumId)
     QSqlQuery query;
     query.prepare("SELECT COUNT(*) FROM linkImageAlbum WHERE idAlbum = :idAlbum AND idImage = :idImage;");
     query.bindValue(":idAlbum", albumId);
-    query.bindValue("idImage", imageId);
+    query.bindValue(":idImage", imageId);
 
     if(query.exec()) {
         query.next();
