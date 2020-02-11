@@ -471,8 +471,8 @@ void MainWindow::checkAllPath()
     QVector<QString> allPath = Database::getAllImagePath();
 
     for(int i=0; i <allPath.size();i++){
-        QDir pathDir(allPath[i]);
-        if (!pathDir.exists())
+        QFile file(allPath[i]);
+        if (!file.exists())
         {
             missingFilesPath->append(allPath[i]);
         }
