@@ -21,13 +21,8 @@ QString getNameFromPath(QString path)
 
 void FilePropertiesWindow::createContents()
 {
-    qDebug()<<"Lol";
     int idImage = Database::getImageId(itemPath);
-    qDebug()<<itemPath;
-    qDebug()<< idImage;
     if(idImage != -1){
-        qDebug()<<"rip";
-
         QVector<QString> result = Database::getInfoImage(idImage);
         QString color = result[2];
         QString feeling = result[3];

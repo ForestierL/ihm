@@ -33,5 +33,6 @@
         <file>Ressources/white-theme.qss</file>
         <file>Ressources/validate-b.png</file>
         <file>Ressources/validate-w.png</file>
+        <file>lumipic.db</file>
     </qresource>
 </RCC>
