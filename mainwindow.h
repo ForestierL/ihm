@@ -27,7 +27,7 @@ public:
     bool updateCurrentPath(QString);
     void setNavButtons();
     void displayAlbum();
-
+    void checkAllPath();
 
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
@@ -44,7 +44,6 @@ private slots:
     void previous_clicked();
     void next_clicked();
     void up_clicked();
-    void checkAllPath();
     void createNewButtonAlbum(QString name);
     void create_album(const QString&);
 

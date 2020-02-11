@@ -30,9 +30,10 @@ private:
 protected slots:
 
 private slots:
-    void relocate(const QString);
-    void ignore(const int);
-    void on_relocateAll_clicked();
+    void relocate(const int);
+    void ignore(const int, bool all = false);
+    void on_ignoreAll_clicked();
+
 };
 
 #endif // CHECKINGWINDOW_H

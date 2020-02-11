@@ -208,7 +208,6 @@ bool Database::addImageToAlbum(int imageId, int albumId)
         Database::lastErrorMessage.append(": Image déja présente dans l'album.");
         return false;
     }
-
     int lastImagePosition = Database::getLastImagePosition(albumId) + 1;
 
     QSqlQuery query;
@@ -242,7 +241,6 @@ int Database::getImageId(QString &filePath)
             query.next();
             return query.value(0).toInt();
         } else {
-            Database::lastErrorMessage = __FUNCTION__;
             Database::lastErrorMessage.append(": Plusieurs images correspondent au nom de fichier.");
             return -1; //ajouté par loic
         }
@@ -381,10 +379,7 @@ QVector<QString> Database::getAllImagePath()
 
 QVector<QString> Database::getInfoImage(int imageId)
 {
-    Database::getInstance();
-
     QVector<QString> result;
-
     QSqlQuery query;
     query.prepare("SELECT * FROM Image WHERE idImage = :idImage");
     query.bindValue(":idImage", imageId);
@@ -398,9 +393,10 @@ QVector<QString> Database::getInfoImage(int imageId)
     }else{
         qDebug() << "rip";
     }
-
     return result;
 }
+/*********************************************************************************************/
+
 
 bool Database::isImageInAlbum(int imageId, int albumId)
 {
@@ -410,7 +406,6 @@ bool Database::isImageInAlbum(int imageId, int albumId)
     query.prepare("SELECT COUNT(*) FROM linkImageAlbum WHERE idAlbum = :idAlbum AND idImage = :idImage;");
     query.bindValue(":idAlbum", albumId);
     query.bindValue(":idImage", imageId);
-
     if(query.exec()) {
         query.next();
         if(query.value(0).toInt() > 0){

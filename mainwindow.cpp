@@ -87,7 +87,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 //    Database::addImage(path,score,comment,color,feeling);
     int idImage = Database::getImageId(path);
-    qDebug()<< idImage;
     QVector<QString> result = Database::getInfoImage(idImage);
     qDebug()<< result;
     for(int i =0 ; i<result.size(); i++)
@@ -101,6 +100,7 @@ void MainWindow::displayAlbum(){
     for (int i = 0; i<albums.size();i++)
         createNewButtonAlbum(albums[i]);
 }
+
 
 void MainWindow::createActions(){
     connect(ui->actionEmplacement_r_cent, SIGNAL(triggered()), this, SLOT(recent_folder()));
@@ -159,7 +159,7 @@ void MainWindow::small_icons(){
 
 }
 void MainWindow::medium_icons(){
-
+//
 }
 void MainWindow::big_icons(){
 
@@ -194,7 +194,6 @@ void MainWindow::about(){
 
 }
 void MainWindow::manual(){
-
 }
 
 MainWindow::~MainWindow()
@@ -342,7 +341,6 @@ void MainWindow::showContextMenu(const QPoint &pos)
     }
     else
     {
-        qDebug() << "Clique sur dossier";
         myMenu.addAction("Ouvrir", this, SLOT(openDirectory()));
         myMenu.addSeparator();
         myMenu.addAction("Supprimer", this, SLOT(removeDirectory()));
@@ -379,7 +377,6 @@ void MainWindow::addToAlbum()
 
 void MainWindow::informations()
 {
-    qDebug() << "Infos";
     FilePropertiesWindow w(this, actualFile);
     //w.setImagePath(path);
     w.createContents();
@@ -403,7 +400,7 @@ void MainWindow::eraseItem()
 
 bool MainWindow::removeDirectory(QString dirPath){
     if(dirPath == ""){
-        int valid = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer ce dossier et tout les documents qu'il contient ?", QMessageBox ::Yes | QMessageBox::No);
+        int valid = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer ce dossier et tout les documents qu'il contient ? \n ATTENTION ! Ces fichiers ne pourront pas être récupérés.", QMessageBox ::Yes | QMessageBox::No);
         if(valid == QMessageBox::No){
             return false;
         }
@@ -470,10 +467,6 @@ void MainWindow::up_clicked()
 void MainWindow::checkAllPath()
 {
     QVector<QString> *missingFilesPath = new QVector<QString>();
-    /*
-    condition : on parse la bdd, si le path n'existe pas sur le pc alors on ajoute à missingFilePath
-    */
-    //DEBUG
     QVector<QString> allPath = Database::getAllImagePath();
 
     for(int i=0; i <allPath.size();i++){
@@ -484,11 +477,13 @@ void MainWindow::checkAllPath()
         }
     }
 
-    CheckingWindow w(this);
-    w.initMissingFilesPath(missingFilesPath);
-    w.show();
-    QEventLoop eventLoop;
-    eventLoop.exec();
+    if(missingFilesPath->size() != 0){
+        CheckingWindow w(this);
+        w.initMissingFilesPath(missingFilesPath);
+        w.show();
+        QEventLoop eventLoop;
+        eventLoop.exec();
+    }
 }
 
 void MainWindow::on_pbAddAlbum_clicked()
@@ -550,7 +545,7 @@ void MainWindow::delete_album(const QString& albumName){
 }
 
 void MainWindow::open_album(const QString& albumName){
-//    QString name = albumName;
+   QString name = albumName;
 //    int idAlbum=Database::getAlbumId(name);
 //    QVector<int> idImages = Database::getAlbumInImageOrderByPosition(idAlbum);
 

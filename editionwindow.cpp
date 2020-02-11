@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QPainter>
+#include <QGraphicsScene>
 
 
 EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::EditionWindow)
@@ -38,8 +39,8 @@ QFrame* EditionWindow::createToolBar(void)
     QPushButton *horizontalMirrorButton = new QPushButton("d");
     QPushButton *verticalMirrorButton = new QPushButton("e");
     QPushButton *trimButton = new QPushButton("f");
+    connect(trimButton, SIGNAL(clicked()), this, SLOT(cropImage()));
     QPushButton *resizeButton = new QPushButton("g");
-
 
     QSlider *tempSlider = new QSlider();
     tempSlider->setFixedSize(150, 20);
@@ -140,14 +141,17 @@ void EditionWindow::createContents()
                                  tr("Cannot load %1: %2").arg(QDir::toNativeSeparators(this->imagePath),
                                                               reader->errorString()));
     }
-    else {
+    else if(1){
         delete reader;
         reader = nullptr;
 
-        QImage dstImage(srcImage.width(), srcImage.height(), srcImage.format());
-
+        QImage image(srcImage.width(), srcImage.height(), srcImage.format());
+        dstImage = image;
         QPainter painter(&dstImage);
         painter.drawImage(0, 0, srcImage);
+        QRect rect(0, 0, 500, 500);
+//        painter.drawRect(rect);
+
 
         QLabel *imageLabel = new QLabel();
         imageLabel->setPixmap(QPixmap::fromImage(dstImage));
@@ -167,7 +171,6 @@ void EditionWindow::createContents()
     }
 }
 
-
 void EditionWindow::resizeImage(int percent)
 {
     float newWidth = this->initialImageWidth * percent/100;
@@ -175,7 +178,6 @@ void EditionWindow::resizeImage(int percent)
 
     this->imageLabel->setPixmap(this->initialPixMap.scaled(newWidth, newHeigth, Qt::KeepAspectRatio));
 }
-
 
 void EditionWindow::initBackground()
 {
@@ -188,12 +190,25 @@ void EditionWindow::initBackground()
     setPalette(palette);
 }
 
-
 void EditionWindow::setImage(const QString &fileName)
 {
     this->imagePath = fileName;
 }
 
+void EditionWindow::cropImage(){
+    QPainter painter(&dstImage);
+    rect.setCoords(0, 0, 500, 500);
+    QBrush brush(Qt::cyan, Qt::Dense4Pattern);
+    painter.drawRect(rect);
+    painter.fillRect(rect, brush);
+    //QPixmap cropped = this->initialPixMap.copy(rect);
+    //this->imageLabel->setPixmap(cropped);
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage));
+}
+
+void EditionWindow::mousePressEvent(QMouseEvent *event){
+
+}
 
 EditionWindow::~EditionWindow()
 {
