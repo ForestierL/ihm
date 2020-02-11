@@ -3,6 +3,8 @@
 #include <QFile>
 #include <QWidget>
 #include "mainwindow.h"
+#include <QDebug>
+#include "qhoversensitivebutton.h"
 
 themeApplier::themeApplier(QMainWindow &toChange)
 {
@@ -21,7 +23,7 @@ themeApplier::themeApplier(QDialog &toChange)
 
 void themeApplier::setTheme(QWidget *window){
     QSettings s("config.ini", QSettings::IniFormat);
-    QFile styleFile(":/Ressources/" + s.value("theme").toString());
+    QFile styleFile(":/Ressources/" + s.value("theme").toString() + "-theme.qss");
     styleFile.open(QFile::ReadOnly);
 
     QString style(styleFile.readAll());
@@ -35,16 +37,20 @@ void themeApplier::setTheme(QWidget *window){
         themeApplier::getChildAndSetStyle(window->children().at(i), s.value("theme").toString());
     }
 }
+
 void themeApplier::getChildAndSetStyle(QObject *obj, QString theme){
-    QFile styleFile(":/Ressources/" + theme);
+    qDebug() << theme;
+    QFile styleFile(":/Ressources/" + theme + "-theme.qss");
     styleFile.open(QFile::ReadOnly);
 
     QString style(styleFile.readAll());
     for(int i=0; i < obj->children().size(); i++)
     {
-        if(QWidget *wi = qobject_cast<QWidget*>(obj->children().at(i))){
+        qDebug() << "try to cast";
+        if(QHoverSensitiveButton *wi = qobject_cast<QHoverSensitiveButton*>(obj->children().at(i))){
             qobject_cast<QWidget*>(obj->children().at(i))->setStyleSheet(style);
-            wi->setStyleSheet(style);
+            qDebug() << "casted";
+            wi->changeIcon();
         }
         if(obj->children().at(i)->children().size() > 0){
             getChildAndSetStyle(obj->children().at(i), theme);

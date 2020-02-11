@@ -1,3 +1,5 @@
+/*dark*/
+
 QFrame#navFrame {
 	background-color: red;
 	border: 0px;

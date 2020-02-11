@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     addtoalbumwindow.cpp \
     database.cpp \
+    dominantcolorcalculator.cpp \
     editionwindow.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
 HEADERS += \
     addtoalbumwindow.h \
     database.h \
+    dominantcolorcalculator.h \
     editionwindow.h \
     mainwindow.h \
     filepropertieswindow.h \
@@ -52,31 +54,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    arrow-d-w.png \
-    arrow-l-b.png \
-    arrow-l-w.png \
-    arrow-r-b.png \
-    arrow-r-w.png \
-    arrow-u-b.png \
-    arrow-u-w.png \
-    crop-w.png \
-    delete-b.png \
-    delete-r.png \
-    delete-w.png \
-    home-b.png \
-    home-w.png \
-    icon-b.png \
-    icon-w.png \
-    list-b.png \
-    list-w.png \
-    next-w.png \
-    previous-w.png \
-    resize-w.png \
-    rotate-w.png \
-    save-w.png \
-    star-empty-w.png \
-    star-full-w.png \
-    star-half-w.png
 
 RESOURCES += \
     icons.qrc

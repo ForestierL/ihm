@@ -175,13 +175,23 @@ void MainWindow::icons(){
 }
 void MainWindow::dark_theme(){
     QSettings s("config.ini",QSettings::IniFormat);
-    s.setValue("theme", "dark-theme.qss");
+    s.setValue("theme", "dark");
     new themeApplier(*this);
+    const QWidgetList topLevelWidgets = QApplication::topLevelWidgets();
+    for (QWidget *widget : topLevelWidgets) {
+        if (!widget->isHidden() && widget->isWindow())
+            new themeApplier(*widget);
+    }
 }
 void MainWindow::light_theme(){
     QSettings s("config.ini",QSettings::IniFormat);
-    s.setValue("theme", "light-theme.qss");
+    s.setValue("theme", "light");
     new themeApplier(*this);
+    const QWidgetList topLevelWidgets = QApplication::topLevelWidgets();
+    for (QWidget *widget : topLevelWidgets) {
+        if (!widget->isHidden() && widget->isWindow())
+            new themeApplier(*widget);
+    }
 }
 void MainWindow::about(){
 
