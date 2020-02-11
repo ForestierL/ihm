@@ -272,7 +272,6 @@ void MainWindow::openDirectory()
 
 void MainWindow::addToAlbum()
 {
-    foundAllPictures(ui->lePath->text());
     qDebug() << "AddToAlbum";
 }
 
@@ -406,32 +405,4 @@ void MainWindow::checkAllPath()
         QEventLoop eventLoop;
         eventLoop.exec();
     }
-}
-
-void MainWindow::foundAllPictures(QString path)
-{
-//    QDir folder(path);
-//    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
-//    foreach (QFileInfo fileInfo, folder.entryInfoList())
-//    {
-//        if(fileInfo.isDir()){
-//            if(!removeDirectory(fileInfo.filePath()))
-//                return false;
-//        }
-//        else if(fileInfo.isFile())
-//        {
-//            if(!QFile::remove(fileInfo.filePath()))
-//            {
-//                qDebug() << "Unable to remove file : " << fileInfo.filePath();
-//                return false;
-//            }
-//        }
-//    }
-
-//    if(!folder.rmdir(dirPath))
-//    {
-//        return false;
-//    }
-//    return true;
-    QVector<QString*> *allPath = new QVector<QString*>();
 }
