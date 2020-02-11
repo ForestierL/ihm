@@ -19,6 +19,8 @@ public:
     void editSwitch();
     bool save();
     bool loadFromBDD();
+    QString getFileExtention(QString name = "");
+    bool imageNameChecker(QString);
 
 private:
     Ui::FilePropertiesWindow *ui;

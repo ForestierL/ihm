@@ -25,7 +25,6 @@ Database::Database(const QString& path)
     }
 }
 
-
 Database* Database::getInstance()
 {
     if(Database::instance == nullptr){
@@ -310,19 +309,13 @@ bool Database::updateImage(int idImage, QString &filePath, int score, QString &c
     query.bindValue(":feeling", feeling);
     query.bindValue(":idImage", idImage);
 
-    if(query.exec())
-    {
-        if(query.next() > 0)
-            return true;
-        else
-            return false;
-    }
-    else
+    if(!query.exec())
     {
         Database::lastErrorMessage = __FUNCTION__;
         Database::lastErrorMessage.append(" : Erreur lors de la requête.");
         return false;
     }
+    return true;
 }
 
 bool Database::updateImagePath(int idImage, QString &filePath)

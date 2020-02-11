@@ -11,10 +11,17 @@ FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : 
     ui->setupUi(this);
     this->itemPath = itemPath;
     idImage = Database::getImageId(itemPath);
-    if(idImage == -1)
+
+    int timeOut = 2;
+    while(idImage == -1 && timeOut!=0)
     {
         qDebug() << "Image " << itemPath <<" doesn't exist, image creation launched !";
-        //idImage = Database::createImage();
+        //addImage(QString &imagePath, int score, QString &comment, QString &dominantColor, QString &feeling)
+        QString empty("");
+        QString empty2("---");
+        Database::addImage(itemPath,0,empty,empty2,empty2);
+        idImage = Database::getImageId(itemPath);
+        timeOut--;
     }
     qDebug() << "Image id : " << idImage;
 }
@@ -31,6 +38,35 @@ QString getFolderPathFromImagePath(QString path)
     qStringList.removeLast();
 
     return qStringList.join("/")+"/";
+}
+
+//retourne l'extention du fichier si sans argument
+//sinon on doit enc*voyer un path, retourne le path complet avec l'extention si elle est manquante
+QString FilePropertiesWindow::getFileExtention(QString namePath)
+{
+    if(namePath.isEmpty())
+    {
+        QStringList qStringList = itemPath.split('.');
+        return "."+qStringList.last();
+    }
+    else
+    {
+        QStringList qStringList = itemPath.split('.');
+        QStringList qStringListName = namePath.split('.');
+        if(qStringList.last() == qStringListName.last())
+        {
+            return namePath;
+        }
+        else
+        {
+            if(qStringListName.length() > 1)
+            {
+                qStringListName.removeLast();
+                namePath = qStringListName.join('.');
+            }
+            return namePath+"."+qStringList.last();
+        }
+    }
 }
 
 void FilePropertiesWindow::createContents()
@@ -56,12 +92,12 @@ void FilePropertiesWindow::createContents()
     ui->feelings->setText("---");
     ui->editFeelings->addItems({
                                    "---",
-                                   "Joie",
-                                   "Tristesse",
-                                   "Peur",
                                    "Colère",
                                    "Dégoût",
-                                   "Surprise"
+                                   "Joie",
+                                   "Peur",
+                                   "Surprise",
+                                   "Tristesse"
                                });
     loadFromBDD();
 }
@@ -79,7 +115,11 @@ bool FilePropertiesWindow::loadFromBDD()
         ui->description->setText(comment);
         ui->color->setText(color);
         ui->feelings->setText(feeling);
-        return true;
+
+        ui->editNote->setValue(score.toInt());
+        ui->editColor->setText(color);
+        int index = ui->editFeelings->findText(feeling);
+        ui->editFeelings->setCurrentIndex(index);
     }
     else
     {
@@ -134,6 +174,21 @@ FilePropertiesWindow::~FilePropertiesWindow()
     delete ui;
 }
 
+bool FilePropertiesWindow::imageNameChecker(QString checkName)
+{
+    if(checkName.isNull() || checkName.isEmpty())
+    {
+        return false;
+    }
+    QString temp(getFileExtention(getFolderPathFromImagePath(itemPath) + checkName));
+
+    QFile qFile(temp);
+    if(qFile.exists())
+        return false;
+
+    return true;
+}
+
 bool FilePropertiesWindow::save()
 {
     if(idImage == -1) return false;
@@ -143,7 +198,12 @@ bool FilePropertiesWindow::save()
     ui->name->setText(ui->editName->text());
     ui->note->setText(QString::number(ui->editNote->value()));
 
+    if(!imageNameChecker(ui->editName->text())) {
+        return false;
+    }
+
     QString newPath = getFolderPathFromImagePath(itemPath) + ui->editName->text();
+    newPath = getFileExtention(newPath);
     ui->path->setText(newPath);
 
     QString color = ui->editColor->text();
@@ -153,6 +213,10 @@ bool FilePropertiesWindow::save()
 
     qDebug() << "updateImage("<<idImage<<", "<<newPath<<", "<<note<<", "<<description<<", "<<color<<", "<<feeling<<");";
     Database::updateImage(idImage, newPath, note, description, color, feeling);
+
+    QFile qFile(itemPath);
+    qFile.rename(newPath);
+    itemPath = newPath;
 
     return true;
 }
