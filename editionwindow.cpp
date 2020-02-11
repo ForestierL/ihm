@@ -267,12 +267,19 @@ void EditionWindow::mouseReleaseEvent(QMouseEvent *event){
 }
 
 void EditionWindow::verticalMirror(){
-    dstImage = dstImage.mirrored();
-
+    QPainter painter(&dstImage);
+    newImage = newImage.mirrored();
+    painter.drawImage(0,0,newImage);
+    initialPixMap = QPixmap::fromImage(newImage);
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
 }
 
 void EditionWindow::horizontalMirror(){
-    dstImage = dstImage.mirrored(true, false);
+    QPainter painter(&dstImage);
+    newImage = newImage.mirrored(true, false);
+    painter.drawImage(0,0,newImage);
+    initialPixMap = QPixmap::fromImage(newImage);
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
 }
 
 EditionWindow::~EditionWindow()

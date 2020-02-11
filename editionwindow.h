@@ -29,8 +29,6 @@ private:
     void mousePressEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
-    void verticalMirror();
-    void horizontalMirror();
 
     Ui::EditionWindow *ui;
     QString imagePath;
@@ -50,7 +48,8 @@ private:
 protected slots:
     void resizeImage(int);
     void cropImage();
-
+    void verticalMirror();
+    void horizontalMirror();
 
 }; //class EditionWindow
 
