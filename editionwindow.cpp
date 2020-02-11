@@ -289,12 +289,12 @@ void EditionWindow::rotateImage(){
     painter.drawImage(0,0,newImage);
     painter.end();
     dstImage = newImage;
-    initialImageWidth = newImage.width();
-    initialImageHeigth = newImage.height();
+    actualImageWidth = newImage.width();
+    actualImageHeigth = newImage.height();
     actualImageWidth = initialImageWidth;
     actualImageHeigth = initialImageHeigth;
 
-    this->imageLabel->setPixmap(this->initialPixMap.scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+    this->imageLabel->setPixmap(this->initialPixMap.scaled(initialImageWidth, initialImageHeigth, Qt::KeepAspectRatio));
 }
 
 EditionWindow::~EditionWindow()
