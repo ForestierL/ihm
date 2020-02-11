@@ -50,6 +50,7 @@ protected slots:
     void cropImage();
     void verticalMirror();
     void horizontalMirror();
+    void rotateImage();
 
 }; //class EditionWindow
 

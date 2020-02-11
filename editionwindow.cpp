@@ -36,6 +36,7 @@ QFrame* EditionWindow::createToolBar(void)
     QPushButton *repeatButton = new QPushButton("b");
 
     QPushButton *rotateButton = new QPushButton("c");
+    connect(rotateButton, SIGNAL(clicked()), this, SLOT(rotateImage()));
     QPushButton *horizontalMirrorButton = new QPushButton("d");
     connect(horizontalMirrorButton, SIGNAL(clicked()), this, SLOT(horizontalMirror()));
     QPushButton *verticalMirrorButton = new QPushButton("e");
@@ -213,8 +214,6 @@ void EditionWindow::mousePressEvent(QMouseEvent *event){
 
         rect.setCoords(px,py,px,py);
         QPainter painter(&dstImage);
-//        painter.drawRect(rect);
-//        QImage image(imagePath);
         painter.drawImage(0,0, newImage);
         QBrush brush(Qt::cyan, Qt::Dense6Pattern);
         painter.drawRect(rect);
@@ -280,6 +279,22 @@ void EditionWindow::horizontalMirror(){
     painter.drawImage(0,0,newImage);
     initialPixMap = QPixmap::fromImage(newImage);
     imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+}
+
+void EditionWindow::rotateImage(){
+    QPainter painter(&dstImage);
+    QTransform trans;
+    newImage = newImage.transformed(trans.rotate(90));
+    initialPixMap = QPixmap::fromImage(newImage);
+    painter.drawImage(0,0,newImage);
+    painter.end();
+    dstImage = newImage;
+    initialImageWidth = newImage.width();
+    initialImageHeigth = newImage.height();
+    actualImageWidth = initialImageWidth;
+    actualImageHeigth = initialImageHeigth;
+
+    this->imageLabel->setPixmap(this->initialPixMap.scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
 }
 
 EditionWindow::~EditionWindow()
