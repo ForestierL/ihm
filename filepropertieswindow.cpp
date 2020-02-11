@@ -10,7 +10,13 @@ FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : 
 {
     ui->setupUi(this);
     this->itemPath = itemPath;
-    createContents();
+    idImage = Database::getImageId(itemPath);
+    if(idImage == -1)
+    {
+        qDebug() << "Image " << itemPath <<" doesn't exist, image creation launched !";
+        //idImage = Database::createImage();
+    }
+    qDebug() << "Image id : " << idImage;
 }
 
 QString getNameFromPath(QString path)
@@ -19,31 +25,67 @@ QString getNameFromPath(QString path)
     return qStringList.last();
 }
 
+QString getFolderPathFromImagePath(QString path)
+{
+    QStringList qStringList = path.split("/");
+    qStringList.removeLast();
+
+    return qStringList.join("/")+"/";
+}
+
 void FilePropertiesWindow::createContents()
 {
-    int idImage = Database::getImageId(itemPath);
+    setEditMode(false);
+
+    ui->gridLayout->setAlignment(Qt::AlignTop);
+    this->setFixedSize(this->size()); //fixed size
+
+    ui->note->setNum(0);
+
+    ui->description->setWordWrapMode(QTextOption::WordWrap);
+    ui->description->setText("");
+
+    ui->name->setText(getNameFromPath(itemPath));
+    ui->editName->setText(ui->name->text());
+
+    ui->path->setText(itemPath);
+
+    ui->editColor->setText("---");
+    ui->color->setText("---");
+
+    ui->feelings->setText("---");
+    ui->editFeelings->addItems({
+                                   "---",
+                                   "Joie",
+                                   "Tristesse",
+                                   "Peur",
+                                   "Colère",
+                                   "Dégoût",
+                                   "Surprise"
+                               });
+    loadFromBDD();
+}
+
+bool FilePropertiesWindow::loadFromBDD()
+{
     if(idImage != -1){
         QVector<QString> result = Database::getInfoImage(idImage);
-        QString color = result[2];
-        QString feeling = result[3];
         QString score= result[0];
         QString comment= result[1];
+        QString color = result[2];
+        QString feeling = result[3];
 
-        ui->gridLayout->setAlignment(Qt::AlignTop);
-        this->setFixedSize(this->size()); //fixed size
-        //ui->description->setWordWrap(true);
-        ui->description->setText("Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.");
-        setEditMode(false);
-
-        ui->name->setText(getNameFromPath(itemPath));
-        ui->path->setText(itemPath);
-
-        ui->editColor->setText(color);
-        ui->editFeelings->setCurrentText(feeling);
-        ui->editName->setText(ui->name->text());
-        ui->editNote->setValue(score.toInt());
+        ui->note->setNum(score.toInt());
+        ui->description->setText(comment);
+        ui->color->setText(color);
+        ui->feelings->setText(feeling);
+        return true;
     }
-
+    else
+    {
+        //normalement existera toujours
+        return false;
+    }
 }
 
 void FilePropertiesWindow::setEditMode(bool editMode)
@@ -86,6 +128,7 @@ void FilePropertiesWindow::editSwitch()
     setEditMode(!editMode);
 }
 
+//destructeur
 FilePropertiesWindow::~FilePropertiesWindow()
 {
     delete ui;
@@ -93,13 +136,24 @@ FilePropertiesWindow::~FilePropertiesWindow()
 
 bool FilePropertiesWindow::save()
 {
-    int idImage = Database::getImageId(itemPath);
+    if(idImage == -1) return false;
 
     ui->color->setText(ui->editColor->text());
-    ui->description->toPlainText(); //pour faciliter l'intégration du save je laisse la ligne
     ui->feelings->setText(ui->editFeelings->currentText());
     ui->name->setText(ui->editName->text());
     ui->note->setText(QString::number(ui->editNote->value()));
+
+    QString newPath = getFolderPathFromImagePath(itemPath) + ui->editName->text();
+    ui->path->setText(newPath);
+
+    QString color = ui->editColor->text();
+    QString description = ui->description->toPlainText(); //pour faciliter l'intégration du save je laisse la ligne
+    QString feeling = ui->editFeelings->currentText();
+    int note = ui->editNote->value();
+
+    qDebug() << "updateImage("<<idImage<<", "<<newPath<<", "<<note<<", "<<description<<", "<<color<<", "<<feeling<<");";
+    Database::updateImage(idImage, newPath, note, description, color, feeling);
+
     return true;
 }
 
@@ -113,10 +167,11 @@ void FilePropertiesWindow::on_ok_clicked()
         if(!save())
         {
             QMessageBox *errorMessage = new QMessageBox(QMessageBox::Warning, "Unexpected saving problem", "We can't save your modifications.");
-            //errorMessage->setStandardButtons(QMessageBox::Ok);
             errorMessage->exec();
         }
-        setEditMode(false);
+        else {
+            setEditMode(false);
+        }
     }
 }
 

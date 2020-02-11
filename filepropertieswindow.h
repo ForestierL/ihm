@@ -18,11 +18,13 @@ public:
     void setEditMode(bool);
     void editSwitch();
     bool save();
+    bool loadFromBDD();
 
 private:
     Ui::FilePropertiesWindow *ui;
     bool editMode;
     QString itemPath;
+    int idImage;
 
 protected slots:
 
