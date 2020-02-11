@@ -25,6 +25,7 @@ Database::Database(const QString& path)
     }
 }
 
+
 Database* Database::getInstance()
 {
     if(Database::instance == nullptr){
