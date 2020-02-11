@@ -183,7 +183,10 @@ bool FilePropertiesWindow::imageNameChecker(QString checkName)
     QString temp(getFileExtention(getFolderPathFromImagePath(itemPath) + checkName));
 
     QFile qFile(temp);
-    if(qFile.exists())
+
+    if(temp == itemPath)
+        return true;
+    else if(qFile.exists())
         return false;
 
     return true;
