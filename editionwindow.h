@@ -27,15 +27,25 @@ private:
     QFrame* createToolBar(void);
     void initBackground(void);
     void mousePressEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
+    void verticalMirror();
+    void horizontalMirror();
 
     Ui::EditionWindow *ui;
     QString imagePath;
     QLabel *imageLabel;
     QPixmap initialPixMap;
     QImage dstImage;
+    QImage newImage;
     QRect rect;
     float initialImageWidth;
     float initialImageHeigth;
+    float actualImageWidth;
+    float actualImageHeigth;
+    QPoint topLeft;
+    QPoint bottomRight;
+    bool crop = false;
 
 protected slots:
     void resizeImage(int);

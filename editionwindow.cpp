@@ -11,7 +11,7 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QPainter>
-#include <QGraphicsScene>
+#include <QtMath>
 
 
 EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::EditionWindow)
@@ -37,7 +37,9 @@ QFrame* EditionWindow::createToolBar(void)
 
     QPushButton *rotateButton = new QPushButton("c");
     QPushButton *horizontalMirrorButton = new QPushButton("d");
+    connect(horizontalMirrorButton, SIGNAL(clicked()), this, SLOT(horizontalMirror()));
     QPushButton *verticalMirrorButton = new QPushButton("e");
+    connect(verticalMirrorButton, SIGNAL(clicked()), this, SLOT(verticalMirror()));
     QPushButton *trimButton = new QPushButton("f");
     connect(trimButton, SIGNAL(clicked()), this, SLOT(cropImage()));
     QPushButton *resizeButton = new QPushButton("g");
@@ -134,6 +136,7 @@ void EditionWindow::createContents()
     QImageReader *reader = new QImageReader(this->imagePath);
     reader->setAutoTransform(true);
     QImage srcImage(this->imagePath);
+    newImage = srcImage;
 
     if (srcImage.isNull()) {
         QMessageBox::information(this,
@@ -141,7 +144,7 @@ void EditionWindow::createContents()
                                  tr("Cannot load %1: %2").arg(QDir::toNativeSeparators(this->imagePath),
                                                               reader->errorString()));
     }
-    else if(1){
+    else{
         delete reader;
         reader = nullptr;
 
@@ -149,9 +152,6 @@ void EditionWindow::createContents()
         dstImage = image;
         QPainter painter(&dstImage);
         painter.drawImage(0, 0, srcImage);
-        QRect rect(0, 0, 500, 500);
-//        painter.drawRect(rect);
-
 
         QLabel *imageLabel = new QLabel();
         imageLabel->setPixmap(QPixmap::fromImage(dstImage));
@@ -161,6 +161,8 @@ void EditionWindow::createContents()
         this->initialPixMap = QPixmap::fromImage(dstImage);
         this->initialImageWidth = imageLabel->pixmap()->width();
         this->initialImageHeigth = imageLabel->pixmap()->height();
+        actualImageWidth = initialImageWidth;
+        actualImageHeigth = initialImageHeigth;
 
         QHBoxLayout *contentLayout = new QHBoxLayout();
         contentLayout->addStretch(1);
@@ -173,10 +175,10 @@ void EditionWindow::createContents()
 
 void EditionWindow::resizeImage(int percent)
 {
-    float newWidth = this->initialImageWidth * percent/100;
-    float newHeigth = this->initialImageHeigth * percent/100;
+    actualImageWidth = this->initialImageWidth * percent/100;
+    actualImageHeigth = this->initialImageHeigth * percent/100;
 
-    this->imageLabel->setPixmap(this->initialPixMap.scaled(newWidth, newHeigth, Qt::KeepAspectRatio));
+    this->imageLabel->setPixmap(this->initialPixMap.scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
 }
 
 void EditionWindow::initBackground()
@@ -196,18 +198,81 @@ void EditionWindow::setImage(const QString &fileName)
 }
 
 void EditionWindow::cropImage(){
+    crop=true;
     QPainter painter(&dstImage);
-    rect.setCoords(0, 0, 500, 500);
-    QBrush brush(Qt::cyan, Qt::Dense4Pattern);
-    painter.drawRect(rect);
-    painter.fillRect(rect, brush);
-    //QPixmap cropped = this->initialPixMap.copy(rect);
-    //this->imageLabel->setPixmap(cropped);
-    imageLabel->setPixmap(QPixmap::fromImage(dstImage));
+
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
 }
 
 void EditionWindow::mousePressEvent(QMouseEvent *event){
+    if(crop){
+        QPoint p = imageLabel->mapFromGlobal(QCursor::pos());
 
+        float px = p.rx()*(initialImageWidth/actualImageWidth);
+        float py = (p.ry()+(-centralWidget()->height()+actualImageHeigth)/2)*(initialImageHeigth/actualImageHeigth);
+
+        rect.setCoords(px,py,px,py);
+        QPainter painter(&dstImage);
+//        painter.drawRect(rect);
+//        QImage image(imagePath);
+        painter.drawImage(0,0, newImage);
+        QBrush brush(Qt::cyan, Qt::Dense6Pattern);
+        painter.drawRect(rect);
+        painter.fillRect(rect, brush);
+        imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+    }
+}
+
+void EditionWindow::mouseMoveEvent(QMouseEvent *event){
+    if(crop){
+        QPoint p = imageLabel->mapFromGlobal(QCursor::pos());
+
+        float px = p.rx()*(initialImageWidth/actualImageWidth);
+        float py = (p.ry()+(-centralWidget()->height()+actualImageHeigth)/2)*(initialImageHeigth/actualImageHeigth);
+        rect.setCoords(rect.topLeft().rx(), rect.topLeft().ry(), px, py);
+
+        QPainter painter(&dstImage);
+        painter.drawRect(rect);
+//        QImage image(imagePath);
+//        newImage = image;
+        painter.drawImage(0,0, newImage);
+        QBrush brush(Qt::cyan, Qt::Dense6Pattern);
+        painter.drawRect(rect);
+        painter.fillRect(rect, brush);
+        imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+    }
+}
+
+void EditionWindow::mouseReleaseEvent(QMouseEvent *event){
+    if(crop){
+        int reponse = QMessageBox::question(this, "Rogner", "Êtes-vous sûr de vouloir rogner cette image ?", QMessageBox ::Yes | QMessageBox::No);
+        if (reponse == QMessageBox::Yes)
+        {
+            rect.setCoords(qMin(rect.topLeft().rx(),rect.bottomRight().rx()), qMin(rect.topLeft().ry(),rect.bottomRight().ry()), qMax(rect.topLeft().rx(),rect.bottomRight().rx()), qMax(rect.topLeft().ry(),rect.bottomRight().ry()));
+
+            QPixmap cropped = this->initialPixMap.copy(rect);
+
+            initialPixMap = cropped;
+            newImage = cropped.toImage();
+            dstImage = newImage;
+            initialImageWidth = newImage.width();
+            initialImageHeigth = newImage.height();
+            actualImageWidth = initialImageWidth;
+            actualImageHeigth = initialImageHeigth;
+
+            this->imageLabel->setPixmap(initialPixMap);
+        }
+        crop = false;
+    }
+}
+
+void EditionWindow::verticalMirror(){
+    dstImage = dstImage.mirrored();
+
+}
+
+void EditionWindow::horizontalMirror(){
+    dstImage = dstImage.mirrored(true, false);
 }
 
 EditionWindow::~EditionWindow()

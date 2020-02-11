@@ -21,7 +21,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="minimumSize">
     <size>
@@ -41,7 +41,7 @@
    </property>
    <widget class="QMenu" name="menufichier">
     <property name="title">
-     <string>fichier</string>
+     <string>fic&amp;hier</string>
     </property>
     <addaction name="saveAct"/>
     <addaction name="saveAsAct"/>
@@ -50,7 +50,7 @@
    </widget>
    <widget class="QMenu" name="menuedition">
     <property name="title">
-     <string>edition</string>
+     <string>&amp;edition</string>
     </property>
     <addaction name="actiontruc"/>
    </widget>
@@ -78,7 +78,7 @@
   </widget>
   <action name="saveAct">
    <property name="text">
-    <string>enregistrer</string>
+    <string>&amp;enregistrer</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -86,7 +86,7 @@
   </action>
   <action name="saveAsAct">
    <property name="text">
-    <string>enregistrer sous</string>
+    <string>enregistrer &amp;sous</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
@@ -94,12 +94,12 @@
   </action>
   <action name="closeAct">
    <property name="text">
-    <string>fermer</string>
+    <string>&amp;fermer</string>
    </property>
   </action>
   <action name="actiontruc">
    <property name="text">
-    <string>truc</string>
+    <string>&amp;truc</string>
    </property>
   </action>
  </widget>
