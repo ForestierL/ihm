@@ -66,60 +66,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 
-//<<<<<<< HEAD
     displayAlbum();
     createActions();
-
-
-//=======
-    //ui->elementListView->setViewMode(QListView::IconMode);
-    ui->elementListView->setMovement(QListView::Static);
-    /*****
-     * Initialisation de la liste en bas à gauche de la main windows
-     * Ceci est codé en dur pour le moment (pas de bdd)
-     * Il n'y a pas de limite à l'expansion du layout (en hauteur)
-     * ça va prendre une place énorme si on ajoute trop d'élément.
-     * Il va faloir réfléchir au scroll et à la position du bouton x...
-     */
-    for(int i=0; i<5; i++) {
-        // Création du sous-layout horizontal => label + bouton
-        QLayout *layoutTest = new QHBoxLayout();
-
-        // Création du label
-        QLabel *testLabel = new QLabel();
-        testLabel->setText("Test " + QString::number(i));
-        // Ajout du label au sous-layout
-        layoutTest->addWidget(testLabel);
-
-        // Création du bouton
-        QHoverSensitiveButton *test = new QHoverSensitiveButton(this, "delete");
-        test->setMaximumSize(20,20);
-        test->setStyleSheet("color:red;");
-        //todo : ajouter l'intération
-        // Ajout du bouton au sous-layout
-        layoutTest->addWidget(test);
-    }
-
-
-//    QString test = "aaaa";
-//    QString test2 = "bbbb";
-//    QString test3 = "cccc";
-//    QString test4 = "dddd";
-//    QString test5 = "eeee";
-
-//    Database::createAlbum(test);
-//    Database::createAlbum(test2);
-//    Database::createAlbum(test3);
-//    Database::createAlbum(test4);
-//    Database::createAlbum(test5);
-
-    QString path ="C:\\Users\\elias albert\\Pictures"; //?????
-//    int score = 4;
-//    QString comment = "GTA RP";
-//    QString color = "Noir";
-//    QString feeling = "cool";
-
-//    Database::addImage(path,score,comment,color,feeling);
 
     ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath, true);
     ui->elementListView->hide();
@@ -408,12 +356,6 @@ void MainWindow::openEditor()
 void MainWindow::openDirectory()
 {
     updateCurrentPath(actualFile);
-    /*
-    ui->elementListView->setRootIndex(fileModel->setRootPath(actualFile));
-    ui->dirTreeView->setExpanded(dirModel->setRootPath(actualFile), true);
-    //ui->dirTreeView->collapse(dirModel->setRootPath(dirPath));
-    ui->dirTreeView->setCurrentIndex(dirModel->setRootPath(actualFile));
-    ui->lePath->setText(actualFile);*/
 }
 
 void MainWindow::addToAlbum()
