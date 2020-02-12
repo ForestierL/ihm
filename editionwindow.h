@@ -38,7 +38,7 @@ private:
     Ui::EditionWindow *ui;
     QString imagePath;
     QLabel *imageLabel;
-    QImage initialImage;
+    //QImage initialImage;
     QSlider *zoomSlider;
     int windowWidth;
     int windowHeigth;
@@ -49,11 +49,6 @@ private:
     QRect rect;
     QImage dstImage;
     QImage newImage;
-
-    /*
-    QPoint topLeft;
-    QPoint bottomRight;
-    */
 
 protected slots:
     void resizeImage(int);

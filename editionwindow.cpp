@@ -144,7 +144,7 @@ void EditionWindow::createContents()
     QImageReader *reader = new QImageReader(imagePath);
     reader->setAutoTransform(true);
     QImage srcImage = reader->read();
-    newImage = srcImage;
+    //newImage = srcImage;
     dstImage = srcImage;
 
     if (srcImage.isNull()) {
@@ -158,20 +158,13 @@ void EditionWindow::createContents()
         imageLabel->setPixmap(QPixmap::fromImage(srcImage));
 
         this->imageLabel = imageLabel;
-        this->initialImage = srcImage;
 
-        this->imageLabel = imageLabel;
-        initialImage = srcImage;
-        /*
-        this->initialImageWidth = imageLabel->pixmap()->width();
-        this->initialImageHeigth = imageLabel->pixmap()->height();
-        */
-        actualImageWidth = initialImage.width();
-        actualImageHeigth = initialImage.height();
+        actualImageWidth = srcImage.width();
+        actualImageHeigth = srcImage.height();
 
-        if(windowWidth < initialImage.width() || windowHeigth < initialImage.height()){
+        if(windowWidth < dstImage.width() || windowHeigth < dstImage.height()){
             zoomSlider->setValue((100 * windowWidth) / srcImage.width());
-            imageLabel->setPixmap(QPixmap::fromImage(initialImage).scaled(windowWidth, windowHeigth, Qt::KeepAspectRatio));
+            imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(windowWidth, windowHeigth, Qt::KeepAspectRatio));
         }
 
         QHBoxLayout *contentLayout = new QHBoxLayout();
@@ -206,117 +199,6 @@ void EditionWindow::setImage(const QString &fileName)
     this->imagePath = fileName;
 }
 
-void EditionWindow::cropImage(){
-    crop=true;
-    QPainter painter(&dstImage);
-
-    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
-}
-
-void EditionWindow::mousePressEvent(QMouseEvent *event){
-    if(crop){
-        QPoint p = imageLabel->mapFromGlobal(QCursor::pos());
-
-        float px = p.rx()*(initialImage.width()/actualImageWidth);
-        float py = (p.ry()+(-centralWidget()->height()+actualImageHeigth)/2)*(initialImage.height()/actualImageHeigth);
-
-        rect.setCoords(px,py,px,py);
-        QPainter painter(&dstImage);
-        painter.drawImage(0,0, newImage);
-        QBrush brush(Qt::cyan, Qt::Dense6Pattern);
-        painter.drawRect(rect);
-        painter.fillRect(rect, brush);
-        imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
-    }
-}
-
-void EditionWindow::mouseMoveEvent(QMouseEvent *event){
-    if(crop){
-        QPoint p = imageLabel->mapFromGlobal(QCursor::pos());
-
-        float px = p.rx()*(initialImage.width()/actualImageWidth);
-        float py = (p.ry()+(-centralWidget()->height()+actualImageHeigth)/2)*(initialImage.height()/actualImageHeigth);
-        rect.setCoords(rect.topLeft().rx(), rect.topLeft().ry(), px, py);
-
-        QPainter painter(&dstImage);
-        painter.drawRect(rect);
-//        QImage image(imagePath);
-//        newImage = image;
-        painter.drawImage(0,0, newImage);
-        QBrush brush(Qt::cyan, Qt::Dense6Pattern);
-        painter.drawRect(rect);
-        painter.fillRect(rect, brush);
-        imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
-    }
-}
-
-void EditionWindow::mouseReleaseEvent(QMouseEvent *event){
-
-    if(crop){
-        int reponse = QMessageBox::question(this, "Rogner", "Êtes-vous sûr de vouloir rogner cette image ?", QMessageBox ::Yes | QMessageBox::No);
-        if (reponse == QMessageBox::Yes)
-        {
-            rect.setCoords(qMin(rect.topLeft().rx(),rect.bottomRight().rx()), qMin(rect.topLeft().ry(),rect.bottomRight().ry()), qMax(rect.topLeft().rx(),rect.bottomRight().rx()), qMax(rect.topLeft().ry(),rect.bottomRight().ry()));
-
-            //QPixmap cropped = this->initialPixMap.copy(rect);
-
-            //initialPixMap = cropped;
-            newImage = initialImage.copy(rect);// cropped.toImage();
-            dstImage = newImage;
-            //initialImageWidth = newImage.width();
-            //initialImageHeigth = newImage.height();
-            actualImageWidth = initialImage.width();
-            actualImageHeigth = initialImage.height();
-        }
-
-        imageLabel->setPixmap(QPixmap::fromImage(newImage));
-        crop = false;
-    }
-
-}
-
-void EditionWindow::verticalMirror(){
-
-    QPainter painter(&dstImage);
-    newImage = newImage.mirrored();
-    painter.drawImage(0,0,newImage);
-    //initialPixMap = QPixmap::fromImage(newImage);
-    initialImage = newImage;
-    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
-
-}
-
-void EditionWindow::horizontalMirror(){
-
-    QPainter painter(&dstImage);
-    newImage = newImage.mirrored(true, false);
-    painter.drawImage(0,0,newImage);
-    //initialPixMap = QPixmap::fromImage(newImage);
-    initialImage = newImage;
-    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
-
-}
-
-void EditionWindow::rotateImage(){
-
-    QPainter painter(&dstImage);
-    QTransform trans;
-    newImage = newImage.transformed(trans.rotate(90));
-    //initialPixMap = QPixmap::fromImage(newImage);
-    initialImage = newImage;
-    painter.drawImage(0,0,newImage);
-    painter.end();
-    dstImage = newImage;
-    actualImageWidth = newImage.width();
-    actualImageHeigth = newImage.height();
-    actualImageWidth = initialImage.width();
-    actualImageHeigth = initialImage.height();
-
-    //this->imageLabel->setPixmap(this->initialPixMap.scaled(initialImageWidth, initialImageHeigth, Qt::KeepAspectRatio));
-    imageLabel->setPixmap(QPixmap::fromImage(initialImage.scaled(initialImage.width(), initialImage.height(), Qt::KeepAspectRatio)));
-
-}
-
 EditionWindow::~EditionWindow()
 {
     delete ui;
@@ -329,17 +211,113 @@ EditionWindow::~EditionWindow()
 }
 
 
+/********************************* MODIFICATION **********************************/
+
+void EditionWindow::cropImage(){
+    crop=true;
+    QPainter painter(&dstImage);
+
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+}
+
+void EditionWindow::mousePressEvent(QMouseEvent *event){
+    if(crop){
+        QPoint p = imageLabel->mapFromGlobal(QCursor::pos());
+
+        float px = p.rx()*(dstImage.width()/actualImageWidth);
+        float py = (p.ry()+(-centralWidget()->height()+actualImageHeigth)/2)*(dstImage.height()/actualImageHeigth);
+
+        newImage = dstImage;
+        rect.setCoords(px,py,px,py);
+        QPainter painter(&dstImage);
+        painter.drawImage(0,0, dstImage);
+        QBrush brush(Qt::cyan, Qt::Dense6Pattern);
+        painter.drawRect(rect);
+        painter.fillRect(rect, brush);
+        imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+    }
+}
+
+void EditionWindow::mouseMoveEvent(QMouseEvent *event){
+    if(crop){
+        QPoint p = imageLabel->mapFromGlobal(QCursor::pos());
+
+        float px = p.rx()*(dstImage.width()/actualImageWidth);
+        float py = (p.ry()+(-centralWidget()->height()+actualImageHeigth)/2)*(dstImage.height()/actualImageHeigth);
+        rect.setCoords(rect.topLeft().rx(), rect.topLeft().ry(), px, py);
+
+        QPainter painter(&dstImage);
+        painter.drawRect(rect);
+        painter.drawImage(0,0, newImage);
+        QBrush brush(Qt::cyan, Qt::Dense6Pattern);
+        painter.drawRect(rect);
+        painter.fillRect(rect, brush);
+        imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+    }
+}
+
+void EditionWindow::mouseReleaseEvent(QMouseEvent *event){
+    if(crop){
+        int reponse = QMessageBox::question(this, "Rogner", "Êtes-vous sûr de vouloir rogner cette image ?", QMessageBox ::Yes | QMessageBox::No);
+        if (reponse == QMessageBox::Yes)
+        {
+            rect.setCoords(qMin(rect.topLeft().rx(),rect.bottomRight().rx()), qMin(rect.topLeft().ry(),rect.bottomRight().ry()), qMax(rect.topLeft().rx(),rect.bottomRight().rx()), qMax(rect.topLeft().ry(),rect.bottomRight().ry()));
+            dstImage = newImage.copy(rect);
+            actualImageHeigth = dstImage.height() * zoomSlider->value()/100;
+            actualImageWidth = dstImage.width() * zoomSlider->value()/100;
+        }
+        else{
+            dstImage = newImage;
+        }
+        crop = false;
+        imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+    }
+}
+
+void EditionWindow::verticalMirror(){
+    crop = false;
+    QPainter painter(&dstImage);
+    newImage = dstImage.mirrored();
+    painter.drawImage(0,0,newImage);
+    painter.end();
+    dstImage = newImage;
+    actualImageHeigth = dstImage.height() * zoomSlider->value()/100;
+    actualImageWidth = dstImage.width() * zoomSlider->value()/100;
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+}
+
+void EditionWindow::horizontalMirror(){
+    crop = false;
+    QPainter painter(&dstImage);
+    newImage = dstImage.mirrored(true, false);
+    painter.drawImage(0,0,newImage);
+    painter.end();
+    dstImage = newImage;
+    actualImageHeigth = dstImage.height() * zoomSlider->value()/100;
+    actualImageWidth = dstImage.width() * zoomSlider->value()/100;
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+}
+
+void EditionWindow::rotateImage(){
+    crop = false;
+    QPainter painter(&dstImage);
+    QTransform trans;
+    QImage newImage = dstImage.transformed(trans.rotate(90));
+    painter.drawImage(0,0,newImage);
+    painter.end();
+    dstImage = newImage;
+    actualImageHeigth = dstImage.height() * zoomSlider->value()/100;
+    actualImageWidth = dstImage.width() * zoomSlider->value()/100;
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+}
 
 /************************************* SLOT *************************************/
 void EditionWindow::resizeImage(int percent)
 {
-    //actualImageWidth = this->initialImageWidth * percent/100;
-    //actualImageHeigth = this->initialImageHeigth * percent/100;
+    actualImageWidth = dstImage.width() * percent/100;
+    actualImageHeigth = dstImage.height() * percent/100;
 
-    float newWidth = initialImage.width() * percent/100;
-    float newHeigth = initialImage.height() * percent/100;
-
-    imageLabel->setPixmap(QPixmap::fromImage(initialImage).scaled(newWidth, newHeigth, Qt::KeepAspectRatio));
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
 }
 
 
