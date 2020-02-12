@@ -1,5 +1,7 @@
 #include "editionwindow.h"
 #include "ui_editionwindow.h"
+#include "themeapplier.h"
+#include "qhoversensitivebutton.h"
 
 #include <QLabel>
 #include <QPushButton>
@@ -12,6 +14,8 @@
 #include <QDir>
 #include <QPainter>
 #include <QGraphicsScene>
+#include <QPixmap>
+#include <QtMath>
 
 
 EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::EditionWindow)
@@ -28,19 +32,14 @@ EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::
     initBackground();
 }
 
+void EditionWindow::showEvent(QShowEvent* event){
+    QMainWindow::showEvent(event);
+    new themeApplier(*this);
+}
 
 QFrame* EditionWindow::createToolBar(void)
 {
     /********* Composant de la tool bar *********/
-    QPushButton *returnButton = new QPushButton("a");
-    QPushButton *repeatButton = new QPushButton("b");
-
-    QPushButton *rotateButton = new QPushButton("c");
-    QPushButton *horizontalMirrorButton = new QPushButton("d");
-    QPushButton *verticalMirrorButton = new QPushButton("e");
-    QPushButton *trimButton = new QPushButton("f");
-    connect(trimButton, SIGNAL(clicked()), this, SLOT(cropImage()));
-    QPushButton *resizeButton = new QPushButton("g");
 
     QSlider *tempSlider = new QSlider();
     tempSlider->setFixedSize(150, 20);
@@ -70,6 +69,15 @@ QFrame* EditionWindow::createToolBar(void)
 
     QHBoxLayout *hBoxLayout = new QHBoxLayout(toolBarFrame);
     hBoxLayout->setContentsMargins(0, 0, 0, 0);
+
+    QHoverSensitiveButton *returnButton = new QHoverSensitiveButton(this, "previous");
+    QHoverSensitiveButton *repeatButton = new QHoverSensitiveButton(this,"next");
+
+    QHoverSensitiveButton *rotateButton = new QHoverSensitiveButton(this, "rotate");
+    QHoverSensitiveButton *horizontalMirrorButton = new QHoverSensitiveButton(this, "mirror-h");
+    QHoverSensitiveButton *verticalMirrorButton = new QHoverSensitiveButton(this, "mirror-v");
+    QHoverSensitiveButton *trimButton = new QHoverSensitiveButton(this, "crop");
+    QHoverSensitiveButton *resizeButton = new QHoverSensitiveButton(this, "resize");
 
     hBoxLayout->addWidget(returnButton);
     hBoxLayout->addWidget(repeatButton);

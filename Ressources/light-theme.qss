@@ -1,0 +1,53 @@
+/*light*/
+
+QFrame#navFrame {
+        background-color: red;
+        border: 0px;
+        margin: 0px;
+        padding: 0px;
+}
+
+QHoverSensitiveButton#previous, QHoverSensitiveButton#next,
+QHoverSensitiveButton#home, QHoverSensitiveButton#up {
+        background-color: rgb(0,255,0);
+        color: black;
+        border: 0px;
+        margin: 0px;
+        padding: 0px;
+		border-style: none;
+}
+
+QFrame#statusFrame {
+        background-color: rgb(255,255,255);
+        border: 0px;
+        margin: 0px;
+        padding: 0px;
+}
+
+QLabel#statusMessage {
+        color: black;
+}
+
+QFrame#frame {
+        background-color: rgb(255,255,255);
+        border: 0px;
+        margin: 0px;
+        padding: 0px;
+}
+
+QHoverSensitiveButton#liste, QHoverSensitiveButton#icone {
+        background-color: rgb(255,255,255);
+        color: rgb(140,140,140);
+        border: 0px;
+        margin: 0px;
+        padding: 0px;
+}
+
+#status-bar {
+        background-color: rgb(255,255,255);
+}
+
+* {
+        background-color: white !important;
+        color: black !important;
+}

@@ -12,7 +12,7 @@ class FilePropertiesWindow : public QDialog
     Q_OBJECT
 
 public:
-    FilePropertiesWindow(QWidget *parent = nullptr, QString itemPath = "a/b/default");
+    FilePropertiesWindow(QWidget *parent = nullptr, QString itemPath = "");
     ~FilePropertiesWindow();
     void createContents(void);
     void setEditMode(bool);
@@ -21,6 +21,9 @@ public:
     bool loadFromBDD();
     QString getFileExtention(QString name = "");
     bool imageNameChecker(QString);
+    void setTheme();
+    void getChildAndSetStyle(QObject *obj, QString theme);
+    void showEvent(QShowEvent *);
 
 private:
     Ui::FilePropertiesWindow *ui;

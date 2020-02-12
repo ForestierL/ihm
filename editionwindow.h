@@ -5,6 +5,7 @@
 #include <QFrame>
 #include <QLabel>
 #include <QGraphicsScene>
+#include "qhoversensitivebutton.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class EditionWindow;}
@@ -20,7 +21,7 @@ public:
     ~EditionWindow();
     void createContents(void);
     void setImage(const QString &fileName);
-
+    void showEvent(QShowEvent *);
 
 private:
     QFrame* createStatusBar(void);

@@ -5,6 +5,7 @@
 #include "albumbutton.h"
 #include "itemlist.h"
 #include "imageitem.h"
+#include "themeapplier.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -16,13 +17,13 @@
 #include <QPushButton>
 #include <QMouseEvent>
 #include <QFileDialog>
+#include <QSettings>
 
 #include <QSplitter>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     /*******************/
     QSplitter *splitter = new QSplitter(); //CQStandardPaths::writableLocation(QStandardPaths::PicturesLocation)réation d'un splitter, permettant de redimensionner l'espace occupé par les widgets enfants
     splitter->setOrientation(Qt::Vertical); //Mettre l'orientation verticale
@@ -42,7 +43,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QString mainPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
     dirModel = new QFileSystemModel(this);
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
-
     ui->dirTreeView->setModel(dirModel);
 
     ui->dirTreeView->setHeaderHidden(true);
@@ -66,9 +66,40 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 
+//<<<<<<< HEAD
     displayAlbum();
-
     createActions();
+
+
+//=======
+    //ui->elementListView->setViewMode(QListView::IconMode);
+    ui->elementListView->setMovement(QListView::Static);
+    /*****
+     * Initialisation de la liste en bas à gauche de la main windows
+     * Ceci est codé en dur pour le moment (pas de bdd)
+     * Il n'y a pas de limite à l'expansion du layout (en hauteur)
+     * ça va prendre une place énorme si on ajoute trop d'élément.
+     * Il va faloir réfléchir au scroll et à la position du bouton x...
+     */
+    for(int i=0; i<5; i++) {
+        // Création du sous-layout horizontal => label + bouton
+        QLayout *layoutTest = new QHBoxLayout();
+
+        // Création du label
+        QLabel *testLabel = new QLabel();
+        testLabel->setText("Test " + QString::number(i));
+        // Ajout du label au sous-layout
+        layoutTest->addWidget(testLabel);
+
+        // Création du bouton
+        QHoverSensitiveButton *test = new QHoverSensitiveButton(this, "delete");
+        test->setMaximumSize(20,20);
+        test->setStyleSheet("color:red;");
+        //todo : ajouter l'intération
+        // Ajout du bouton au sous-layout
+        layoutTest->addWidget(test);
+    }
+
 
 //    QString test = "aaaa";
 //    QString test2 = "bbbb";
@@ -82,20 +113,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 //    Database::createAlbum(test4);
 //    Database::createAlbum(test5);
 
-    QString path ="C:\\Users\\elias albert\\Pictures";
+    QString path ="C:\\Users\\elias albert\\Pictures"; //?????
 //    int score = 4;
 //    QString comment = "GTA RP";
 //    QString color = "Noir";
 //    QString feeling = "cool";
 
 //    Database::addImage(path,score,comment,color,feeling);
-    int idImage = Database::getImageId(path);
-    QVector<QString> result = Database::getInfoImage(idImage);
-    qDebug()<< result;
-    for(int i =0 ; i<result.size(); i++)
-        qDebug() << result[i];
 
-    ItemList *itemList = new ItemList(ui->scrollAreaWidgetContents, mainPath, true);
+    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath, true);
+    ui->elementListView->hide();
 
 }
 
@@ -127,7 +154,6 @@ void MainWindow::createActions(){
     connect(ui->actionTh_me_clair, SIGNAL(triggered()), this, SLOT(light_theme()));
     connect(ui->actionA_propos, SIGNAL(triggered()), this, SLOT(about()));
     connect(ui->actionManuel, SIGNAL(triggered()), this, SLOT(manual()));
-
 }
 
 void MainWindow::recent_folder(){
@@ -149,6 +175,14 @@ void MainWindow::edit(){
 
 }
 void MainWindow::rename(){
+
+    Database::getInstance();
+    QVector<QString> v = Database::getAlbumsOrderByLastModification();
+    for(int i = 0; i < v.size(); i++){
+        qDebug() << v[i];
+    }
+
+    createActions();
 
 }
 void MainWindow::copy(){
@@ -175,30 +209,31 @@ void MainWindow::list(){
 void MainWindow::icons(){
 
 }
-void MainWindow::dark_theme(){
-    qDebug() << "DARK";
-    // Load an application style
-    QFile styleFile(":/Ressources/dark-theme.qss");
-    styleFile.open(QFile::ReadOnly);
-
-    // Apply the loaded stylesheet
-    QString style(styleFile.readAll());
-    qApp->setStyleSheet(style);
-}
-void MainWindow::light_theme(){
-    qDebug() << "LIGHT";
-    // Load an application style
-    QFile styleFile(":/Ressources/white-theme.qss");
-    styleFile.open(QFile::ReadOnly);
-
-    // Apply the loaded stylesheet
-    QString style(styleFile.readAll());
-    qApp->setStyleSheet(style);
-}
 void MainWindow::about(){
 
 }
 void MainWindow::manual(){
+}
+
+void MainWindow::dark_theme(){
+    QSettings s("config.ini",QSettings::IniFormat);
+    s.setValue("theme", "dark");
+    new themeApplier(*this);
+    const QWidgetList topLevelWidgets = QApplication::topLevelWidgets();
+    for (QWidget *widget : topLevelWidgets) {
+        if (!widget->isHidden() && widget->isWindow())
+            new themeApplier(*widget);
+    }
+}
+void MainWindow::light_theme(){
+    QSettings s("config.ini",QSettings::IniFormat);
+    s.setValue("theme", "light");
+    new themeApplier(*this);
+    const QWidgetList topLevelWidgets = QApplication::topLevelWidgets();
+    for (QWidget *widget : topLevelWidgets) {
+        if (!widget->isHidden() && widget->isWindow())
+            new themeApplier(*widget);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -390,7 +425,7 @@ void MainWindow::informations()
 {
     FilePropertiesWindow w(this, actualFile);
     //w.setImagePath(path);
-    w.createContents();
+
     w.show();
     QEventLoop eventLoop;
     eventLoop.exec();

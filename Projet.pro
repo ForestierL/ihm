@@ -20,6 +20,7 @@ SOURCES += \
     addtoalbumwindow.cpp \
     albumbutton.cpp \
     database.cpp \
+    dominantcolorcalculator.cpp \
     editionwindow.cpp \
     imageitem.cpp \
     itemlist.cpp \
@@ -29,12 +30,14 @@ SOURCES += \
     pathvisit.cpp \
     qhoversensitivebutton.cpp \
     checkingwindow.cpp \
-    albumline.cpp
+    albumline.cpp \
+    themeapplier.cpp
 
 HEADERS += \
     addtoalbumwindow.h \
     albumbutton.h \
     database.h \
+    dominantcolorcalculator.h \
     editionwindow.h \
     imageitem.h \
     itemlist.h \
@@ -43,7 +46,8 @@ HEADERS += \
     pathvisit.h \
     qhoversensitivebutton.h \
     checkingwindow.h \
-    albumline.h
+    albumline.h \
+    themeapplier.h
 
 FORMS += \
     addtoalbumwindow.ui \
@@ -58,32 +62,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    arrow-d-w.png \
-    arrow-l-b.png \
-    arrow-l-w.png \
-    arrow-r-b.png \
-    arrow-r-w.png \
-    arrow-u-b.png \
-    arrow-u-w.png \
-    crop-w.png \
-    delete-b.png \
-    delete-r.png \
-    delete-w.png \
-    home-b.png \
-    home-w.png \
-    icon-b.png \
-    icon-w.png \
-    list-b.png \
-    list-w.png \
-    next-w.png \
-    previous-w.png \
-    resize-w.png \
-    rotate-w.png \
-    save-w.png \
-    star-empty-w.png \
-    star-full-w.png \
-    star-half-w.png
 
 RESOURCES += \
     icons.qrc \
     lumipic.db
+

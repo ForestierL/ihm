@@ -22,6 +22,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    QString theme;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void setStatusBar();
@@ -29,6 +30,8 @@ public:
     void setNavButtons();
     void displayAlbum();
     void checkAllPath();
+    void getChildAndSetStyle(QObject *, QString);
+    void setTheme();
 
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);

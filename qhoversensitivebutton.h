@@ -8,6 +8,7 @@ class QHoverSensitiveButton : public QPushButton
     Q_OBJECT
 public:
     explicit QHoverSensitiveButton(QWidget *parent = 0, QString icon = "");
+    void changeIcon();
 
 protected:
     void hoverEnter(QHoverEvent *event);

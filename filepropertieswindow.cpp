@@ -6,6 +6,11 @@
 #include <iostream>   // std::cout
 #include <QDebug>
 
+#include "database.h"
+#include <QDebug>
+#include <QSettings>
+#include "themeapplier.h"
+
 FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : QDialog(parent), ui(new Ui::FilePropertiesWindow)
 {
     ui->setupUi(this);
@@ -24,6 +29,11 @@ FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : 
         timeOut--;
     }
     qDebug() << "Image id : " << idImage;
+}
+
+void FilePropertiesWindow::showEvent(QShowEvent* event){
+    QDialog::showEvent(event);
+    new themeApplier(*this);
 }
 
 QString getNameFromPath(QString path)
@@ -221,6 +231,7 @@ bool FilePropertiesWindow::save()
     qFile.rename(newPath);
     itemPath = newPath;
 
+//    Database::up
     return true;
 }
 

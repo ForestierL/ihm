@@ -86,7 +86,7 @@ void CheckingWindow::relocate(const int id){
     if(fichier!="")
     {
         QString path(missingFilesPath->at(id));
-        int idImage = Database::getImageId(path);
+        int idImage = Database::getImageId(path); //todo : warning
         //Database::updateImagePath(idImage,fichier);
         QMessageBox::information(this, "Fichier", "Vous avez sélectionné :\n" + fichier);
     }
