@@ -6,13 +6,13 @@ QVector<QString> selectAllImageInDir(QString dirPath, bool recursive = false){
     QVector<QString> result;
     QStringList list = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
     foreach(QString filename, list) {
-        QString path = dirPath+"\\"+filename;
+        QString path = dirPath+"/"+filename;
         if(recursive)
             result.append(selectAllImageInDir(path));
     }
     QStringList images = dir.entryList(QStringList() << "*.jpg" << "*.JPG"<< "*.png" << "*.jpeg" << "*.jpg" << "*.gif" << "*.bmp" << "*.jpe" << "*.jfif" << "*.rle" << "*.tga" << "*.tif" << "*.tiff",QDir::Files);
     foreach(QString filename, images) {
-       result.append(dirPath+"\\"+filename);
+       result.append(dirPath+"/"+filename);
     }
     return result;
 }
