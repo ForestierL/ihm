@@ -26,6 +26,8 @@ public:
     void setStatusBar();
     bool updateCurrentPath(QString);
     void setNavButtons();
+    void displayAlbum();
+    void checkAllPath();
 
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
@@ -42,7 +44,8 @@ private slots:
     void previous_clicked();
     void next_clicked();
     void up_clicked();
-    void checkAllPath();
+    void createNewButtonAlbum(QString name);
+    void create_album(const QString&);
 
     void recent_folder();
     void recent_album();
@@ -66,6 +69,9 @@ private slots:
 
     void on_pbAddAlbum_clicked();
     void generateCreateAlbumLine();
+
+    void delete_album(const QString&);
+    void open_album(const QString&);
 
 private:
     Ui::MainWindow *ui;

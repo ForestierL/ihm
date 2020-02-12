@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qhoversensitivebutton.h"
+#include "albumline.h"
+#include "albumbutton.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -62,52 +64,49 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 
-
-
-    /*****
-     * Initialisation de la liste en bas à gauche de la main windows
-     * Ceci est codé en dur pour le moment (pas de bdd)
-     * Il n'y a pas de limite à l'expansion du layout (en hauteur)
-     * ça va prendre une place énorme si on ajoute trop d'élément.
-     * Il va faloir réfléchir au scroll et à la position du bouton x...
-     */
-    for(int i=0; i<5; i++) {
-        // Création du sous-layout horizontal => label + bouton
-        QLayout *layoutTest = new QHBoxLayout();
-
-        // Création du label
-        QLabel *testLabel = new QLabel();
-        testLabel->setText("Test " + QString::number(i));
-        // Ajout du label au sous-layout
-        layoutTest->addWidget(testLabel);
-
-        // Création du bouton
-        QHoverSensitiveButton *test = new QHoverSensitiveButton(this, "delete");
-        test->setMaximumSize(20,20);
-        test->setStyleSheet("color:red;");
-        //todo : ajouter l'intération
-        // Ajout du bouton au sous-layout
-        layoutTest->addWidget(test);
-
-        // Ajout du sous-layout au layout vertical de l'UI
-        ui->vlAlbums->addLayout(layoutTest);
-    }
-
-    Database::getInstance();
-    QVector<QString> v = Database::getAlbumsOrderByLastModification();
-    for(int i = 0; i < v.size(); i++){
-        qDebug() << v[i];
-    }
+    displayAlbum();
 
     createActions();
 
+//    QString test = "aaaa";
+//    QString test2 = "bbbb";
+//    QString test3 = "cccc";
+//    QString test4 = "dddd";
+//    QString test5 = "eeee";
+
+//    Database::createAlbum(test);
+//    Database::createAlbum(test2);
+//    Database::createAlbum(test3);
+//    Database::createAlbum(test4);
+//    Database::createAlbum(test5);
+
+    QString path ="C:\\Users\\elias albert\\Pictures";
+//    int score = 4;
+//    QString comment = "GTA RP";
+//    QString color = "Noir";
+//    QString feeling = "cool";
+
+//    Database::addImage(path,score,comment,color,feeling);
+    int idImage = Database::getImageId(path);
+    QVector<QString> result = Database::getInfoImage(idImage);
+    qDebug()<< result;
+    for(int i =0 ; i<result.size(); i++)
+        qDebug() << result[i];
     //checkAllPath(); //pour test => Lucas, pense à remove
 }
+
+void MainWindow::displayAlbum(){
+    QVector<QString> albums = Database::getAlbumsOrderByName();
+
+    for (int i = 0; i<albums.size();i++)
+        createNewButtonAlbum(albums[i]);
+}
+
 
 void MainWindow::createActions(){
     connect(ui->actionEmplacement_r_cent, SIGNAL(triggered()), this, SLOT(recent_folder()));
     connect(ui->actionAlbum_r_cent, SIGNAL(triggered()), this, SLOT(recent_album()));
-    connect(ui->actionNouveau_album, SIGNAL(triggered()), this, SLOT(new_Album()));
+    connect(ui->actionNouveau_album, SIGNAL(triggered()), this, SLOT(new_album()));
     connect(ui->actionAjouter_l_album, SIGNAL(triggered()), this, SLOT(add_to_album()));
     connect(ui->actionFermer, SIGNAL(triggered()), this, SLOT(close()));
     connect(ui->actionEditer, SIGNAL(triggered()), this, SLOT(edit()));
@@ -161,7 +160,7 @@ void MainWindow::small_icons(){
 
 }
 void MainWindow::medium_icons(){
-
+//
 }
 void MainWindow::big_icons(){
 
@@ -196,7 +195,6 @@ void MainWindow::about(){
 
 }
 void MainWindow::manual(){
-
 }
 
 MainWindow::~MainWindow()
@@ -245,7 +243,7 @@ void MainWindow::on_lePath_returnPressed()
     QString dirPath = ui->lePath->text();
     QDir pathDir(dirPath);
     if (pathDir.exists())
-	{
+    {
         qDebug() << "DIR " + dirPath;
         updateCurrentPath(dirPath);
     }
@@ -344,7 +342,6 @@ void MainWindow::showContextMenu(const QPoint &pos)
     }
     else
     {
-        qDebug() << "Clique sur dossier";
         myMenu.addAction("Ouvrir", this, SLOT(openDirectory()));
         myMenu.addSeparator();
         myMenu.addAction("Supprimer", this, SLOT(removeDirectory()));
@@ -381,7 +378,6 @@ void MainWindow::addToAlbum()
 
 void MainWindow::informations()
 {
-    qDebug() << "Infos";
     FilePropertiesWindow w(this, actualFile);
     //w.setImagePath(path);
     w.createContents();
@@ -405,7 +401,7 @@ void MainWindow::eraseItem()
 
 bool MainWindow::removeDirectory(QString dirPath){
     if(dirPath == ""){
-        int valid = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer ce dossier et tout les documents qu'il contient ?", QMessageBox ::Yes | QMessageBox::No);
+        int valid = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer ce dossier et tout les documents qu'il contient ? \n ATTENTION ! Ces fichiers ne pourront pas être récupérés.", QMessageBox ::Yes | QMessageBox::No);
         if(valid == QMessageBox::No){
             return false;
         }
@@ -438,26 +434,26 @@ bool MainWindow::removeDirectory(QString dirPath){
 
 void MainWindow::home_clicked()
 {
-	QString path = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+    QString path = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
     pathVisit->addPath(path);
     updateCurrentPath(path);
 }
 
 void MainWindow::previous_clicked()
 {
-	QString path = pathVisit->back();
+    QString path = pathVisit->back();
     updateCurrentPath(path);
 }
 
 void MainWindow::next_clicked()
 {
-	QString path = pathVisit->forward();
+    QString path = pathVisit->forward();
     updateCurrentPath(path);
 }
 
 void MainWindow::up_clicked()
 {
-	QString path = ui->lePath->text();
+    QString path = ui->lePath->text();
     QStringList pathList = path.split('/');
     pathList.removeLast();
     path = "";
@@ -472,34 +468,23 @@ void MainWindow::up_clicked()
 void MainWindow::checkAllPath()
 {
     QVector<QString> *missingFilesPath = new QVector<QString>();
-    /*
-    condition : on parse la bdd, si le path n'existe pas sur le pc alors on ajoute à missingFilePath
-    */
-    //DEBUG
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
-    missingFilesPath->append("C:/UnHibou.png");
-    missingFilesPath->append("Hiboubountou/photoDeTheiere.jpg");
-    missingFilesPath->append("Nyan/Nyan/Nyan/Nyan.png");
+    QVector<QString> allPath = Database::getAllImagePath();
 
-    CheckingWindow w(this);
-    w.initMissingFilesPath(missingFilesPath);
-    w.show();
-    QEventLoop eventLoop;
-    eventLoop.exec();
+    for(int i=0; i <allPath.size();i++){
+        QDir pathDir(allPath[i]);
+        if (!pathDir.exists())
+        {
+            missingFilesPath->append(allPath[i]);
+        }
+    }
+
+    if(missingFilesPath->size() != 0){
+        CheckingWindow w(this);
+        w.initMissingFilesPath(missingFilesPath);
+        w.show();
+        QEventLoop eventLoop;
+        eventLoop.exec();
+    }
 }
 
 void MainWindow::on_pbAddAlbum_clicked()
@@ -507,27 +492,68 @@ void MainWindow::on_pbAddAlbum_clicked()
     generateCreateAlbumLine();
 }
 
+void MainWindow::createNewButtonAlbum(QString name)
+{
+    AlbumButton *layoutAlbum = new AlbumButton(name);
+    connect(layoutAlbum, SIGNAL(validated(const QString&)), this, SLOT(delete_album(const QString&)));
+    connect(layoutAlbum, SIGNAL(openAlbum(const QString&)), this, SLOT(open_album(const QString&)));
+    ui->vlAlbums->addLayout(layoutAlbum);
+}
+
+
 void MainWindow::generateCreateAlbumLine(){
     if(!newAlbum){
         newAlbum = true;
         // Création du sous-layout horizontal => label + bouton
-        QLayout *layoutTest = new QHBoxLayout();
+        AlbumLine *layout = new AlbumLine();//QHBoxLayout();
 
-        // Création du label
-        QLineEdit *albumTitle = new QLineEdit();
-        albumTitle->setPlaceholderText("Titre");
-        // Ajout du label au sous-layout
-        layoutTest->addWidget(albumTitle);
-
-        // Création du bouton
-        QHoverSensitiveButton *test = new QHoverSensitiveButton(this, "ok");
-        test->setMaximumSize(20,20);
-        layoutTest->addWidget(test);
+        connect(layout, SIGNAL(validated(const QString&)), this, SLOT(create_album(const QString&)));
 
         // Ajout du sous-layout au layout vertical de l'UI
-        ui->vlAlbums->addLayout(layoutTest);
+        ui->vlAlbums->addLayout(layout);
     }
 }
+
+// Il faut modifier les messages
+void MainWindow::create_album(const QString& albumName){
+    QString name = albumName;
+    if(name == ""){
+        QMessageBox::question(this, "Nom invalide", "Veuillez entrer un nom", QMessageBox ::Ok);
+    }else{
+        bool result = Database::createAlbum(name);
+        if(!result){
+            QMessageBox::question(this, "Nom invalide", "Le nom de l'album existe deja ou est invalide", QMessageBox ::Ok);
+        }else {
+            delete sender();
+            qDeleteAll(ui->vlAlbums->children());
+            displayAlbum();
+            this->newAlbum = false;
+        }
+    }
+}
+
+void MainWindow::delete_album(const QString& albumName){
+    int reponse = QMessageBox::question(this, "Supprimer Album", "Êtes-vous sûr de supprimer cette album ?", QMessageBox ::Yes | QMessageBox::No);
+    if (reponse == QMessageBox::Yes)
+    {
+        QString name = albumName;
+        int idAlbum = Database::getAlbumId(name);
+        Database::removeAlbum(idAlbum);
+        delete sender();
+        qDeleteAll(ui->vlAlbums->children());
+        displayAlbum();
+    }
+}
+
+void MainWindow::open_album(const QString& albumName){
+   QString name = albumName;
+//    int idAlbum=Database::getAlbumId(name);
+//    QVector<int> idImages = Database::getAlbumInImageOrderByPosition(idAlbum);
+
+    qDeleteAll(ui->elementListView->children());
+
+}
+
 
 
 

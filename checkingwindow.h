@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QVector>
+#include <QLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +18,6 @@ class CheckingWindow : public QDialog
 public:
     CheckingWindow(QWidget *parent = nullptr);
     ~CheckingWindow();
-    QString relocate();
     void initMissingFilesPath(QVector<QString>* missingFilesPath);
 
 private:
@@ -25,11 +25,15 @@ private:
     QVector<QString> *missingFilesPath;
     QVector<QPushButton*> *buttonsRelocate;
     QVector<QPushButton*> *buttonsIgnore;
+    QLayout* vlMissingList;
 
 protected slots:
 
 private slots:
-    void on_pushButton_2_clicked();
+    void relocate(const int);
+    void ignore(const int, bool all = false);
+    void on_ignoreAll_clicked();
+
 };
 
 #endif // CHECKINGWINDOW_H

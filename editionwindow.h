@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QFrame>
 #include <QLabel>
-#include <QSlider>
+#include <QGraphicsScene>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class EditionWindow;}
@@ -18,38 +18,39 @@ class EditionWindow : public QMainWindow
 public:
     explicit EditionWindow(QWidget *parent = nullptr);
     ~EditionWindow();
-    void create_contents(void);
-    void set_image(const QString &fileName);
+    void createContents(void);
+    void setImage(const QString &fileName);
 
 
-private: //données membres
+private:
+    QFrame* createStatusBar(void);
+    QFrame* createToolBar(void);
+    void initBackground(void);
+    void mousePressEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
+
     Ui::EditionWindow *ui;
-
-    int _window_width;
-    int _window_heigth;
-
-    QString _image_path;
-    QLabel* _image_label;
-    QImage _initial_image;
-
-    QSlider* _zoom_slider;
-
-private: //méthodes
-    QFrame* create_status_bar(void);
-    QFrame* create_tool_bar(void);
-
-    void init_background(void);
-    void init_connects(void);
-
-
-
-
+    QString imagePath;
+    QLabel *imageLabel;
+    QPixmap initialPixMap;
+    QImage dstImage;
+    QImage newImage;
+    QRect rect;
+    float initialImageWidth;
+    float initialImageHeigth;
+    float actualImageWidth;
+    float actualImageHeigth;
+    QPoint topLeft;
+    QPoint bottomRight;
+    bool crop = false;
 
 protected slots:
-    void resize_image(int);
-    void save();
-    void save_as();
-
+    void resizeImage(int);
+    void cropImage();
+    void verticalMirror();
+    void horizontalMirror();
+    void rotateImage();
 
 }; //class EditionWindow
 

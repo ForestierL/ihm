@@ -30,7 +30,9 @@
         <file>Ressources/close-w.png</file>
         <file>Ressources/open-b.png</file>
         <file>Ressources/open-w.png</file>
-        <file>lumipic.db</file>
         <file>Ressources/white-theme.qss</file>
+        <file>Ressources/validate-b.png</file>
+        <file>Ressources/validate-w.png</file>
+        <file>lumipic.db</file>
     </qresource>
 </RCC>
