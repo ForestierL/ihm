@@ -19,13 +19,13 @@ public:
     static QVector<QString> getAlbumsOrderByLastModification();
 
     static int getImageId(QString &filePath);
-    static bool addImage(QString &filePath, int score, QString &comment, QString &color, QString &feeling);
+    static bool addImage(QString &filePath, int score, QString &comment, QString &color, QString &feeling, double xTrim, double yTrim, double widthTrim, double heightTrim);
     static bool addImageToAlbum(int imageId, int albumId);
     static bool removeImage(int imageId);
     static int getLastImagePosition(int albumId);
     bool imageExistFromPath(QString &path);
 
-    static bool updateImage(int idImage, QString &filePath, int score, QString &comment, QString &dominantColor, QString &feeling);
+    static bool updateImage(int idImage, QString &filePath, int score, QString &comment, QString &dominantColor, QString &feeling,double xTrim, double yTrim, double widthTrim, double heightTrim);
     static bool updateImagePath(int idImage, QString &filePath);
     static QVector<QString> getAllImagePath(void);
     static bool updatePositionInAlbum(int imageId, int albumId, int newPosition);

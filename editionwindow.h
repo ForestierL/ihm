@@ -37,8 +37,7 @@ private:
     QImage dstImage;
     QImage newImage;
     QRect rect;
-    float initialImageWidth;
-    float initialImageHeigth;
+
     float actualImageWidth;
     float actualImageHeigth;
     QPoint topLeft;
