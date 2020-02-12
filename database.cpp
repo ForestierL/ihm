@@ -468,6 +468,22 @@ int sqlQuerySize(QSqlQuery &query)
 }
 
 
+QString Database::getImageFilePath(int idImage){
+    Database::getInstance();
+
+    QSqlQuery query("SELECT filePath FROM Image WHERE idImage = :idImage");
+    query.bindValue(":idImage",idImage);
+
+    if(query.exec()){
+        query.next();
+        return query.value(0).toString();
+    } else {
+        Database::lastErrorMessage = __FUNCTION__;
+        Database::lastErrorMessage.append(" : Erreur lors de la requête.");
+        return "Erreur requete";
+    }
+}
+
 
 
 /*

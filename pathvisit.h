@@ -12,6 +12,7 @@ public:
     void addPath(QString);
     QString back();
     QString forward();
+    QString getCurrentPath();
 private:
     QString currentPath;
     QVector<QString> precedingPath;

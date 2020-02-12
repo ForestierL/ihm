@@ -11,6 +11,7 @@
 #include "filepropertieswindow.h"
 
 #include "pathvisit.h"
+#include "itemlist.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -73,6 +74,8 @@ private slots:
     void delete_album(const QString&);
     void open_album(const QString&);
 
+    void allImage_clicked();
+
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *dirModel;
@@ -80,6 +83,7 @@ private:
     QString actualFile;
     PathVisit *pathVisit;
     bool newAlbum = false;
+    ItemList *itemList;
 
     void createActions();
 };

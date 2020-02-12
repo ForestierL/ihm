@@ -21,6 +21,8 @@ SOURCES += \
     albumbutton.cpp \
     database.cpp \
     editionwindow.cpp \
+    imageitem.cpp \
+    itemlist.cpp \
     main.cpp \
     mainwindow.cpp \
     filepropertieswindow.cpp \
@@ -34,6 +36,8 @@ HEADERS += \
     albumbutton.h \
     database.h \
     editionwindow.h \
+    imageitem.h \
+    itemlist.h \
     mainwindow.h \
     filepropertieswindow.h \
     pathvisit.h \

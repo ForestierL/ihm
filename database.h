@@ -37,6 +37,8 @@ public:
 
     static QString getLastErrorMessage(void);
 
+    static QString getImageFilePath(int idImage);
+
 
 
 private:

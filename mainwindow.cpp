@@ -3,6 +3,8 @@
 #include "qhoversensitivebutton.h"
 #include "albumline.h"
 #include "albumbutton.h"
+#include "itemlist.h"
+#include "imageitem.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -278,10 +280,16 @@ void MainWindow::setNavButtons(){
     up->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     connect(up, SIGNAL(clicked()), this, SLOT(up_clicked()));
 
+    QHoverSensitiveButton *allImage = new QHoverSensitiveButton(navFrame, "arrow-u");
+    up->setMaximumWidth(24);
+    up->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    connect(allImage, SIGNAL(clicked()), this, SLOT(allImage_clicked()));
+
     layout->addWidget(previous);
     layout->addWidget(next);
     layout->addWidget(home);
     layout->addWidget(up);
+    layout->addWidget(allImage);
 
     ui->lePath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
     ui->navBar->insertWidget(0, navFrame);
@@ -546,15 +554,19 @@ void MainWindow::delete_album(const QString& albumName){
 }
 
 void MainWindow::open_album(const QString& albumName){
-   QString name = albumName;
-//    int idAlbum=Database::getAlbumId(name);
-//    QVector<int> idImages = Database::getAlbumInImageOrderByPosition(idAlbum);
-
-    qDeleteAll(ui->elementListView->children());
-
+    QString name = albumName;
+    int idAlbum=Database::getAlbumId(name);
+    QVector<int> idImages = Database::getAlbumInImageOrderByPosition(idAlbum);
+    // pas sur de ca
+    //itemList->createContentAlbum(idImages);
 }
 
-
+void MainWindow::allImage_clicked()
+{
+    QString path = pathVisit->getCurrentPath();
+    QWidget *scrollAreaList = ui->scrollAreaWidgetContents;
+    itemList  = new ItemList(scrollAreaList, path, true);
+}
 
 
 

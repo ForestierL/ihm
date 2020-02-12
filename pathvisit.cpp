@@ -52,3 +52,7 @@ QString PathVisit::forward()
     qDebug() << "PathVisit >> forward >> " + currentPath;
     return currentPath;
 }
+
+QString PathVisit::getCurrentPath(){
+    return currentPath;
+}
