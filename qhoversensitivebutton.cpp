@@ -16,7 +16,6 @@ QHoverSensitiveButton::QHoverSensitiveButton(QWidget *parent, QString _icon) : Q
 
 void QHoverSensitiveButton::changeIcon(){
     QSettings s("config.ini",QSettings::IniFormat);
-    qDebug() << ":/Ressources/" + icon + "-" + s.value("theme").toString() + ".png";
     setIcon(QIcon(":/Ressources/" + icon + "-" + s.value("theme").toString() + ".png"));
 }
 

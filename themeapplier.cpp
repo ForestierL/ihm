@@ -39,17 +39,14 @@ void themeApplier::setTheme(QWidget *window){
 }
 
 void themeApplier::getChildAndSetStyle(QObject *obj, QString theme){
-    qDebug() << theme;
     QFile styleFile(":/Ressources/" + theme + "-theme.qss");
     styleFile.open(QFile::ReadOnly);
 
     QString style(styleFile.readAll());
     for(int i=0; i < obj->children().size(); i++)
     {
-        qDebug() << "try to cast";
         if(QHoverSensitiveButton *wi = qobject_cast<QHoverSensitiveButton*>(obj->children().at(i))){
             qobject_cast<QWidget*>(obj->children().at(i))->setStyleSheet(style);
-            qDebug() << "casted";
             wi->changeIcon();
         }
         if(obj->children().at(i)->children().size() > 0){

@@ -39,7 +39,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QString mainPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
     dirModel = new QFileSystemModel(this);
     dirModel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
-
     ui->dirTreeView->setModel(dirModel);
 
     ui->dirTreeView->setHeaderHidden(true);
@@ -63,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
 
-    ui->elementListView->setViewMode(QListView::IconMode);
+    //ui->elementListView->setViewMode(QListView::IconMode);
     ui->elementListView->setMovement(QListView::Static);
     /*****
      * Initialisation de la liste en bas à gauche de la main windows
