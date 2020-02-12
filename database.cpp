@@ -170,7 +170,8 @@ bool Database::updateLastModifDate(int &id){
 
 
 /***************************************** IMAGE *********************************************/
-bool Database::addImage(QString &imagePath, int score, QString &comment, QString &dominantColor, QString &feeling)
+bool Database::addImage(QString &imagePath, int score, QString &comment, QString &dominantColor, QString &feeling,
+                        double xTrim, double yTrim, double widthTrim, double heightTrim)
 {
     Database::getInstance();
 
@@ -182,13 +183,17 @@ bool Database::addImage(QString &imagePath, int score, QString &comment, QString
     }
 
     QSqlQuery query;
-    query.prepare("INSERT INTO Image (filePath, score, comment, dominantColor, feeling) "
-                  "VALUES (:filePath, :score, :comment, :dominantColor, :feeling)");
+    query.prepare("INSERT INTO Image (filePath, score, comment, dominantColor, feeling, xTrim, yTrim, widthTrim, heightTrim) "
+                  "VALUES (:filePath, :score, :comment, :dominantColor, :feeling, :xTrim, yTrim, widthTrim, heightTrim)");
     query.bindValue(":filePath", imagePath);
     query.bindValue(":score", score);
     query.bindValue(":comment", comment);
     query.bindValue(":dominantColor", dominantColor);
     query.bindValue(":feeling", feeling);
+    query.bindValue(":xTrim", xTrim);
+    query.bindValue(":yTrim", yTrim);
+    query.bindValue(":widthTrim", widthTrim);
+    query.bindValue(":heightTrim", heightTrim);
 
     if(query.exec()){
         return true;
@@ -287,7 +292,8 @@ int Database::getLastImagePosition(int albumId)
     return false;
 }
 
-bool Database::updateImage(int idImage, QString &filePath, int score, QString &comment, QString &dominantColor, QString &feeling)
+bool Database::updateImage(int idImage, QString &filePath, int score, QString &comment, QString &dominantColor, QString &feeling,
+                           double xTrim, double yTrim, double widthTrim, double heightTrim)
 {
     if(idImage == -1)
         return false;
@@ -300,7 +306,11 @@ bool Database::updateImage(int idImage, QString &filePath, int score, QString &c
                   "score = :score,"
                   "comment = :comment,"
                   "dominantColor = :dominantColor,"
-                  "feeling = :feeling "
+                  "feeling = :feeling,"
+                  "xTrim = :xTrim,"
+                  "yTrim = :yTrim,"
+                  "widthTrim = :widthTrim,"
+                  "heightTrim = :heightTrim "
                   "WHERE idImage = :idImage;");
     query.bindValue(":filePath", filePath);
     query.bindValue(":score", score);
@@ -308,6 +318,10 @@ bool Database::updateImage(int idImage, QString &filePath, int score, QString &c
     query.bindValue(":dominantColor", dominantColor);
     query.bindValue(":feeling", feeling);
     query.bindValue(":idImage", idImage);
+    query.bindValue(":xTrim", xTrim);
+    query.bindValue(":yTrim", yTrim);
+    query.bindValue(":widthTrim", widthTrim);
+    query.bindValue(":heightTrim", heightTrim);
 
     if(query.exec())
     {
@@ -488,7 +502,14 @@ CREATE TABLE Image (idImage INTEGER CONSTRAINT pk_idImage PRIMARY KEY AUTOINCREM
                     score INTEGER (1),
                     comment STRING,
                     dominantColor STRING,
-                    feeling STRING);
+                    feeling STRING
+                    isverticalMirror BOOLEAN
+                    ishorizontalMirror BOOLEAN
+                    rotateDegre INTEGER(2)
+                    xTrim DOUBLE NOT NULL
+                    yTrim DOUBLE NOT NULL
+                    widthTrimm DOUBLE NOT NULL
+                    heightTrim DOUBLE NOT NULL);
 
 
 CREATE TABLE linkImageAlbum (idAlbum INTEGER NOT NULL,
