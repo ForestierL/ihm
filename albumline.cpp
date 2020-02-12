@@ -16,6 +16,10 @@ AlbumLine::AlbumLine(QObject *parent) : QHBoxLayout()
 }
 
 
+void AlbumLine::setFocusToAlbumTitleLineEdit()
+{
+    albumTitle->setFocus();
+}
 
 
 void AlbumLine::emitSignalClick()

@@ -16,6 +16,8 @@ public:
     QLineEdit* getLineEdit(void);
     QString getAlbumTitleString(void);
 
+    void setFocusToAlbumTitleLineEdit();
+
 
 private:
     QLineEdit *albumTitle;
