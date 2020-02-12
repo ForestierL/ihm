@@ -97,13 +97,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
     QWidget *scrollAreaList = ui->scrollAreaWidgetContents;
-    //*
+    /*
     QVector<QString> folder = {"C:\\Users\\loicf\\Pictures\\ihm\\1.jpg",
                               "C:\\Users\\loicf\\Pictures\\ihm\\3.jpg",
                               "C:\\Users\\loicf\\Pictures\\ihm\\",
                               "C:\\Users\\loicf\\Pictures\\ihm\\45.jpg"};
     ItemList *itemList = new ItemList(scrollAreaList, folder);
-    /*/
+    /*
     QString folder = "C:\\Users\\loicf\\Pictures\\ihm\\";
     ItemList *itemList = new ItemList(scrollAreaList, mainPath, true);
     itemList->moveUp(2);

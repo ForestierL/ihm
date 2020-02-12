@@ -12,7 +12,7 @@ AlbumLine::AlbumLine(QObject *parent) : QHBoxLayout()
     addWidget(valideNewAlbumButton);
 
     connect(getButton(), SIGNAL(clicked()), this, SLOT(emitSignalClick()));
-    //connect(getLineEdit(), SIGNAL(returnPressed()), this, SLOT(emitSignalEnter()));
+    connect(getLineEdit(), SIGNAL(returnPressed()), this, SLOT(emitSignalEnter()));
 }
 
 
@@ -23,12 +23,12 @@ void AlbumLine::emitSignalClick()
     emit this->validated(getAlbumTitleString());
 }
 
-/*
+
 void AlbumLine::emitSignalEnter()
 {
     emit this->validated(getAlbumTitleString());
 }
-*/
+
 
 
 QHoverSensitiveButton* AlbumLine::getButton()
