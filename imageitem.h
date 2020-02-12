@@ -13,6 +13,7 @@
 #include <QDirIterator>
 #include <QDebug>
 #include <QLineEdit>
+#include <QFileIconProvider>
 #include "database.h"
 
 class ImageItem : public QWidget

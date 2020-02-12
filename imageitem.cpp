@@ -52,9 +52,16 @@ void ImageItem::createContentFolder(QString dirPath)
     filePath = dirPath;
 
     //charger une image de dossier
+//    QFileIconProvider::Folder
     imageLabel  = new QLabel();
     imageLabel->setStyleSheet("background-color: #7f7f7f;");
     imageLabel->setFixedSize(100,100);
+
+    imageLabel->setAlignment(Qt::AlignCenter);
+    QPixmap *pixmap_img = new QPixmap(filePath);
+    auto icon = QFileIconProvider().icon(filePath);
+    imageLabel->setPixmap(icon.pixmap(100,100));
+
     name = new QLabel(extactDirectoryName(dirPath));
     name->setStyleSheet("font-weight: bold;");
     size = new QLabel("Elements : "+QString::number(dir.count()));
@@ -72,6 +79,7 @@ void ImageItem::createContentFolder(QString dirPath)
 
 void ImageItem::createContentFile(QString filePath, bool smoothImage)
 {
+    qDebug() << "file ! " <<filePath;
     //qt.gui.icc: fromIccProfile: failed minimal tag size sanity ??? ça vient de là mais ???
     this->filePath = filePath;
 
@@ -90,6 +98,8 @@ void ImageItem::createContentFile(QString filePath, bool smoothImage)
     size = new QLabel(QString::number(imageInfo.size().width()) + "x" + QString::number(imageInfo.size().height()));
     date = new QLabel(fileInfo.birthTime().toString("d/MM/yy"));
     /*Liens avec la bd
+     *
+     * bool loadFromDatabase(); <<<<<<<
     int idImage = Database::getImageId(filePath);
     QVector<QString> result = Database::getInfoImage(idImage);
     QString imageScore= result[0];
@@ -127,10 +137,13 @@ void ImageItem::setupLayout()
     mainLayout->addWidget(note,     0,6,1,1);
     mainLayout->addWidget(color,    1,6,1,1);
     mainLayout->addWidget(feeling,  2,6,1,1);
+    if(isImage)
+    {
     //mover
-    mainLayout->addWidget(upArrow,  0,7,1,1);
-    mainLayout->addWidget(idEdit,   1,7,1,1);
-    mainLayout->addWidget(downArrow,2,7,1,1);
+        mainLayout->addWidget(upArrow,  0,7,1,1);
+        mainLayout->addWidget(idEdit,   1,7,1,1);
+        mainLayout->addWidget(downArrow,2,7,1,1);
+    }
     for(int i=0; i<8; i++) {
 //        mainLayout->setColumnMinimumWidth(i,size->width()/8);
         mainLayout->setColumnStretch(i, 1);

@@ -86,7 +86,7 @@ border: none;</string>
            <x>0</x>
            <y>0</y>
            <width>650</width>
-           <height>297</height>
+           <height>299</height>
           </rect>
          </property>
         </widget>
@@ -162,7 +162,7 @@ border-color: rgb(83, 83, 83);</string>
      </layout>
     </item>
     <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayoutCenter" stretch="0,0">
+     <layout class="QHBoxLayout" name="horizontalLayoutCenter" stretch="0,0,0">
       <property name="bottomMargin">
        <number>0</number>
       </property>
@@ -257,6 +257,33 @@ border: none;</string>
        </layout>
       </item>
       <item>
+       <layout class="QVBoxLayout" name="vlList">
+        <item>
+         <widget class="QScrollArea" name="scrollAreaList">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_3">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>254</width>
+             <height>295</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="QListView" name="elementListView"/>
       </item>
      </layout>
@@ -269,7 +296,7 @@ border: none;</string>
      <x>0</x>
      <y>0</y>
      <width>794</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="styleSheet">
