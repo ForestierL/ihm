@@ -5,6 +5,7 @@
 #include <QFrame>
 #include <QLabel>
 #include <QGraphicsScene>
+#include <QSlider>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class EditionWindow;}
@@ -26,31 +27,45 @@ private:
     QFrame* createStatusBar(void);
     QFrame* createToolBar(void);
     void initBackground(void);
+
     void mousePressEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
 
+
+    void initConnects(void);
+
     Ui::EditionWindow *ui;
     QString imagePath;
     QLabel *imageLabel;
-    QPixmap initialPixMap;
-    QImage dstImage;
-    QImage newImage;
-    QRect rect;
-    float initialImageWidth;
-    float initialImageHeigth;
+    QImage initialImage;
+    QSlider *zoomSlider;
+    int windowWidth;
+    int windowHeigth;
+
+    bool crop = false;
     float actualImageWidth;
     float actualImageHeigth;
+    QRect rect;
+    QImage dstImage;
+    QImage newImage;
+
+    /*
     QPoint topLeft;
     QPoint bottomRight;
-    bool crop = false;
+    */
 
 protected slots:
     void resizeImage(int);
+
     void cropImage();
     void verticalMirror();
     void horizontalMirror();
     void rotateImage();
+
+
+    void save(void);
+    void saveAs(void);
 
 }; //class EditionWindow
 

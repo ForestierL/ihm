@@ -28,10 +28,10 @@ Database::Database(const QString& path)
 Database* Database::getInstance()
 {
     if(Database::instance == nullptr){
-        QString db_path = QDir::currentPath();
-        qDebug() <<db_path;    //current path
-        db_path =  db_path + QString("/lumipic.db");
-        Database::instance = new Database("./Ressources/lumipic.db"); //todo: modifier
+        //QString db_path = QDir::currentPath();
+        //qDebug() <<db_path;    //current path
+        //db_path =  db_path + QString("/lumipic.db");
+        Database::instance = new Database("/Users/romaincolonnadistria/Desktop/ihm/lumipic.db"); //todo: modifier
     }
 
     return Database::instance;
@@ -170,7 +170,8 @@ bool Database::updateLastModifDate(int &id){
 
 
 /***************************************** IMAGE *********************************************/
-bool Database::addImage(QString &imagePath, int score, QString &comment, QString &dominantColor, QString &feeling)
+bool Database::addImage(QString &imagePath, int score, QString &comment, QString &dominantColor, QString &feeling,
+                        double xCrop, double yCrop, double widthCrop, double heightCrop)
 {
     Database::getInstance();
 
@@ -182,13 +183,17 @@ bool Database::addImage(QString &imagePath, int score, QString &comment, QString
     }
 
     QSqlQuery query;
-    query.prepare("INSERT INTO Image (filePath, score, comment, dominantColor, feeling) "
-                  "VALUES (:filePath, :score, :comment, :dominantColor, :feeling)");
+    query.prepare("INSERT INTO Image (filePath, score, comment, dominantColor, feeling, xCrop, yCrop, widthCrop, heightCrop) "
+                  "VALUES (:filePath, :score, :comment, :dominantColor, :feeling, :xCrop, yCrop, widthCrop, heightCrop)");
     query.bindValue(":filePath", imagePath);
     query.bindValue(":score", score);
     query.bindValue(":comment", comment);
     query.bindValue(":dominantColor", dominantColor);
     query.bindValue(":feeling", feeling);
+    query.bindValue(":xCrop", xCrop);
+    query.bindValue(":yCrop", yCrop);
+    query.bindValue(":widthCrop", widthCrop);
+    query.bindValue(":heightCrop", heightCrop);
 
     if(query.exec()){
         return true;
@@ -287,7 +292,8 @@ int Database::getLastImagePosition(int albumId)
     return false;
 }
 
-bool Database::updateImage(int idImage, QString &filePath, int score, QString &comment, QString &dominantColor, QString &feeling)
+bool Database::updateImage(int idImage, QString &filePath, int score, QString &comment, QString &dominantColor, QString &feeling,
+                           double xCrop, double yCrop, double widthCrop, double heightCrop)
 {
     if(idImage == -1)
         return false;
@@ -300,7 +306,11 @@ bool Database::updateImage(int idImage, QString &filePath, int score, QString &c
                   "score = :score,"
                   "comment = :comment,"
                   "dominantColor = :dominantColor,"
-                  "feeling = :feeling "
+                  "feeling = :feeling,"
+                  "xCrop = :xCrop,"
+                  "yCrop = :yCrop,"
+                  "widthCrop = :widthCrop,"
+                  "heightCrop = :heightCrop "
                   "WHERE idImage = :idImage;");
     query.bindValue(":filePath", filePath);
     query.bindValue(":score", score);
@@ -308,6 +318,10 @@ bool Database::updateImage(int idImage, QString &filePath, int score, QString &c
     query.bindValue(":dominantColor", dominantColor);
     query.bindValue(":feeling", feeling);
     query.bindValue(":idImage", idImage);
+    query.bindValue(":xCrop", xCrop);
+    query.bindValue(":yCrop", yCrop);
+    query.bindValue(":widthCrop", widthCrop);
+    query.bindValue(":heightCrop", heightCrop);
 
     if(query.exec())
     {
@@ -488,7 +502,14 @@ CREATE TABLE Image (idImage INTEGER CONSTRAINT pk_idImage PRIMARY KEY AUTOINCREM
                     score INTEGER (1),
                     comment STRING,
                     dominantColor STRING,
-                    feeling STRING);
+                    feeling STRING
+                    isverticalMirror BOOLEAN
+                    ishorizontalMirror BOOLEAN
+                    rotateDegre INTEGER(2)
+                    xCrop DOUBLE NOT NULL
+                    yCrop DOUBLE NOT NULL
+                    widthCrop DOUBLE NOT NULL
+                    heightCrop DOUBLE NOT NULL);
 
 
 CREATE TABLE linkImageAlbum (idAlbum INTEGER NOT NULL,
