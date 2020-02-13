@@ -132,7 +132,7 @@ void MainWindow::add_to_album(){
 
 }
 void MainWindow::close(){
-
+    QMainWindow::close();
 }
 void MainWindow::edit(){
 
@@ -202,6 +202,16 @@ void MainWindow::light_theme(){
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete itemList;
+    delete dirModel;
+    delete fileModel;
+    delete pathVisit;
+
+    ui = nullptr;
+    itemList = nullptr;
+    dirModel = nullptr;
+    fileModel = nullptr;
+    pathVisit = nullptr;
 }
 
 bool MainWindow::updateCurrentPath(QString path) {
