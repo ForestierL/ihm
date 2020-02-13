@@ -1,4 +1,5 @@
 #include "imageitem.h"
+#include "itemlist.h"
 
 QString shortText(QString text, int size = 30)
 {
@@ -13,6 +14,7 @@ QString shortText(QString text, int size = 30)
 
 ImageItem::ImageItem(QWidget *parent, QString filePath, int id, bool smoothImage) : QWidget(parent)
 {
+    //qDebug()<< (ItemList)parent;
     this->id = id;
     QFile file(filePath);
     if(!file.exists())
@@ -58,7 +60,6 @@ void ImageItem::createContentFolder(QString dirPath)
     imageLabel->setFixedSize(100,100);
 
     imageLabel->setAlignment(Qt::AlignCenter);
-    QPixmap *pixmap_img = new QPixmap(filePath);
     auto icon = QFileIconProvider().icon(filePath);
     imageLabel->setPixmap(icon.pixmap(100,100));
 
@@ -123,6 +124,11 @@ void ImageItem::createContentFile(QString filePath, bool smoothImage)
     else
         transformationMode = Qt::TransformationMode::FastTransformation;
     imageLabel->setPixmap(pixmap_img->scaled(100, 100, Qt::KeepAspectRatio, transformationMode));
+
+
+    imageLabel->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(imageLabel, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ctxMenu(const QPoint &)));
+
     initMover();
 }
 
@@ -224,6 +230,9 @@ void ImageItem::initMover()
 
     downArrow = new QPushButton("⯆");
     downArrow->setFixedWidth(30);
+
+    connect(upArrow, SIGNAL(clicked()), this, SLOT(move_up()));
+    connect(downArrow, SIGNAL(clicked()), this, SLOT(move_down()));
 }
 
 void ImageItem::setId(int id)
@@ -248,4 +257,16 @@ void ImageItem::setDisabledDown(bool disabled)
         downArrow->hide();
     else
         downArrow->show();
+}
+
+void ImageItem::move_up(){
+}
+
+void ImageItem::move_down(){
+}
+
+
+void ImageItem::ctxMenu(const QPoint &pos)
+{
+   qDebug()<<"test";
 }

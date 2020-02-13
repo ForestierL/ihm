@@ -64,6 +64,11 @@ private:
     int id;
     QPushButton* downArrow;
 
+private slots:
+    void move_down();
+    void move_up();
+    void ctxMenu(const QPoint &pos);
+
 signals:
 
 };
