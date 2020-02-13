@@ -385,10 +385,13 @@ void MainWindow::showContextMenu(const QPoint &pos)
     }
 }
 
-void MainWindow::openEditor()
+void MainWindow::openEditor(const QString path)
 {
     EditionWindow w(this);
-    w.setImage(actualFile);
+    if(path == "")
+        w.setImage(actualFile);
+    else
+        w.setImage(path);
     w.createContents();
     w.show();
     QEventLoop eventLoop;
@@ -400,30 +403,29 @@ void MainWindow::openDirectory()
     updateCurrentPath(actualFile);
 }
 
-void MainWindow::addToAlbum()
+void MainWindow::addToAlbum(const QString path)
 {
     qDebug() << "AddToAlbum";
 }
 
-void MainWindow::informations()
+void MainWindow::informations(const QString path)
 {
     FilePropertiesWindow w(this, actualFile);
-    //w.setImagePath(path);
-
+    if(path != "")
+        FilePropertiesWindow w(this, path);
     w.show();
     QEventLoop eventLoop;
     eventLoop.exec();
 }
 
-void MainWindow::eraseItem()
+void MainWindow::eraseItem(const QString path)
 {
     QFile file(actualFile);
 
-    int reponse = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer cette image ?", QMessageBox ::Yes | QMessageBox::No);
+    int reponse = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer cette image ?\nATTENTION ! Elle ne sera pas récupérable.", QMessageBox ::Yes | QMessageBox::No);
 
     if (reponse == QMessageBox::Yes)
     {
-        //bool valid = file.remove(); //modif loic => var unused
         file.remove();
     }
 }
