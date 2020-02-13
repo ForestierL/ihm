@@ -50,8 +50,21 @@ ItemList::ItemList(QWidget *parent, QVector<QString> imagesPaths)
     createContent(imagesPaths);
 }
 
+
 void ItemList::reloadWith(QString folderPath, bool recursive, bool showFolder, bool arrows)
 {
+    QFileInfo fileInfo(folderPath);
+    if(!fileInfo.isDir()) //securite
+    {
+        QStringList qsl = folderPath.split('/');
+        if(qsl.size()>1)
+        {
+            qsl.removeLast();
+            folderPath = qsl.join("/");
+        }
+    }
+
+
     QVector<QString> paths;
     if(showFolder || !recursive)
         paths = selectDir(folderPath);
@@ -60,6 +73,11 @@ void ItemList::reloadWith(QString folderPath, bool recursive, bool showFolder, b
     else
         paths.append(selectAllImageInDir(folderPath, false));
 
+    reloadWith(paths, recursive, showFolder, arrows);
+}
+
+void ItemList::reloadWith(QVector<QString> paths, bool recursive, bool showFolder, bool arrows)
+{
     this->paths = paths;
     recreateContent(paths, arrows);
 }

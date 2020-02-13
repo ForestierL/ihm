@@ -38,7 +38,7 @@ ImageItem::ImageItem(QWidget *parent, QString filePath, int id, bool smoothImage
     setupLayout();
 }
 
-QString extactDirectoryName(QString path)
+QString extractDirectoryName(QString path)
 {
     QStringList qsl = path.split('/');
     if(qsl.size()<2)
@@ -63,7 +63,7 @@ void ImageItem::createContentFolder(QString dirPath)
     auto icon = QFileIconProvider().icon(filePath);
     imageLabel->setPixmap(icon.pixmap(100,100));
 
-    name = new QLabel(extactDirectoryName(dirPath));
+    name = new QLabel(extractDirectoryName(dirPath));
     name->setStyleSheet("font-weight: bold;");
     size = new QLabel("Elements : "+QString::number(dir.count()));
     date = new QLabel();

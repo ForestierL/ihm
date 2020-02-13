@@ -74,7 +74,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 //    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath, true);
     itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
     itemList->reloadWith(mainPath,false, true, true);
-    //ui->elementListView->hide();
+    ui->elementListView->hide();
+    ui->elementListView->show();
 
 }
 

@@ -14,6 +14,7 @@ public:
     explicit ItemList(QWidget *parent = nullptr, QString folderPath = "");
     explicit ItemList(QWidget *parent = nullptr, QVector<QString> imagesPaths = {""});
     void reloadWith(QString folderPath, bool recursive = false, bool showFolder = true, bool arrows = false);
+    void reloadWith(QVector<QString> paths, bool recursive = false, bool showFolder = true, bool arrows = false);
     void moveTo(int currentIndex, int finalIndex); // to 0 => prend 0 et décale la suite de 1 jusqu'à l'ancien index
     void moveUp(int currentIndex);
     void moveDown(int currentIndex);
