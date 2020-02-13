@@ -94,6 +94,16 @@ QMenu::separator{
     margin-right: 5px;
 }
 
+QMenu::item:disabled{
+    color: light-grey;
+    background-color: #888888;
+}
+
+QMenu::item:disabled:hover{
+    color: light-grey;
+    background-color: #888888;
+}
+
 QLineEdit#lePath, QLineEdit#leSearch{
     padding-left: 5px;
     padding-right: 5px;
@@ -102,6 +112,10 @@ QLineEdit#lePath, QLineEdit#leSearch{
 
 QLineEdit#lePath{
     margin-right: 5px;
+}
+
+QLineEdit:disabled{
+    background-color: #888888;
 }
 
 QScrollArea#scrollAreaList QWidget, QListView#elementListView QWidget,
@@ -127,9 +141,6 @@ QPushButton:hover{
     color: #ffffff;
     background: #4D4D4D;
 }
-
-
-
 
 QScrollBar:horizontal {
     border: 0px;
@@ -215,3 +226,6 @@ QScrollBar::sub-line:vertical {
     subcontrol-origin: margin;
 }
 
+QToolTip{
+    color: #000000;
+}

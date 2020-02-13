@@ -64,7 +64,7 @@
        <x>0</x>
        <y>0</y>
        <width>381</width>
-       <height>251</height>
+       <height>257</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
@@ -96,7 +96,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Name : </string>
+         <string>Nom : </string>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -107,12 +107,16 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLineEdit" name="editName"/>
+       <widget class="QLineEdit" name="editName">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nom image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Grade : </string>
+         <string>Note : </string>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -125,7 +129,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Note : </string>
+         <string>Commentaire : </string>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -137,6 +141,9 @@
       </item>
       <item row="2" column="2">
        <widget class="QSlider" name="editNote">
+        <property name="toolTip">
+         <string>Note</string>
+        </property>
         <property name="maximum">
          <number>5</number>
         </property>
@@ -147,13 +154,20 @@
       </item>
       <item row="4" column="2">
        <widget class="QPushButton" name="editColor">
+        <property name="toolTip">
+         <string>Calculer couleur dominante</string>
+        </property>
         <property name="text">
-         <string>calculate</string>
+         <string>Calculer</string>
         </property>
        </widget>
       </item>
       <item row="5" column="2">
-       <widget class="QComboBox" name="editFeelings"/>
+       <widget class="QComboBox" name="editFeelings">
+        <property name="toolTip">
+         <string>Selectionner émotion</string>
+        </property>
+       </widget>
       </item>
       <item row="5" column="1">
        <widget class="QLabel" name="feelings">
@@ -168,7 +182,7 @@
       <item row="5" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Feelings : </string>
+         <string>Emotions : </string>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -181,7 +195,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Main color : </string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Couleur&lt;/p&gt;&lt;p&gt;dominante : &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -214,7 +228,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Path :</string>
+         <string>Chemin :</string>
         </property>
         <property name="wordWrap">
          <bool>false</bool>
@@ -244,6 +258,9 @@
        <widget class="QTextEdit" name="description">
         <property name="enabled">
          <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Commentaires&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -291,8 +308,11 @@
     </item>
     <item>
      <widget class="QPushButton" name="edit">
+      <property name="toolTip">
+       <string>Modifier informations</string>
+      </property>
       <property name="text">
-       <string>Edit</string>
+       <string>Editer</string>
       </property>
      </widget>
     </item>

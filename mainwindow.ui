@@ -80,8 +80,8 @@ border: none;</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>644</width>
-           <height>288</height>
+           <width>648</width>
+           <height>295</height>
           </rect>
          </property>
         </widget>
@@ -111,6 +111,9 @@ border: none;</string>
           <height>24</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Chemin courant</string>
+        </property>
         <property name="dragEnabled">
          <bool>true</bool>
         </property>
@@ -124,6 +127,9 @@ border: none;</string>
       </item>
       <item>
        <widget class="QLineEdit" name="leSearch">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -135,6 +141,9 @@ border: none;</string>
           <width>200</width>
           <height>24</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Recherche sur critère (WIP)</string>
         </property>
         <property name="dragEnabled">
          <bool>true</bool>
@@ -201,6 +210,9 @@ border: none;</string>
                 <height>20</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Créer album&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="autoFillBackground">
                <bool>false</bool>
               </property>
@@ -255,8 +267,8 @@ border: none;</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>251</width>
-             <height>286</height>
+             <width>254</width>
+             <height>293</height>
             </rect>
            </property>
           </widget>
@@ -338,6 +350,9 @@ border: none;</string>
    <property name="text">
     <string>&amp;Emplacements récents</string>
    </property>
+   <property name="toolTip">
+    <string extracomment="TEST">Emplacements récents</string>
+   </property>
   </action>
   <action name="actionEditer">
    <property name="text">
@@ -350,36 +365,57 @@ border: none;</string>
    </property>
   </action>
   <action name="actionIcones_petites">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Icones petites</string>
    </property>
   </action>
   <action name="actionIcones_moyennes">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Icones &amp;moyennes</string>
    </property>
   </action>
   <action name="actionIcones_grandes">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Icones &amp;grandes</string>
    </property>
   </action>
   <action name="actionListe">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Liste</string>
    </property>
   </action>
   <action name="actionIc_nes">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>I&amp;cônes</string>
    </property>
   </action>
   <action name="actionA_propos">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;A propos</string>
    </property>
   </action>
   <action name="actionManuel">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Manuel</string>
    </property>
