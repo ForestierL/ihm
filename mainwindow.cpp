@@ -6,6 +6,7 @@
 #include "itemlist.h"
 #include "imageitem.h"
 #include "themeapplier.h"
+#include"createalbumwindow.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -116,7 +117,12 @@ void MainWindow::recent_album(){
 
 }
 void MainWindow::new_album(){
+    CreateAlbumWindow w(this);
+    //w.setImagePath(path);
 
+    w.show();
+    QEventLoop eventLoop;
+    eventLoop.exec();
 }
 void MainWindow::add_to_album(){
 
@@ -614,6 +620,10 @@ void MainWindow::allImage_clicked()
 
 
 
+Ui::MainWindow* MainWindow::getUI(void)
+{
+    return ui;
+}
 
 
 

@@ -32,6 +32,7 @@ public:
     void checkAllPath();
     void getChildAndSetStyle(QObject *, QString);
     void setTheme();
+    Ui::MainWindow* getUI(void);
 
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
