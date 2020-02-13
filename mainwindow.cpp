@@ -430,6 +430,8 @@ void MainWindow::eraseItem(const QString path)
     if (reponse == QMessageBox::Yes)
     {
         file.remove();
+        if(path != "")
+            itemList->reloadWith(path,false, true, true);
     }
 }
 
