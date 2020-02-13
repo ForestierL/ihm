@@ -15,7 +15,11 @@
 #include <QLineEdit>
 #include <QFileIconProvider>
 #include "database.h"
+<<<<<<< HEAD
 #include "clickablelabel.h"
+=======
+#include "qhoversensitivebutton.h"
+>>>>>>> 4bc679a509735d9a78395c930a65220782216c27
 
 class ImageItem : public QWidget
 {
@@ -60,10 +64,10 @@ public:
     void setDisabledDown(bool disabled);
 
 private:
-    QPushButton* upArrow;
+    QHoverSensitiveButton* upArrow;
     QLineEdit* idEdit;
     int id;
-    QPushButton* downArrow;
+    QHoverSensitiveButton* downArrow;
 
 private slots:
     void move_down();

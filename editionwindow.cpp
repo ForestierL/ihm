@@ -48,10 +48,13 @@ QFrame* EditionWindow::createToolBar(void)
     tempSlider->setMaximum(5);
     tempSlider->setTickInterval(1);
     tempSlider->setValue(0);
+    tempSlider->setToolTip("Note");
 
     QLabel *tempLabel = new QLabel("0");
+    tempLabel->setToolTip("Note");
     tempLabel->setFixedSize(8, 20);
     QLabel *temp2Label = new QLabel("/ 5");
+    temp2Label->setToolTip("Note");
     temp2Label->setFixedSize(20, 20);
 
     QHBoxLayout *tempLayout = new QHBoxLayout();
@@ -71,13 +74,20 @@ QFrame* EditionWindow::createToolBar(void)
     hBoxLayout->setContentsMargins(0, 0, 0, 0);
 
     QHoverSensitiveButton *returnButton = new QHoverSensitiveButton(this, "previous");
+    returnButton->setToolTip("Annuler dernière modification");
     QHoverSensitiveButton *repeatButton = new QHoverSensitiveButton(this,"next");
+    repeatButton->setToolTip("Rétablir dernière modification");
 
     QHoverSensitiveButton *rotateButton = new QHoverSensitiveButton(this, "rotate");
+    rotateButton->setToolTip("Pivoter l'image de 90°");
     QHoverSensitiveButton *horizontalMirrorButton = new QHoverSensitiveButton(this, "mirror-h");
+    horizontalMirrorButton->setToolTip("Mirroir horizontal");
     QHoverSensitiveButton *verticalMirrorButton = new QHoverSensitiveButton(this, "mirror-v");
+    verticalMirrorButton->setToolTip("Mirroir vertical");
     QHoverSensitiveButton *trimButton = new QHoverSensitiveButton(this, "crop");
+    trimButton->setToolTip("Rogner");
     QHoverSensitiveButton *resizeButton = new QHoverSensitiveButton(this, "resize");
+    resizeButton->setToolTip("Redimenssionner");
 
     hBoxLayout->addWidget(returnButton);
     hBoxLayout->addWidget(repeatButton);
@@ -98,6 +108,7 @@ QFrame* EditionWindow::createStatusBar(void)
 {
     /******** Composant de la status bar ********/
     QPushButton *addToAlbumButton = new QPushButton("+");
+    addToAlbumButton->setToolTip("Ajouter à un album");
     QLabel *addToAlbumLabel = new QLabel("Ajouter à un album");
 
     QSlider *zoomSlider = new QSlider();
@@ -107,8 +118,10 @@ QFrame* EditionWindow::createStatusBar(void)
     zoomSlider->setMaximum(200);
     zoomSlider->setTickInterval(1);
     zoomSlider->setValue(100);
+    zoomSlider->setToolTip("Zoomer");
 
     QLabel *percentZoomLabel = new QLabel("100");
+    percentZoomLabel->setToolTip("Niveau de zoom");
     QLabel *percentLabel = new QLabel("%");
 
     QHBoxLayout *zoomLayout = new QHBoxLayout();

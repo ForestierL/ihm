@@ -3,7 +3,9 @@
 AlbumButton::AlbumButton(QString &name) : QHBoxLayout()
 {
     albumTitle = new QPushButton();
+    albumTitle->setToolTip(name);
     deleteAlbum = new QHoverSensitiveButton(NULL, "delete");
+    deleteAlbum->setToolTip("Supprimer l'album");
 
     albumTitle->setText(name);
     deleteAlbum->setMaximumSize(20,20);

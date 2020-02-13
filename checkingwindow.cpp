@@ -34,7 +34,9 @@ void CheckingWindow::initMissingFilesPath(QVector<QString>* missingFilesPath)
     for(int i=0; i < this->missingFilesPath->length(); i++)
     {
         QPushButton *relocate = new QPushButton("Relocaliser");
+        relocate->setToolTip("Relocaliser l'image");
         QPushButton *ignore = new QPushButton("Ignorer");
+        ignore->setToolTip("Ignorer l'image");
 
         buttonsRelocate->append(relocate);
         buttonsIgnore->append(ignore);
