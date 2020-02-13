@@ -17,9 +17,27 @@ QVector<QString> selectAllImageInDir(QString dirPath, bool recursive = false){
     return result;
 }
 
-ItemList::ItemList(QWidget *parent, QString folderPath, bool recursive) : QWidget(parent)
+QVector<QString> selectImageAndDir(QString dirPath){
+    QDir dir(dirPath);
+    QVector<QString> result;
+    QStringList dirs = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
+    foreach(QString dir, dirs)
+    {
+        result.append(dirPath+"/"+dir+"/");
+    }
+
+    QStringList extension;
+    extension<<"*.jpg" << "*.JPG"<< "*.png" << "*.jpeg" << "*.jpg" << "*.gif" << "*.bmp" << "*.jpe" << "*.jfif" << "*.rle" << "*.tga" << "*.tif" << "*.tiff";
+    QStringList images = dir.entryList(extension, QDir::Files);
+    foreach(QString filename, images) {
+       result.append(dirPath+"/"+filename);
+    }
+    return result;
+}
+
+ItemList::ItemList(QWidget *parent, QString folderPath) : QWidget(parent)
 {
-    QVector<QString> paths = selectAllImageInDir(folderPath, recursive);
+    QVector<QString> paths = selectImageAndDir(folderPath);
 
     this->parent = parent;
     selfLayout = new QGridLayout(parent);
@@ -49,7 +67,15 @@ void ItemList::createContent(QVector<QString> paths)
         imageItems.append(imageItem);
         selfLayout->addWidget(imageItem,i,0);
     }
-    imageItems.at(0)->setDisabledUp(true);
+    for(ImageItem *im : imageItems)
+    {
+        if(im->getIsImage())
+        {
+            im->setDisabledUp(true);
+            break;
+        }
+    }
+//    imageItems.at(0)->setDisabledUp(true);
     imageItems.last()->setDisabledDown(true);
 }
 

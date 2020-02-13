@@ -38,23 +38,23 @@ ImageItem::ImageItem(QWidget *parent, QString filePath, int id, bool smoothImage
 
 QString extactDirectoryName(QString path)
 {
-    QStringList qsl = path.split('\\');
+    QStringList qsl = path.split('/');
     if(qsl.size()<2)
-        return path+"\\";
+        return path;
     qsl.removeLast(); //vide
-    return qsl.last()+"\\";
+    return qsl.last();
 }
 
 void ImageItem::createContentFolder(QString dirPath)
 {
-    qDebug() << "folder";
+    qDebug() << "folder" << dirPath;
     QDir dir(dirPath);
     filePath = dirPath;
 
     //charger une image de dossier
 //    QFileIconProvider::Folder
     imageLabel  = new QLabel();
-    imageLabel->setStyleSheet("background-color: #7f7f7f;");
+    //imageLabel->setStyleSheet("background-color: #7f7f7f;");
     imageLabel->setFixedSize(100,100);
 
     imageLabel->setAlignment(Qt::AlignCenter);
@@ -222,9 +222,11 @@ void ImageItem::setId(int id)
 void ImageItem::setDisabledUp(bool disabled)
 {
     upArrow->setDisabled(disabled);
+    upArrow->hide();
 }
 
 void ImageItem::setDisabledDown(bool disabled)
 {
     downArrow->setDisabled(disabled);
+    downArrow->hide();
 }

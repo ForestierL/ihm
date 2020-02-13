@@ -69,7 +69,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     displayAlbum();
     createActions();
 
-    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath, true);
+//    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath, true);
+    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
     ui->elementListView->hide();
 
 }
@@ -545,7 +546,7 @@ void MainWindow::allImage_clicked()
 {
     QString path = pathVisit->getCurrentPath();
     QWidget *scrollAreaList = ui->scrollAreaWidgetContents;
-    itemList  = new ItemList(scrollAreaList, path, true);
+    //itemList  = new ItemList(scrollAreaList, path, true);
 }
 
 
