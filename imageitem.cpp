@@ -275,14 +275,4 @@ void ImageItem::ctxMenu(const QPoint &pos)
 
 void ImageItem::on_ImageLabel_doubleClicked()
 {
-//    QString dirPath = dirModel->fileInfo(index).absoluteFilePath();
-//    actualFile = dirPath;
-
-//    QDir pathDir(dirPath);
-//    if (pathDir.exists()) {
-//        openDirectory();
-//    } else {
-//        openEditor();
-//    }
-    qDebug()<<"LOLL";
 }
