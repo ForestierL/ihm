@@ -63,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->elementListView->setModel(fileModel);
 
     pathVisit = new PathVisit(mainPath);
+    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
+
     updateCurrentPath(mainPath);
 
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -71,11 +73,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     displayAlbum();
     createActions();
 
+//    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
+
 //    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath, true);
-    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
-    itemList->reloadWith(mainPath,false, true, true);
-    ui->elementListView->hide();
-    ui->elementListView->show();
+//    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
+//    itemList->reloadWith(mainPath,false, true, true);
+//    ui->elementListView->hide();
+//    ui->elementListView->show();
 
 }
 
@@ -206,7 +210,10 @@ bool MainWindow::updateCurrentPath(QString path) {
 
     lineEditPath->setText(path);
 
+    itemList->reloadWith(path,false, true, true);
+
     pathVisit->addPath(path);
+    //itemList->reloadWith(path,false, true, true);
 
     return true;
 }
@@ -545,8 +552,12 @@ void MainWindow::open_album(const QString& albumName){
     QString name = albumName;
     int idAlbum=Database::getAlbumId(name);
     QVector<int> idImages = Database::getAlbumInImageOrderByPosition(idAlbum);
-    // pas sur de ca
-    //itemList->createContentAlbum(idImages);
+    QVector<QString> allPath;
+    for(int i =0;i<idImages.size();i++){
+        QString filepath = Database::getImageFilePath(idImages[i]);
+        allPath.append(filepath);
+    }
+    itemList->reloadWith(allPath,false, false, true);
 }
 
 void MainWindow::allImage_clicked()

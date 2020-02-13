@@ -18,7 +18,6 @@ public:
     void moveTo(int currentIndex, int finalIndex); // to 0 => prend 0 et décale la suite de 1 jusqu'à l'ancien index
     void moveUp(int currentIndex);
     void moveDown(int currentIndex);
-    void createContentAlbum(QVector<int> idImages);
 private:
     void createContent(QVector<QString> paths = {""});
     void recreateContent(QVector<QString> paths = {""}, bool arrow = false);
