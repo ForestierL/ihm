@@ -77,11 +77,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 //    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
 
 //    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath, true);
+
 //    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
 //    itemList->reloadWith(mainPath,false, true, true);
 //    ui->elementListView->hide();
 //    ui->elementListView->show();
 
+    addRecentsAlbumToMenuFichier();
+}
+
+void MainWindow::addRecentsAlbumToMenuFichier()
+{
+    QVector<QString> recentAlbums = Database::getAlbumsOrderByLastModification();
+    for(int i = 0; i < recentAlbums.length(); ++i)
+    {
+        QAction *action = new QAction(ui->menu_Albums_r_cents);
+        action->setText(recentAlbums.at(i));
+        ui->menu_Albums_r_cents->addAction(recentAlbums.at(i));
+    }
 }
 
 void MainWindow::displayAlbum(){
@@ -94,7 +107,6 @@ void MainWindow::displayAlbum(){
 
 void MainWindow::createActions(){
     connect(ui->actionEmplacement_r_cent, SIGNAL(triggered()), this, SLOT(recent_folder()));
-    connect(ui->actionAlbum_r_cent, SIGNAL(triggered()), this, SLOT(recent_album()));
     connect(ui->actionNouveau_album, SIGNAL(triggered()), this, SLOT(new_album()));
     connect(ui->actionAjouter_l_album, SIGNAL(triggered()), this, SLOT(add_to_album()));
     connect(ui->actionFermer, SIGNAL(triggered()), this, SLOT(close()));
@@ -117,9 +129,8 @@ void MainWindow::createActions(){
 void MainWindow::recent_folder(){
 
 }
-void MainWindow::recent_album(){
 
-}
+
 void MainWindow::new_album(){
     CreateAlbumWindow w(this);
     //w.setImagePath(path);
@@ -132,7 +143,7 @@ void MainWindow::add_to_album(){
 
 }
 void MainWindow::close(){
-
+    QMainWindow::close();
 }
 void MainWindow::edit(){
 
@@ -202,6 +213,16 @@ void MainWindow::light_theme(){
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete itemList;
+    delete dirModel;
+    delete fileModel;
+    delete pathVisit;
+
+    ui = nullptr;
+    itemList = nullptr;
+    dirModel = nullptr;
+    fileModel = nullptr;
+    pathVisit = nullptr;
 }
 
 bool MainWindow::updateCurrentPath(QString path) {
