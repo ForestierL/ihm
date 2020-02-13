@@ -285,28 +285,33 @@ void MainWindow::setNavButtons(){
     layout->setSpacing(0);
 
     QHoverSensitiveButton *previous = new QHoverSensitiveButton(navFrame, "arrow-l");
+    previous->setToolTip("Retour arrière");
     previous->setMaximumWidth(24);
     previous->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     connect(previous, SIGNAL(clicked()), this, SLOT(previous_clicked()));
 
     QHoverSensitiveButton *next = new QHoverSensitiveButton(navFrame, "arrow-r");
+    next->setToolTip("Retour avant");
     next->setMaximumWidth(24);
     next->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     connect(next, SIGNAL(clicked()), this, SLOT(next_clicked()));
 
     QHoverSensitiveButton *home = new QHoverSensitiveButton(navFrame, "home");
+    home->setToolTip("Retour dans le dossier d'accueil");
     home->setMaximumWidth(24);
     home->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     connect(home, SIGNAL(clicked()), this, SLOT(home_clicked()));
 
     QHoverSensitiveButton *up = new QHoverSensitiveButton(navFrame, "arrow-u");
+    up->setToolTip("Remonter la hierarchie");
     up->setMaximumWidth(24);
     up->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     connect(up, SIGNAL(clicked()), this, SLOT(up_clicked()));
 
     QHoverSensitiveButton *allImage = new QHoverSensitiveButton(navFrame, "recursive-search");
-    up->setMaximumWidth(24);
-    up->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    allImage->setToolTip("Recherche récursive dans le dossier actif");
+    allImage->setMaximumWidth(24);
+    allImage->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     connect(allImage, SIGNAL(clicked()), this, SLOT(allImage_clicked()));
 
     layout->addWidget(previous);
@@ -315,6 +320,7 @@ void MainWindow::setNavButtons(){
     layout->addWidget(up);
 
     ui->lePath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    ui->lePath->setToolTip("Chemin du dossier actif");
     ui->navBar->insertWidget(0, navFrame);
 
     ui->navigation->addWidget(allImage);
@@ -329,13 +335,18 @@ void MainWindow::setStatusBar() {
     layout->setSpacing(0);
 
     QLabel *statusMessage = new QLabel("0 élement selectionné", statusFrame);
+    statusMessage->setToolTip("Nombre total d'élements");
 
     QFrame *frame = new QFrame(statusFrame);
     frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QHoverSensitiveButton *liste = new QHoverSensitiveButton(statusFrame, "list");
+    liste->setDisabled(true);
+    liste->setToolTip("Affichage en liste (WIP)");
 
     QHoverSensitiveButton *icone = new QHoverSensitiveButton(statusFrame, "icon");
+    icone->setDisabled(true);
+    icone->setToolTip("Affichage en icones (WIP)");
 
     layout->addWidget(statusMessage);
     layout->addWidget(frame);
@@ -617,6 +628,7 @@ void MainWindow::allImage_clicked()
     couleur->addItem("Violet");
     couleur->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     couleur->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
+    couleur->setToolTip("Filtrage par couleur");
 
     QComboBox *feeling = new QComboBox(filterFrame);
     feeling->addItem("---");
@@ -628,6 +640,7 @@ void MainWindow::allImage_clicked()
     feeling->addItem("Tristesse");
     feeling->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     feeling->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
+    feeling->setToolTip("Filtrage par emotion");
 
     QComboBox *note = new QComboBox(filterFrame);
     note->addItem("---");
@@ -639,8 +652,10 @@ void MainWindow::allImage_clicked()
     note->addItem("5");
     note->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     note->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
+    feeling->setToolTip("Filtrage par note");
 
     QHoverSensitiveButton *okFilter = new QHoverSensitiveButton(filterFrame, "filter");
+    okFilter->setToolTip("Lancer le filtrage");
 
     layout->addWidget(couleur);
     layout->addWidget(feeling);

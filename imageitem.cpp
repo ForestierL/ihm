@@ -138,19 +138,31 @@ void ImageItem::setupLayout()
     /*mainLayout->addWidget(imageLabel);
     mainLayout->addWidget(imageLabel, 0, 0, Qt::AlignCenter);*/
     mainLayout->addWidget(imageLabel,0,0,3,1);
+    imageLabel->setToolTip(name->text());
     mainLayout->addWidget(name,     0,1,1,5);
+    name->setToolTip(name->text());
     mainLayout->addWidget(size,     1,1,1,2);
+    size->setToolTip("Taille du fichier");
     mainLayout->addWidget(date,     2,1,1,2);
+    date->setToolTip("Date de création");
     mainLayout->addWidget(comment,  1,2,3,4);
+    comment->setToolTip("Commentaires");
     mainLayout->addWidget(note,     0,6,1,1);
+    note->setToolTip("Note");
     mainLayout->addWidget(color,    1,6,1,1);
+    color->setToolTip("Couleur dominante");
     mainLayout->addWidget(feeling,  2,6,1,1);
+    feeling->setToolTip("Emotions");
     if(isImage)
     {
     //mover
         mainLayout->addWidget(upArrow,  0,7,1,1);
+        upArrow->setToolTip("Monter dans l'album");
         mainLayout->addWidget(idEdit,   1,7,1,1);
+        idEdit->setDisabled(true);
+        idEdit->setToolTip("Range dans l'album");
         mainLayout->addWidget(downArrow,2,7,1,1);
+        downArrow->setToolTip("Descendre dans l'album");
     }
     for(int i=0; i<8; i++) {
 //        mainLayout->setColumnMinimumWidth(i,size->width()/8);
@@ -220,7 +232,7 @@ void ImageItem::setFeeling(QString feeling)
 //from mover
 void ImageItem::initMover()
 {
-    upArrow = new QPushButton("⯅");
+    upArrow = new QHoverSensitiveButton(NULL,"arrow-u");
     upArrow->setFixedWidth(30);
 
     idEdit = new QLineEdit(QString::number(id));
@@ -228,7 +240,7 @@ void ImageItem::initMover()
     idEdit->setFixedWidth(30);
     //idEdit->hide();
 
-    downArrow = new QPushButton("⯆");
+    downArrow = new QHoverSensitiveButton(NULL,"arrow-d");
     downArrow->setFixedWidth(30);
 
     connect(upArrow, SIGNAL(clicked()), this, SLOT(move_up()));
