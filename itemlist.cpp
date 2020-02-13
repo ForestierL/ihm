@@ -60,6 +60,11 @@ void ItemList::reloadWith(QString folderPath, bool recursive, bool showFolder, b
     else
         paths.append(selectAllImageInDir(folderPath, false));
 
+    reloadWith(paths, recursive, showFolder, arrows);
+}
+
+void ItemList::reloadWith(QVector<QString> paths, bool recursive, bool showFolder, bool arrows)
+{
     this->paths = paths;
     recreateContent(paths, arrows);
 }
