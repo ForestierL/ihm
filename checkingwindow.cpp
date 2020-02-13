@@ -6,7 +6,6 @@
 #include <QMessageBox>
 #include <QSignalMapper>
 #include <QSpacerItem>
-#include <QSignalMapper>
 #include <QFileDialog>
 
 
@@ -45,7 +44,6 @@ void CheckingWindow::initMissingFilesPath(QVector<QString>* missingFilesPath)
 
         QSignalMapper *mapperRelocate = new QSignalMapper();
         connect(relocate, SIGNAL(clicked()), mapperRelocate, SLOT(map()));
-
         mapperRelocate->setMapping(relocate, i);
         connect(mapperRelocate, SIGNAL(mapped(const int &)), this, SLOT(relocate(const int &)));
 

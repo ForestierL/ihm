@@ -56,7 +56,8 @@ protected slots:
     void horizontalMirror();
     void rotateImage();
     void resizeWindow();
-    void resize(QImage);
+    void resizePhoto(const int);
+    void resetImage();
 
     void save(void);
     void saveAs(void);

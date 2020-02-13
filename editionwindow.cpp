@@ -41,7 +41,8 @@ QFrame* EditionWindow::createToolBar(void)
 {
     /********* Composant de la tool bar *********/
     QPushButton *returnButton = new QPushButton("a");
-    QPushButton *repeatButton = new QPushButton("b");
+    connect(returnButton, SIGNAL(clicked()), this, SLOT(resetImage()));
+    //QPushButton *repeatButton = new QPushButton("b");
 
     QPushButton *rotateButton = new QPushButton("c");
     connect(rotateButton, SIGNAL(clicked()), this, SLOT(rotateImage()));
@@ -84,7 +85,7 @@ QFrame* EditionWindow::createToolBar(void)
     hBoxLayout->setContentsMargins(0, 0, 0, 0);
 
     hBoxLayout->addWidget(returnButton);
-    hBoxLayout->addWidget(repeatButton);
+    //hBoxLayout->addWidget(repeatButton);
     hBoxLayout->addStretch(1);
     hBoxLayout->addWidget(rotateButton);
     hBoxLayout->addWidget(horizontalMirrorButton);
@@ -146,7 +147,6 @@ void EditionWindow::createContents()
     QImageReader *reader = new QImageReader(imagePath);
     reader->setAutoTransform(true);
     QImage srcImage = reader->read();
-    //newImage = srcImage;
     dstImage = srcImage;
 
     if (srcImage.isNull()) {
@@ -328,13 +328,31 @@ void EditionWindow::resizeWindow(){
     eventLoop.exec();
 }
 
-void EditionWindow::resize(QImage img){
+void EditionWindow::resizePhoto(const int p){
+    qDebug() << p;
+    QImage img = dstImage.scaled(dstImage.width()*p/100, dstImage.height()*p/100, Qt::KeepAspectRatio);
     QPainter painter(&dstImage);
     painter.drawImage(0, 0, img);
+    painter.end();
     dstImage = img;
     actualImageHeigth = dstImage.height() * zoomSlider->value()/100;
     actualImageWidth = dstImage.width() * zoomSlider->value()/100;
     imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+}
+
+void EditionWindow::resetImage(){
+    QPainter painter(&dstImage);
+    QImageReader *reader = new QImageReader(imagePath);
+    reader->setAutoTransform(true);
+    QImage srcImage = reader->read();
+    painter.drawImage(0, 0, srcImage);
+    painter.end();
+    dstImage = srcImage;
+
+    actualImageWidth = srcImage.width();
+    actualImageHeigth = srcImage.height();
+    zoomSlider->setValue(100);
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage));
 }
 
 /************************************* SLOT *************************************/

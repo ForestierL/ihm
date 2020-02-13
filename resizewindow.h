@@ -2,6 +2,7 @@
 #define RESIZEWINDOW_H
 
 #include <QDialog>
+#include <QSignalMapper>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class ResizeWindow;}
@@ -19,12 +20,13 @@ public:
 private:
     Ui::ResizeWindow *ui;
     QImage imgRef;
+    QSignalMapper *mapper;
 
 protected slots:
     void modifPercent();
     void modifHeight();
     void modifWidth();
-    void validate();
+
 };
 
 #endif // REZIZEWINDOW_H
