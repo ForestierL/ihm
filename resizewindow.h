@@ -13,14 +13,18 @@ class ResizeWindow : public QDialog
     Q_OBJECT
 
 public:
-    ResizeWindow(QWidget *parent = nullptr);
+    ResizeWindow(QImage, QWidget *parent = nullptr);
     ~ResizeWindow();
 
 private:
     Ui::ResizeWindow *ui;
+    QImage imgRef;
 
 protected slots:
-
+    void modifPercent();
+    void modifHeight();
+    void modifWidth();
+    void validate();
 };
 
 #endif // REZIZEWINDOW_H

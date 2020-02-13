@@ -52,7 +52,7 @@ QFrame* EditionWindow::createToolBar(void)
     QPushButton *trimButton = new QPushButton("f");
     connect(trimButton, SIGNAL(clicked()), this, SLOT(cropImage()));
     QPushButton *resizeButton = new QPushButton("g");
-    connect(resizeButton, SIGNAL(clicked()), this, SLOT(resize()));
+    connect(resizeButton, SIGNAL(clicked()), this, SLOT(resizeWindow()));
 
     QSlider *tempSlider = new QSlider();
     tempSlider->setFixedSize(150, 20);
@@ -321,11 +321,20 @@ void EditionWindow::rotateImage(){
     imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
 }
 
-void EditionWindow::resize(){
-    ResizeWindow r(this);
+void EditionWindow::resizeWindow(){
+    ResizeWindow r(dstImage, this);
     r.show();
     QEventLoop eventLoop;
     eventLoop.exec();
+}
+
+void EditionWindow::resize(QImage img){
+    QPainter painter(&dstImage);
+    painter.drawImage(0, 0, img);
+    dstImage = img;
+    actualImageHeigth = dstImage.height() * zoomSlider->value()/100;
+    actualImageWidth = dstImage.width() * zoomSlider->value()/100;
+    imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
 }
 
 /************************************* SLOT *************************************/

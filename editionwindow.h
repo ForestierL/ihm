@@ -21,8 +21,6 @@ public:
     ~EditionWindow();
     void createContents(void);
     void setImage(const QString &fileName);
-    QImage dstImage;
-    QImage newImage;
 
 private:
     QFrame* createStatusBar(void);
@@ -47,6 +45,8 @@ private:
     float actualImageWidth;
     float actualImageHeigth;
     QRect rect;
+    QImage dstImage;
+    QImage newImage;
 
 protected slots:
     void resizeImage(int);
@@ -55,7 +55,8 @@ protected slots:
     void verticalMirror();
     void horizontalMirror();
     void rotateImage();
-    void resize();
+    void resizeWindow();
+    void resize(QImage);
 
     void save(void);
     void saveAs(void);
