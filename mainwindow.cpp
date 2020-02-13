@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     splitter->addWidget(w2);
     splitter->addWidget(w1);
 
+    this->statusBar()->setSizeGripEnabled(false);
+
     ui->lAlbums->setAlignment(Qt::AlignTop);
     /*******************/
 
@@ -267,19 +269,20 @@ void MainWindow::setNavButtons(){
     up->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     connect(up, SIGNAL(clicked()), this, SLOT(up_clicked()));
 
-    QHoverSensitiveButton *allImage = new QHoverSensitiveButton(navFrame, "arrow-u");
+    QHoverSensitiveButton *allImage = new QHoverSensitiveButton(navFrame, "recursive-search");
     up->setMaximumWidth(24);
-    up->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    up->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     connect(allImage, SIGNAL(clicked()), this, SLOT(allImage_clicked()));
 
     layout->addWidget(previous);
     layout->addWidget(next);
     layout->addWidget(home);
     layout->addWidget(up);
-    layout->addWidget(allImage);
 
     ui->lePath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
     ui->navBar->insertWidget(0, navFrame);
+
+    ui->navigation->addWidget(allImage);
 }
 
 void MainWindow::setStatusBar() {
@@ -291,7 +294,6 @@ void MainWindow::setStatusBar() {
     layout->setSpacing(0);
 
     QLabel *statusMessage = new QLabel("0 élement selectionné", statusFrame);
-    //statusMessage->setStyleSheet("color: white");
 
     QFrame *frame = new QFrame(statusFrame);
     frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -306,6 +308,9 @@ void MainWindow::setStatusBar() {
     layout->addWidget(icone);
 
     ui->statusbar->addWidget(statusFrame, 1);
+//    statusFrame->setStyleSheet("background-color: red;");
+//    statusMessage->setStyleSheet("background-color: green;");
+//    frame->setStyleSheet("background-color: yellow;");
 }
 
 
@@ -550,6 +555,60 @@ void MainWindow::allImage_clicked()
         QString path = pathVisit->getCurrentPath();
         itemList->reloadWith(path,true, false, false);
     }
+
+    QFrame *filterFrame = new QFrame();
+    filterFrame->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+    QHBoxLayout *layout = new QHBoxLayout(filterFrame);
+    layout->setContentsMargins(0,0,0,0);
+    layout->setSpacing(0);
+
+    QComboBox *couleur = new QComboBox(filterFrame);
+    couleur->addItem("---");
+    couleur->addItem("Blanc");
+    couleur->addItem("Bleu");
+    couleur->addItem("Cyan");
+    couleur->addItem("Gris");
+    couleur->addItem("Jaune");
+    couleur->addItem("Noir");
+    couleur->addItem("Orange");
+    couleur->addItem("Rouge");
+    couleur->addItem("Rose");
+    couleur->addItem("Vert");
+    couleur->addItem("Violet");
+    couleur->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    couleur->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+    QComboBox *feeling = new QComboBox(filterFrame);
+    feeling->addItem("---");
+    feeling->addItem("Colère");
+    feeling->addItem("Dégoût");
+    feeling->addItem("Joie");
+    feeling->addItem("Peur");
+    feeling->addItem("Surprise");
+    feeling->addItem("Tristesse");
+    feeling->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    feeling->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+    QComboBox *note = new QComboBox(filterFrame);
+    note->addItem("---");
+    note->addItem("0");
+    note->addItem("1");
+    note->addItem("2");
+    note->addItem("3");
+    note->addItem("4");
+    note->addItem("5");
+    note->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    note->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+    QHoverSensitiveButton *okFilter = new QHoverSensitiveButton(filterFrame, "filter");
+
+    layout->addWidget(couleur);
+    layout->addWidget(feeling);
+    layout->addWidget(note);
+    layout->addWidget(okFilter);
+
+    ui->vlList->insertWidget(0, filterFrame);
 }
 
 

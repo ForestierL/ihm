@@ -1,53 +1,19 @@
-/*dark*/
-
-QFrame#navFrame {
-        background-color: #FF0000;
-	border: 0px;
-	margin: 0px;
-	padding: 0px;
-}
-
-QHoverSensitiveButton#previous, QHoverSensitiveButton#next,
-QHoverSensitiveButton#home, QHoverSensitiveButton#up {
-	background-color: rgb(0,255,0);
-        color: #F6F6F6;
-	border: 0px;
-	margin: 0px;
-	padding: 0px;
-}
-
-QFrame#statusFrame {
-	background-color: rgb(51,51,51);
-	border: 0px;
-	margin: 0px;
-	padding: 0px;
-}
-
-QLabel#statusMessage {
-        color: #F6F6F6;
-}
-
-QFrame#frame {
-	background-color: rgb(51,51,51);
-	border: 0px;
-	margin: 0px;
-	padding: 0px;
-}
-
-QHoverSensitiveButton#liste, QHoverSensitiveButton#icone {
-	background-color: rgb(51,51,51);
-	color: rgb(140,140,140);
-	border: 0px;
-	margin: 0px;
-	padding: 0px;
-}
-
-#status-bar {
-	background-color: rgb(51,51,51);
-}
-
 * {
-        background-color: #404040 !important;
-        color: #F6F6F6 !important;
+    background-color: #191919;
+    color: #ffffff;
+}
+
+QStatusBar QLabel{
+    color: #ffffff;
+}
+
+QStatusBar{
+    color: #ffffff;
+    background-color: #333333;
+}
+
+QTreeView::item:hover{
+    color: #ffffff;
+    background-color: #333333;
 }
 

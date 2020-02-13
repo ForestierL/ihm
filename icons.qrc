@@ -57,5 +57,13 @@
         <file>Ressources/resize-light.png</file>
         <file>Ressources/rotate-hover.png</file>
         <file>Ressources/rotate-light.png</file>
+        <file>Ressources/filter-dark.png</file>
+        <file>Ressources/filter-hover.png</file>
+        <file>Ressources/filter-light.png</file>
+        <file>Ressources/recursive-search-dark.png</file>
+        <file>Ressources/recursive-search-hover.png</file>
+        <file>Ressources/recursive-search-light.png</file>
+        <file>Ressources/validate-light.png</file>
+        <file>Ressources/validate-hover.png</file>
     </qresource>
 </RCC>
