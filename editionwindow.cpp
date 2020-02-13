@@ -1,6 +1,7 @@
 
 #include "editionwindow.h"
 #include "ui_editionwindow.h"
+#include "resizewindow.h"
 
 #include <QLabel>
 #include <QPushButton>
@@ -51,6 +52,7 @@ QFrame* EditionWindow::createToolBar(void)
     QPushButton *trimButton = new QPushButton("f");
     connect(trimButton, SIGNAL(clicked()), this, SLOT(cropImage()));
     QPushButton *resizeButton = new QPushButton("g");
+    connect(resizeButton, SIGNAL(clicked()), this, SLOT(resize()));
 
     QSlider *tempSlider = new QSlider();
     tempSlider->setFixedSize(150, 20);
@@ -262,6 +264,14 @@ void EditionWindow::mouseReleaseEvent(QMouseEvent *event){
         if (reponse == QMessageBox::Yes)
         {
             rect.setCoords(qMin(rect.topLeft().rx(),rect.bottomRight().rx()), qMin(rect.topLeft().ry(),rect.bottomRight().ry()), qMax(rect.topLeft().rx(),rect.bottomRight().rx()), qMax(rect.topLeft().ry(),rect.bottomRight().ry()));
+            if(rect.topLeft().rx() < 0)
+                rect.setCoords(0, rect.topLeft().ry(), rect.bottomRight().rx(), rect.bottomRight().ry());
+            if(rect.topLeft().ry() < 0)
+                rect.setCoords(rect.topLeft().rx(), 0, rect.bottomRight().rx(), rect.bottomRight().ry());
+            if(rect.bottomRight().rx() > dstImage.width())
+                rect.setCoords(0, rect.topLeft().ry(), dstImage.width(), rect.bottomRight().ry());
+            if(rect.bottomRight().ry() > dstImage.height())
+                rect.setCoords(rect.topLeft().rx(), rect.topLeft().ry(), rect.bottomRight().rx(), dstImage.height());
             dstImage = newImage.copy(rect);
             actualImageHeigth = dstImage.height() * zoomSlider->value()/100;
             actualImageWidth = dstImage.width() * zoomSlider->value()/100;
@@ -309,6 +319,13 @@ void EditionWindow::rotateImage(){
     actualImageHeigth = dstImage.height() * zoomSlider->value()/100;
     actualImageWidth = dstImage.width() * zoomSlider->value()/100;
     imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+}
+
+void EditionWindow::resize(){
+    ResizeWindow r(this);
+    r.show();
+    QEventLoop eventLoop;
+    eventLoop.exec();
 }
 
 /************************************* SLOT *************************************/
