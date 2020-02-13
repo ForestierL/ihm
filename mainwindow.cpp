@@ -421,6 +421,9 @@ void MainWindow::informations(const QString path)
 void MainWindow::eraseItem(const QString path)
 {
     QFile file(actualFile);
+    if(path != ""){
+        file.setFileName(path);
+    }
 
     int reponse = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer cette image ?\nATTENTION ! Elle ne sera pas récupérable.", QMessageBox ::Yes | QMessageBox::No);
 
