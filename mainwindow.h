@@ -37,11 +37,11 @@ public:
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
     void on_dirTreeView_clicked(const QModelIndex &index);
-    void openEditor();
+    void openEditor(const QString path = "");
     void openDirectory();
-    void addToAlbum();
-    void informations();
-    void eraseItem();
+    void addToAlbum(const QString path = "");
+    void informations(const QString path = "");
+    void eraseItem(const QString path = "");
     bool removeDirectory(QString dirPath = "");
     void showContextMenu(const QPoint&);
     void on_lePath_returnPressed();
