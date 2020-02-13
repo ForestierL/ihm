@@ -80,8 +80,8 @@ border: none;</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>648</width>
-           <height>295</height>
+           <width>644</width>
+           <height>288</height>
           </rect>
          </property>
         </widget>
@@ -255,8 +255,8 @@ border: none;</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>254</width>
-             <height>293</height>
+             <width>251</width>
+             <height>286</height>
             </rect>
            </property>
           </widget>
@@ -284,8 +284,13 @@ border: none;</string>
     <property name="title">
      <string>Fic&amp;hier</string>
     </property>
+    <widget class="QMenu" name="menu_Albums_r_cents">
+     <property name="title">
+      <string>&amp;Albums récents</string>
+     </property>
+    </widget>
     <addaction name="actionEmplacement_r_cent"/>
-    <addaction name="actionAlbum_r_cent"/>
+    <addaction name="menu_Albums_r_cents"/>
     <addaction name="actionNouveau_album"/>
     <addaction name="actionAjouter_l_album"/>
     <addaction name="separator"/>
@@ -332,11 +337,6 @@ border: none;</string>
   <action name="actionEmplacement_r_cent">
    <property name="text">
     <string>&amp;Emplacements récents</string>
-   </property>
-  </action>
-  <action name="actionAlbum_r_cent">
-   <property name="text">
-    <string>&amp;Albums récents</string>
    </property>
   </action>
   <action name="actionEditer">
