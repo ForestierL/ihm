@@ -84,16 +84,14 @@ void ItemList::reloadWith(QVector<QString> paths, bool recursive, bool showFolde
 
 void ItemList::recreateContent(QVector<QString> paths, bool arrow)
 {
-    if(paths.empty())
-        return;
-
     foreach(ImageItem *im, imageItems) {
         im->~ImageItem();
         im = nullptr;
     }
     imageItems.clear();
 
-
+    if(paths.empty())
+        return;
 
     for(int i=0; i<paths.size(); i++)
     {
@@ -168,16 +166,3 @@ void ItemList::moveDown(int currentIndex)
     moveTo(currentIndex, currentIndex+1);
 }
 
-
-void ItemList::createContentAlbum(QVector<int> idImages)
-{
-    selfLayout->setSpacing(0);
-    for(int i =0;i<idImages.size();i++){
-        QString filepath = Database::getImageFilePath(idImages[i]);
-        ImageItem *imageItem = new ImageItem(this, filepath, i);
-        imageItems.append(imageItem);
-        selfLayout->addWidget(imageItem,i,0);
-    }
-    imageItems.at(0)->setDisabledUp(true);
-    imageItems.last()->setDisabledDown(true);
-}

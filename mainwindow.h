@@ -32,6 +32,7 @@ public:
     void checkAllPath();
     void getChildAndSetStyle(QObject *, QString);
     void setTheme();
+    Ui::MainWindow* getUI(void);
 
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
@@ -52,7 +53,6 @@ private slots:
     void create_album(const QString&);
 
     void recent_folder();
-    void recent_album();
     void new_album();
     void add_to_album();
     void close();
@@ -89,5 +89,7 @@ private:
     bool newAlbum = false;
 
     void createActions();
+    void addRecentsAlbumToMenuFichier(void);
+
 };
 #endif // MAINWINDOW_H

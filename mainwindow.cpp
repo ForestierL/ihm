@@ -6,6 +6,7 @@
 #include "itemlist.h"
 #include "imageitem.h"
 #include "themeapplier.h"
+#include"createalbumwindow.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -63,6 +64,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->elementListView->setModel(fileModel);
 
     pathVisit = new PathVisit(mainPath);
+    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
+
     updateCurrentPath(mainPath);
 
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -71,11 +74,27 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     displayAlbum();
     createActions();
 
+//    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
+
 //    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath, true);
-    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
-    itemList->reloadWith(mainPath,false, true, true);
-    ui->elementListView->hide();
-    ui->elementListView->show();
+
+//    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
+//    itemList->reloadWith(mainPath,false, true, true);
+//    ui->elementListView->hide();
+//    ui->elementListView->show();
+
+    addRecentsAlbumToMenuFichier();
+}
+
+void MainWindow::addRecentsAlbumToMenuFichier()
+{
+    QVector<QString> recentAlbums = Database::getAlbumsOrderByLastModification();
+    for(int i = 0; i < recentAlbums.length(); ++i)
+    {
+        QAction *action = new QAction(ui->menu_Albums_r_cents);
+        action->setText(recentAlbums.at(i));
+        ui->menu_Albums_r_cents->addAction(recentAlbums.at(i));
+    }
 }
 
 void MainWindow::displayAlbum(){
@@ -88,7 +107,6 @@ void MainWindow::displayAlbum(){
 
 void MainWindow::createActions(){
     connect(ui->actionEmplacement_r_cent, SIGNAL(triggered()), this, SLOT(recent_folder()));
-    connect(ui->actionAlbum_r_cent, SIGNAL(triggered()), this, SLOT(recent_album()));
     connect(ui->actionNouveau_album, SIGNAL(triggered()), this, SLOT(new_album()));
     connect(ui->actionAjouter_l_album, SIGNAL(triggered()), this, SLOT(add_to_album()));
     connect(ui->actionFermer, SIGNAL(triggered()), this, SLOT(close()));
@@ -111,17 +129,21 @@ void MainWindow::createActions(){
 void MainWindow::recent_folder(){
 
 }
-void MainWindow::recent_album(){
 
-}
+
 void MainWindow::new_album(){
+    CreateAlbumWindow w(this);
+    //w.setImagePath(path);
 
+    w.show();
+    QEventLoop eventLoop;
+    eventLoop.exec();
 }
 void MainWindow::add_to_album(){
 
 }
 void MainWindow::close(){
-
+    QMainWindow::close();
 }
 void MainWindow::edit(){
 
@@ -191,6 +213,16 @@ void MainWindow::light_theme(){
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete itemList;
+    delete dirModel;
+    delete fileModel;
+    delete pathVisit;
+
+    ui = nullptr;
+    itemList = nullptr;
+    dirModel = nullptr;
+    fileModel = nullptr;
+    pathVisit = nullptr;
 }
 
 bool MainWindow::updateCurrentPath(QString path) {
@@ -205,7 +237,10 @@ bool MainWindow::updateCurrentPath(QString path) {
 
     lineEditPath->setText(path);
 
+    itemList->reloadWith(path,false, true, true);
+
     pathVisit->addPath(path);
+    //itemList->reloadWith(path,false, true, true);
 
     return true;
 }
@@ -544,8 +579,12 @@ void MainWindow::open_album(const QString& albumName){
     QString name = albumName;
     int idAlbum=Database::getAlbumId(name);
     QVector<int> idImages = Database::getAlbumInImageOrderByPosition(idAlbum);
-    // pas sur de ca
-    //itemList->createContentAlbum(idImages);
+    QVector<QString> allPath;
+    for(int i =0;i<idImages.size();i++){
+        QString filepath = Database::getImageFilePath(idImages[i]);
+        allPath.append(filepath);
+    }
+    itemList->reloadWith(allPath,false, false, true);
 }
 
 void MainWindow::allImage_clicked()
@@ -613,6 +652,10 @@ void MainWindow::allImage_clicked()
 
 
 
+Ui::MainWindow* MainWindow::getUI(void)
+{
+    return ui;
+}
 
 
 
