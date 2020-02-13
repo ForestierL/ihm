@@ -55,7 +55,7 @@ void ImageItem::createContentFolder(QString dirPath)
 
     //charger une image de dossier
 //    QFileIconProvider::Folder
-    imageLabel  = new QLabel();
+    imageLabel  = new ClickableLabel();
     //imageLabel->setStyleSheet("background-color: #7f7f7f;");
     imageLabel->setFixedSize(100,100);
 
@@ -114,7 +114,7 @@ void ImageItem::createContentFile(QString filePath, bool smoothImage)
     setData("","",0,"---","---");
 
     //Image
-    imageLabel  = new QLabel();
+    imageLabel  = new ClickableLabel();
     imageLabel->setFixedSize(100,100);
     imageLabel->setAlignment(Qt::AlignCenter);
     QPixmap *pixmap_img = new QPixmap(filePath);
@@ -125,9 +125,11 @@ void ImageItem::createContentFile(QString filePath, bool smoothImage)
         transformationMode = Qt::TransformationMode::FastTransformation;
     imageLabel->setPixmap(pixmap_img->scaled(100, 100, Qt::KeepAspectRatio, transformationMode));
 
+    connect(imageLabel, SIGNAL(doubleClicked()), this, SLOT(on_ImageLabel_doubleClicked()));
 
     imageLabel->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(imageLabel, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ctxMenu(const QPoint &)));
+
 
     initMover();
 }
@@ -269,4 +271,18 @@ void ImageItem::move_down(){
 void ImageItem::ctxMenu(const QPoint &pos)
 {
    qDebug()<<"test";
+}
+
+void ImageItem::on_ImageLabel_doubleClicked()
+{
+//    QString dirPath = dirModel->fileInfo(index).absoluteFilePath();
+//    actualFile = dirPath;
+
+//    QDir pathDir(dirPath);
+//    if (pathDir.exists()) {
+//        openDirectory();
+//    } else {
+//        openEditor();
+//    }
+    qDebug()<<"LOLL";
 }
