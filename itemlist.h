@@ -13,14 +13,16 @@ class ItemList : public QWidget
 public:
     explicit ItemList(QWidget *parent = nullptr, QString folderPath = "");
     explicit ItemList(QWidget *parent = nullptr, QVector<QString> imagesPaths = {""});
-    void reloadWith(QString folderPath, bool recursive = true, bool showFolder = true);
-    void createContent(QVector<QString> paths = {""});
+    void reloadWith(QString folderPath, bool recursive = false, bool showFolder = true, bool arrows = false);
     void moveTo(int currentIndex, int finalIndex); // to 0 => prend 0 et décale la suite de 1 jusqu'à l'ancien index
     void moveUp(int currentIndex);
     void moveDown(int currentIndex);
     void createContentAlbum(QVector<int> idImages);
 private:
+    void createContent(QVector<QString> paths = {""});
+    void recreateContent(QVector<QString> paths = {""}, bool arrow = false);
     QVector<QWidget*> moveVectorElement(QVector<QWidget*> vector, int currentIndex, int finalIndex);
+    void moverParameter();
 private:
     QVector<QString> paths;
     QWidget *parent;

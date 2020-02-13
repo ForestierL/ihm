@@ -81,12 +81,12 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    ItemList *itemList;
     QFileSystemModel *dirModel;
     QFileSystemModel *fileModel;
     QString actualFile;
     PathVisit *pathVisit;
     bool newAlbum = false;
-    ItemList *itemList;
 
     void createActions();
 };

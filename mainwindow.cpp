@@ -70,8 +70,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     createActions();
 
 //    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath, true);
-    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
-    ui->elementListView->hide();
+    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
+    itemList->reloadWith(mainPath,false, true, true);
+    //ui->elementListView->hide();
 
 }
 
@@ -522,7 +523,7 @@ void MainWindow::create_album(const QString& albumName){
 }
 
 void MainWindow::delete_album(const QString& albumName){
-    int reponse = QMessageBox::question(this, "Supprimer Album", "Êtes-vous sûr de supprimer cette album ?", QMessageBox ::Yes | QMessageBox::No);
+    int reponse = QMessageBox::warning(this, "Supprimer Album", "Êtes-vous sûr de supprimer l'album ?", QMessageBox ::Yes | QMessageBox::No);
     if (reponse == QMessageBox::Yes)
     {
         QString name = albumName;
@@ -544,9 +545,11 @@ void MainWindow::open_album(const QString& albumName){
 
 void MainWindow::allImage_clicked()
 {
-    QString path = pathVisit->getCurrentPath();
-    QWidget *scrollAreaList = ui->scrollAreaWidgetContents;
-    //itemList  = new ItemList(scrollAreaList, path, true);
+    int reponse = QMessageBox::warning(this, "Afficheur récursif", "Êtes-vous sûr de vouloir afficher les dossiers de manière récursive ?\nCeci peut prendre beaucoup de temps.", QMessageBox ::Yes | QMessageBox::No);
+    if (reponse == QMessageBox::Yes) {
+        QString path = pathVisit->getCurrentPath();
+        itemList->reloadWith(path,true, false, false);
+    }
 }
 
 

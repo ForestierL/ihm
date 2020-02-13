@@ -2,13 +2,14 @@
 
 
 QVector<QString> selectAllImageInDir(QString dirPath, bool recursive = false){
+    qDebug() << "selectAllImageInDir >> " << dirPath;
     QDir dir(dirPath);
     QVector<QString> result;
     QStringList list = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
     foreach(QString filename, list) {
         QString path = dirPath+"/"+filename;
         if(recursive)
-            result.append(selectAllImageInDir(path));
+            result.append(selectAllImageInDir(path, recursive));
     }
     QStringList images = dir.entryList(QStringList() << "*.jpg" << "*.JPG"<< "*.png" << "*.jpeg" << "*.jpg" << "*.gif" << "*.bmp" << "*.jpe" << "*.jfif" << "*.rle" << "*.tga" << "*.tif" << "*.tiff",QDir::Files);
     foreach(QString filename, images) {
@@ -17,7 +18,7 @@ QVector<QString> selectAllImageInDir(QString dirPath, bool recursive = false){
     return result;
 }
 
-QVector<QString> selectImageAndDir(QString dirPath){
+QVector<QString> selectDir(QString dirPath){
     QDir dir(dirPath);
     QVector<QString> result;
     QStringList dirs = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
@@ -25,19 +26,13 @@ QVector<QString> selectImageAndDir(QString dirPath){
     {
         result.append(dirPath+"/"+dir+"/");
     }
-
-    QStringList extension;
-    extension<<"*.jpg" << "*.JPG"<< "*.png" << "*.jpeg" << "*.jpg" << "*.gif" << "*.bmp" << "*.jpe" << "*.jfif" << "*.rle" << "*.tga" << "*.tif" << "*.tiff";
-    QStringList images = dir.entryList(extension, QDir::Files);
-    foreach(QString filename, images) {
-       result.append(dirPath+"/"+filename);
-    }
     return result;
 }
 
 ItemList::ItemList(QWidget *parent, QString folderPath) : QWidget(parent)
 {
-    QVector<QString> paths = selectImageAndDir(folderPath);
+    QVector<QString> paths = selectDir(folderPath);
+    paths.append(selectAllImageInDir(folderPath));
 
     this->parent = parent;
     selfLayout = new QGridLayout(parent);
@@ -55,6 +50,49 @@ ItemList::ItemList(QWidget *parent, QVector<QString> imagesPaths)
     createContent(imagesPaths);
 }
 
+void ItemList::reloadWith(QString folderPath, bool recursive, bool showFolder, bool arrows)
+{
+    QVector<QString> paths;
+    if(showFolder || !recursive)
+        paths = selectDir(folderPath);
+    if(recursive)
+        paths = selectAllImageInDir(folderPath, true);
+    else
+        paths.append(selectAllImageInDir(folderPath, false));
+
+    this->paths = paths;
+    recreateContent(paths, arrows);
+}
+
+void ItemList::recreateContent(QVector<QString> paths, bool arrow)
+{
+    if(paths.empty())
+        return;
+
+    foreach(ImageItem *im, imageItems) {
+        im->~ImageItem();
+        im = nullptr;
+    }
+    imageItems.clear();
+
+
+
+    for(int i=0; i<paths.size(); i++)
+    {
+        QString item = paths.at(i);
+        ImageItem *imageItem = new ImageItem(this, item, i);
+        if(imageItem->getIsImage())
+            imageItem->disableMover(!arrow); //si image => on peut avoir un mover ou pas
+        else
+            imageItem->disableMover(true); //si dossier => pas de mover
+        imageItems.append(imageItem);
+        selfLayout->addWidget(imageItem,i,0);
+    }
+    if(arrow) {
+        moverParameter();
+    }
+}
+
 void ItemList::createContent(QVector<QString> paths)
 {
     if(paths.empty())
@@ -67,6 +105,10 @@ void ItemList::createContent(QVector<QString> paths)
         imageItems.append(imageItem);
         selfLayout->addWidget(imageItem,i,0);
     }
+    moverParameter();
+}
+
+void ItemList::moverParameter() {
     for(ImageItem *im : imageItems)
     {
         if(im->getIsImage())
@@ -75,8 +117,8 @@ void ItemList::createContent(QVector<QString> paths)
             break;
         }
     }
-//    imageItems.at(0)->setDisabledUp(true);
-    imageItems.last()->setDisabledDown(true);
+    if(imageItems.last()->getIsImage())
+        imageItems.last()->setDisabledDown(true);
 }
 
 void ItemList::moveTo(int currentIndex, int finalIndex)

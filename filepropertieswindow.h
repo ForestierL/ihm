@@ -31,11 +31,15 @@ private:
     QString itemPath;
     int idImage;
 
+private:
+    //QPushButton *editColor;
+
 protected slots:
 
 private slots:
     void on_ok_clicked();
     void on_edit_clicked();
+    void calculateColor();
 };
 
 #endif

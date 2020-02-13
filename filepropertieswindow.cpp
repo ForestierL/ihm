@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QSettings>
 #include "themeapplier.h"
+#include "dominantcolorcalculator.h"
 
 FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : QDialog(parent), ui(new Ui::FilePropertiesWindow)
 {
@@ -21,7 +22,6 @@ FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : 
     while(idImage == -1 && timeOut!=0)
     {
         qDebug() << "Image " << itemPath <<" doesn't exist, image creation launched !";
-        //addImage(QString &imagePath, int score, QString &comment, QString &dominantColor, QString &feeling)
         QString empty("");
         QString empty2("---");
         Database::addImage(itemPath,0,empty,empty2,empty2);
@@ -29,6 +29,7 @@ FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : 
         timeOut--;
     }
     qDebug() << "Image id : " << idImage;
+    createContents();
 }
 
 void FilePropertiesWindow::showEvent(QShowEvent* event){
@@ -97,6 +98,7 @@ void FilePropertiesWindow::createContents()
     ui->path->setText(itemPath);
 
     ui->editColor->setText("---");
+
     ui->color->setText("---");
 
     ui->feelings->setText("---");
@@ -110,6 +112,7 @@ void FilePropertiesWindow::createContents()
                                    "Tristesse"
                                });
     loadFromBDD();
+    /*setEditMode(false);*/
 }
 
 bool FilePropertiesWindow::loadFromBDD()
@@ -161,6 +164,7 @@ void FilePropertiesWindow::setEditMode(bool editMode)
         ui->edit->setText("Cancel");
 
         ui->editColor->show();
+        connect(ui->editColor, SIGNAL(clicked()),this,SLOT(calculateColor()));
         ui->editFeelings->show();
         ui->editName->show();
         ui->editNote->show();
@@ -256,4 +260,13 @@ void FilePropertiesWindow::on_ok_clicked()
 void FilePropertiesWindow::on_edit_clicked()
 {
     editSwitch();
+}
+
+void FilePropertiesWindow::calculateColor()
+{
+    qDebug() << "Image color test";
+    QString color = DominantColorCalculator::calculate(QImage(itemPath));
+    qDebug() << "color : " << color;
+    ui->color->setText(color);
+    ui->editColor->setText(color);
 }

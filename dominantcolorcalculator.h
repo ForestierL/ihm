@@ -3,11 +3,10 @@
 
 #include <QImage>
 
-class dominantColorCalculator
+class DominantColorCalculator
 {
 public:
-    dominantColorCalculator();
-    void calculate(QImage);
+    static QString calculate(QImage);
 };
 
 #endif // DOMINANTCOLORCALCULATOR_H

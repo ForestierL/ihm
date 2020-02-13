@@ -31,6 +31,7 @@ public:
     void setFeeling(QString feeling);
     bool getIsImage() const;
     QString getFilePath() const;
+    void disableMover(bool disabled);
 
 private:
     void createContentFile(QString filePath, bool smoothImage);

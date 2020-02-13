@@ -4,11 +4,7 @@
 #include <QtMath>
 #include <QPixmap>
 
-dominantColorCalculator::dominantColorCalculator()
-{
-}
-
-void calculate(QImage srcImg){
+QString DominantColorCalculator::calculate(QImage srcImg){
     qDebug() << "TEST";
     QImage scaledImg = srcImg.scaledToWidth(200);
     QPixmap scaledPix = QPixmap::fromImage(scaledImg);
@@ -161,4 +157,5 @@ void calculate(QImage srcImg){
         }
     }
     qDebug() << names[iBest] << " " << c[iBest];
+    return names[iBest];
 }

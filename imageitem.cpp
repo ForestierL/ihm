@@ -75,11 +75,13 @@ void ImageItem::createContentFolder(QString dirPath)
     color->hide();
     feeling = new QLabel();
     feeling->hide();
+    initMover();
+    disableMover(true);
 }
 
 void ImageItem::createContentFile(QString filePath, bool smoothImage)
 {
-    qDebug() << "file ! " <<filePath;
+    //qDebug() << "file ! " <<filePath;
     //qt.gui.icc: fromIccProfile: failed minimal tag size sanity ??? ça vient de là mais ???
     this->filePath = filePath;
 
@@ -155,6 +157,16 @@ QString ImageItem::getFilePath() const
 {
     return filePath;
 }
+
+void ImageItem::disableMover(bool disabled)
+{
+    if(disabled)
+        this->idEdit->hide();
+    else
+        this->idEdit->show();
+    setDisabledUp(disabled);
+    setDisabledDown(disabled);
+}
 bool ImageItem::getIsImage() const
 {
     return isImage;
@@ -208,6 +220,7 @@ void ImageItem::initMover()
     idEdit = new QLineEdit(QString::number(id));
     idEdit->setAlignment(Qt::AlignCenter);
     idEdit->setFixedWidth(30);
+    //idEdit->hide();
 
     downArrow = new QPushButton("⯆");
     downArrow->setFixedWidth(30);
@@ -222,11 +235,17 @@ void ImageItem::setId(int id)
 void ImageItem::setDisabledUp(bool disabled)
 {
     upArrow->setDisabled(disabled);
-    upArrow->hide();
+    if(disabled)
+        upArrow->hide();
+    else
+        upArrow->show();
 }
 
 void ImageItem::setDisabledDown(bool disabled)
 {
     downArrow->setDisabled(disabled);
-    downArrow->hide();
+    if(disabled)
+        downArrow->hide();
+    else
+        downArrow->show();
 }
