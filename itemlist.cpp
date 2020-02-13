@@ -39,7 +39,8 @@ ItemList::ItemList(QWidget *parent, QVector<QString> imagesPaths)
 
 void ItemList::createContent(QVector<QString> paths)
 {
-    // sert a quoi se setSpacing a 0?
+    if(paths.empty())
+        return;
     selfLayout->setSpacing(0);
     for(int i=0; i<paths.size(); i++)
     {

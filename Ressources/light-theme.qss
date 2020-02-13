@@ -1,7 +1,7 @@
 /*light*/
 
 QFrame#navFrame {
-        background-color: red;
+        background-color: #FF0000;
         border: 0px;
         margin: 0px;
         padding: 0px;
@@ -10,7 +10,7 @@ QFrame#navFrame {
 QHoverSensitiveButton#previous, QHoverSensitiveButton#next,
 QHoverSensitiveButton#home, QHoverSensitiveButton#up {
         background-color: rgb(0,255,0);
-        color: black;
+        color: #404040;
         border: 0px;
         margin: 0px;
         padding: 0px;
@@ -25,7 +25,7 @@ QFrame#statusFrame {
 }
 
 QLabel#statusMessage {
-        color: black;
+        color: #404040;
 }
 
 QFrame#frame {
@@ -48,6 +48,6 @@ QHoverSensitiveButton#liste, QHoverSensitiveButton#icone {
 }
 
 * {
-        background-color: white !important;
-        color: black !important;
+        background-color: #F6F6F6 !important;
+        color: #404040 !important;
 }
