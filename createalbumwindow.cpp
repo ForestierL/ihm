@@ -14,7 +14,7 @@ CreateAlbumWindow::CreateAlbumWindow(MainWindow *parent) :
 
 void CreateAlbumWindow::ok_clicked()
 {
-    QString albumName = ui->albumNamelineEdit->text();
+    QString albumName = ui->albumNameLineEdit->text();
     if(albumName == ""){
         QMessageBox::question(this, "Nom invalide", "Veuillez entrer un nom", QMessageBox ::Ok);
     }else{
