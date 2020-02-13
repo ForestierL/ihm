@@ -76,7 +76,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     itemList->reloadWith(mainPath,false, true, true);
     ui->elementListView->hide();
     ui->elementListView->show();
-
 }
 
 void MainWindow::displayAlbum(){
