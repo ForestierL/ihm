@@ -1,5 +1,9 @@
 #include "imageitem.h"
 #include "itemlist.h"
+#include "mainwindow.h"
+
+#include <QMenu>
+#include <QSignalMapper>
 
 QString shortText(QString text, int size = 30)
 {
@@ -268,5 +272,38 @@ void ImageItem::move_down(){
 
 void ImageItem::ctxMenu(const QPoint &pos)
 {
-   qDebug()<<"test";
+    QMenu myMenu;
+    QPoint globalPos = this->mapToGlobal(pos);
+
+    QAction *open = new QAction("Ouvrir", parentWidget());
+    myMenu.addAction(open);
+    QSignalMapper *mOpen = new QSignalMapper();
+    connect(open, SIGNAL(triggered()), mOpen, SLOT(map()));
+    mOpen->setMapping(open, filePath);
+    connect(mOpen, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(openEditor(const QString &)));
+
+    myMenu.addSeparator();
+    QAction *add = new QAction("Ajouter à un album", parentWidget());
+    myMenu.addAction(add);
+    QSignalMapper *mAdd = new QSignalMapper();
+    connect(add, SIGNAL(triggered()), mAdd, SLOT(map()));
+    mAdd->setMapping(add, filePath);
+    connect(mAdd, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(addToAlbum(const QString &)));
+
+    QAction *info = new QAction("Informations", parentWidget());
+    myMenu.addAction(info);
+    QSignalMapper *mInfo = new QSignalMapper();
+    connect(info, SIGNAL(triggered()), mInfo, SLOT(map()));
+    mInfo->setMapping(info, filePath);
+    connect(mInfo, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(informations(const QString &)));
+
+    myMenu.addSeparator();
+    QAction *erase = new QAction("Supprimer", parentWidget());
+    myMenu.addAction(erase);
+    QSignalMapper *mErase = new QSignalMapper();
+    connect(erase, SIGNAL(triggered()), mErase, SLOT(map()));
+    mErase->setMapping(erase, filePath);
+    connect(mErase, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(eraseItem(const QString &)));
+
+    myMenu.exec(globalPos);
 }
