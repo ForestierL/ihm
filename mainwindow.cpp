@@ -416,7 +416,7 @@ void MainWindow::openEditor(const QString path)
 
 void MainWindow::openDirectory()
 {
-        updateCurrentPath(actualFile);
+    updateCurrentPath(actualFile);
 }
 
 void MainWindow::addToAlbum(const QString path)
@@ -437,12 +437,17 @@ void MainWindow::informations(const QString path)
 void MainWindow::eraseItem(const QString path)
 {
     QFile file(actualFile);
+    if(path != ""){
+        file.setFileName(path);
+    }
 
     int reponse = QMessageBox::question(this, "Suppression", "Êtes-vous sûr de vouloir supprimer cette image ?\nATTENTION ! Elle ne sera pas récupérable.", QMessageBox ::Yes | QMessageBox::No);
 
     if (reponse == QMessageBox::Yes)
     {
         file.remove();
+        if(path != "")
+            itemList->reloadWith(path,false, true, true);
     }
 }
 
@@ -684,7 +689,6 @@ Ui::MainWindow* MainWindow::getUI(void)
 {
     return ui;
 }
-
 
 
 
