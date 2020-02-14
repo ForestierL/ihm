@@ -146,7 +146,7 @@ void FilePropertiesWindow::setEditMode(bool editMode)
     this->editMode = editMode;
     if(!editMode)
     {
-        ui->edit->setText("Edit");
+        ui->edit->setText("Editer");
 
         ui->editColor->hide();
         ui->editFeelings->hide();
@@ -161,7 +161,7 @@ void FilePropertiesWindow::setEditMode(bool editMode)
     }
     else
     {
-        ui->edit->setText("Cancel");
+        ui->edit->setText("Annuler");
 
         ui->editColor->show();
         connect(ui->editColor, SIGNAL(clicked()),this,SLOT(calculateColor()));
@@ -248,7 +248,7 @@ void FilePropertiesWindow::on_ok_clicked()
         //save
         if(!save())
         {
-            QMessageBox *errorMessage = new QMessageBox(QMessageBox::Warning, "Unexpected saving problem", "We can't save your modifications.");
+            QMessageBox *errorMessage = new QMessageBox(QMessageBox::Warning, "Un problème de sauvegarde est survenu", "Nous ne pouvons pas sauvegarder vos modifications.");
             errorMessage->exec();
         }
         else {
