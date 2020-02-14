@@ -46,17 +46,14 @@ private:
     float actualImageWidth;
     float actualImageHeigth;
 
-    QPixmap initialPixMap; //
     QRect rect;
     QImage dstImage;
     QImage newImage;
 
-    float initialImageWidth;//
-    float initialImageHeigth;//
-
 
 protected slots:
     void resizeImage(int);
+    void addToAlbum();
 
     void cropImage();
     void verticalMirror();

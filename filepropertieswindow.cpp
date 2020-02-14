@@ -21,14 +21,12 @@ FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : 
     int timeOut = 2;
     while(idImage == -1 && timeOut!=0)
     {
-        qDebug() << "Image " << itemPath <<" doesn't exist, image creation launched !";
         QString empty("");
         QString empty2("---");
         Database::addImage(itemPath,0,empty,empty2,empty2);
         idImage = Database::getImageId(itemPath);
         timeOut--;
     }
-    qDebug() << "Image id : " << idImage;
     createContents();
     this->setWindowTitle("Propriétés");
 }
@@ -242,8 +240,10 @@ bool FilePropertiesWindow::save()
 
 void FilePropertiesWindow::on_ok_clicked()
 {
-    if(!editMode)
+    if(!editMode){
+        qobject_cast<MainWindow*>(parent())->reloadImageItem();
         accept();
+    }
     else
     {
         //save

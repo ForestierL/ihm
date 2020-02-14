@@ -18,7 +18,8 @@ QString shortText(QString text, int size = 30)
 
 ImageItem::ImageItem(QWidget *parent, QString filePath, int id, bool smoothImage) : QWidget(parent)
 {
-    //qDebug()<< (ItemList)parent;
+    parentGlobal = parent;
+
     this->id = id;
     QFile file(filePath);
     if(!file.exists())
@@ -36,6 +37,16 @@ ImageItem::ImageItem(QWidget *parent, QString filePath, int id, bool smoothImage
         else
         {
             isImage = true;
+            int idImage = Database::getImageId(filePath);
+            int timeOut = 2;
+            while(idImage == -1 && timeOut!=0)
+            {
+                QString empty("");
+                QString empty2("---");
+                Database::addImage(filePath,0,empty,empty2,empty2);
+                idImage = Database::getImageId(filePath);
+                timeOut--;
+            }
             createContentFile(filePath, true);
         }
     }
@@ -107,18 +118,15 @@ void ImageItem::createContentFile(QString filePath, bool smoothImage)
     name->setStyleSheet("font-weight: bold;");
     size = new QLabel(QString::number(imageInfo.size().width()) + "x" + QString::number(imageInfo.size().height()));
     date = new QLabel(fileInfo.birthTime().toString("d/MM/yy"));
-    /*Liens avec la bd
-     *
-     * bool loadFromDatabase(); <<<<<<<
+
     int idImage = Database::getImageId(filePath);
     QVector<QString> result = Database::getInfoImage(idImage);
     QString imageScore= result[0];
     QString imageComment= result[1];
     QString imageColor = result[2];
     QString imageFeeling = result[3];
+
     setData("",imageComment,imageScore.toInt(),imageColor,imageFeeling);
-    */
-    setData("","",0,"---","---");
 
     //Image
     imageLabel  = new ClickableLabel();
@@ -281,9 +289,11 @@ void ImageItem::setDisabledDown(bool disabled)
 }
 
 void ImageItem::move_up(){
+    qobject_cast<ItemList*>(par)->moveUp(id);
 }
 
 void ImageItem::move_down(){
+    qobject_cast<ItemList*>(par)->moveDown(id);
 }
 
 
@@ -301,6 +311,9 @@ void ImageItem::ctxMenu(const QPoint &pos)
 
     myMenu.addSeparator();
     QAction *add = new QAction("Ajouter à un album", parentWidget());
+    if(qobject_cast<ItemList*>(parentGlobal)->inAlbum){
+        add->setText("Ajouter à un autre album");
+    }
     myMenu.addAction(add);
     QSignalMapper *mAdd = new QSignalMapper();
     connect(add, SIGNAL(triggered()), mAdd, SLOT(map()));
@@ -315,14 +328,25 @@ void ImageItem::ctxMenu(const QPoint &pos)
     connect(mInfo, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(informations(const QString &)));
 
     myMenu.addSeparator();
-    QAction *erase = new QAction("Supprimer", parentWidget());
-    myMenu.addAction(erase);
-    QSignalMapper *mErase = new QSignalMapper();
-    connect(erase, SIGNAL(triggered()), mErase, SLOT(map()));
-    mErase->setMapping(erase, filePath);
-    connect(mErase, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(eraseItem(const QString &)));
+    if(!qobject_cast<ItemList*>(parentGlobal)->inAlbum){
+        QAction *erase = new QAction("Supprimer", parentWidget());
+        myMenu.addAction(erase);
+        QSignalMapper *mErase = new QSignalMapper();
+        connect(erase, SIGNAL(triggered()), mErase, SLOT(map()));
+        mErase->setMapping(erase, filePath);
+        connect(mErase, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(eraseItem(const QString &)));
+    }else{
+        QAction *eraseOfAlbum = new QAction("Supprimer de l'album", parentWidget());
+        myMenu.addAction(eraseOfAlbum);
+        connect(eraseOfAlbum, SIGNAL(triggered()), this, SLOT(deleteToAlbum()));
+    }
 
     myMenu.exec(globalPos);
+}
+
+void ImageItem::deleteToAlbum(){
+    int idImage = Database::getImageId(filePath);
+    Database::removeImage(idImage);
 }
 
 void ImageItem::on_ImageLabel_doubleClicked()

@@ -53,6 +53,8 @@ ItemList::ItemList(QWidget *parent, QVector<QString> imagesPaths)
 
 void ItemList::reloadWith(QString folderPath, bool recursive, bool showFolder, bool arrows)
 {
+    inAlbum = arrows;
+
     QFileInfo fileInfo(folderPath);
     if(!fileInfo.isDir()) //securite
     {

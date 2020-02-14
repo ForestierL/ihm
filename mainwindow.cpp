@@ -241,7 +241,7 @@ bool MainWindow::updateCurrentPath(QString path) {
     dirTreeView->setCurrentIndex(dirModel->setRootPath(path));
 
     lineEditPath->setText(path);
-
+    //itemList->reloadWith(path,false, true, true);
     itemList->reloadWith(path,false, true, false);
     qDebug() << "updateCurrentPath" << itemList->getImageItems().size();
 //    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
@@ -680,7 +680,10 @@ Ui::MainWindow* MainWindow::getUI(void)
     return ui;
 }
 
-
+void MainWindow::reloadImageItem(){
+    QString path =pathVisit->getCurrentPath();
+    itemList->reloadWith(path,false, true, false);
+}
 
 
 

@@ -36,6 +36,7 @@ public:
     void disableMover(bool disabled);
 
 private:
+    QWidget* parentGlobal;
     void createContentFile(QString filePath, bool smoothImage);
     void createContentFolder(QString dirPath);
     void setupLayout();
@@ -52,7 +53,7 @@ private:
     QLabel *note;
     QLabel *color;
     QLabel *feeling;
-
+    QWidget *par;
     //from mover
 public:
     void initMover();
@@ -72,6 +73,7 @@ private slots:
     void ctxMenu(const QPoint &pos);
     void on_ImageLabel_doubleClicked();
     void on_dir_doubleClicked();
+    void deleteToAlbum();
 
 signals:
 
