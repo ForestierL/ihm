@@ -41,5 +41,7 @@ int main(int argc, char *argv[])
 
     new themeApplier(w);
 
+    a.setWindowIcon(QIcon(":/Ressources/logo.png"));
+
     return a.exec();
 }

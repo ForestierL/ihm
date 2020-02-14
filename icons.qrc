@@ -67,5 +67,6 @@
         <file>Ressources/validate-hover.png</file>
         <file>Ressources/close-hover.png</file>
         <file>Ressources/open-hover.png</file>
+        <file>Ressources/logo.png</file>
     </qresource>
 </RCC>
