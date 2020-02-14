@@ -18,12 +18,8 @@ QString shortText(QString text, int size = 30)
 
 ImageItem::ImageItem(QWidget *parent, QString filePath, int id, bool smoothImage) : QWidget(parent)
 {
-<<<<<<< HEAD
-    //qDebug()<< (ItemList)parent;
     parentGlobal = parent;
-=======
-    par=parent;
->>>>>>> 893d6e0a26be79b6a5e197a21784816e902136fa
+
     this->id = id;
     QFile file(filePath);
     if(!file.exists())
