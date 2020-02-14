@@ -54,11 +54,11 @@ QFrame* EditionWindow::createToolBar(void)
     connect(rotateButton, SIGNAL(clicked()), this, SLOT(rotateImage()));
 
     QHoverSensitiveButton *horizontalMirrorButton = new QHoverSensitiveButton(this, "mirror-h");
-    horizontalMirrorButton->setToolTip("Mirroir horizontal");
+    horizontalMirrorButton->setToolTip("Miroir horizontal");
     connect(horizontalMirrorButton, SIGNAL(clicked()), this, SLOT(horizontalMirror()));
 
     QHoverSensitiveButton *verticalMirrorButton = new QHoverSensitiveButton(this, "mirror-v");
-    verticalMirrorButton->setToolTip("Mirroir vertical");
+    verticalMirrorButton->setToolTip("Miroir vertical");
     connect(verticalMirrorButton, SIGNAL(clicked()), this, SLOT(verticalMirror()));
 
     QHoverSensitiveButton *trimButton = new QHoverSensitiveButton(this, "crop");
@@ -336,7 +336,7 @@ void EditionWindow::mouseReleaseEvent(QMouseEvent *event){
 void EditionWindow::verticalMirror(){
     crop = false;
     QPainter painter(&dstImage);
-    newImage = dstImage.mirrored();
+    newImage = dstImage.mirrored(true, false);
     painter.drawImage(0,0,newImage);
     painter.end();
     dstImage = newImage;
@@ -348,7 +348,7 @@ void EditionWindow::verticalMirror(){
 void EditionWindow::horizontalMirror(){
     crop = false;
     QPainter painter(&dstImage);
-    newImage = dstImage.mirrored(true, false);
+    newImage = dstImage.mirrored();
     painter.drawImage(0,0,newImage);
     painter.end();
     dstImage = newImage;
