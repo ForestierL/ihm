@@ -331,5 +331,6 @@ void ImageItem::on_ImageLabel_doubleClicked()
 
 void ImageItem::on_dir_doubleClicked()
 {
-    qobject_cast<MainWindow*>(parent())->updateCurrentPath(filePath);
+    QObject *p = parent()->parent()->parent()->parent()->parent();
+    qobject_cast<MainWindow*>(p)->updateCurrentPath(filePath);
 }
