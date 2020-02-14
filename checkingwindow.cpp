@@ -14,6 +14,7 @@ CheckingWindow::CheckingWindow(QWidget *parent): QDialog(parent), ui(new Ui::Che
 {
     ui->setupUi(this);
     setFixedSize(this->size()); //fixed size
+    this->setWindowTitle("Images manquantes");
 }
 
 CheckingWindow::~CheckingWindow()

@@ -28,6 +28,7 @@ FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : 
         timeOut--;
     }
     createContents();
+    this->setWindowTitle("Propriétés");
 }
 
 void FilePropertiesWindow::showEvent(QShowEvent* event){
