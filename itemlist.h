@@ -19,6 +19,7 @@ public:
     void moveUp(int currentIndex);
     void moveDown(int currentIndex);
     QVector<ImageItem *> getImageItems() const;
+    bool inAlbum;
 
 private:
     void createContent(QVector<QString> paths = {""});

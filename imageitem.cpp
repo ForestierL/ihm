@@ -18,7 +18,8 @@ QString shortText(QString text, int size = 30)
 
 ImageItem::ImageItem(QWidget *parent, QString filePath, int id, bool smoothImage) : QWidget(parent)
 {
-    par=parent;
+    parentGlobal = parent;
+
     this->id = id;
     QFile file(filePath);
     if(!file.exists())
@@ -310,6 +311,9 @@ void ImageItem::ctxMenu(const QPoint &pos)
 
     myMenu.addSeparator();
     QAction *add = new QAction("Ajouter à un album", parentWidget());
+    if(qobject_cast<ItemList*>(parentGlobal)->inAlbum){
+        add->setText("Ajouter à un autre album");
+    }
     myMenu.addAction(add);
     QSignalMapper *mAdd = new QSignalMapper();
     connect(add, SIGNAL(triggered()), mAdd, SLOT(map()));
@@ -324,14 +328,25 @@ void ImageItem::ctxMenu(const QPoint &pos)
     connect(mInfo, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(informations(const QString &)));
 
     myMenu.addSeparator();
-    QAction *erase = new QAction("Supprimer", parentWidget());
-    myMenu.addAction(erase);
-    QSignalMapper *mErase = new QSignalMapper();
-    connect(erase, SIGNAL(triggered()), mErase, SLOT(map()));
-    mErase->setMapping(erase, filePath);
-    connect(mErase, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(eraseItem(const QString &)));
+    if(!qobject_cast<ItemList*>(parentGlobal)->inAlbum){
+        QAction *erase = new QAction("Supprimer", parentWidget());
+        myMenu.addAction(erase);
+        QSignalMapper *mErase = new QSignalMapper();
+        connect(erase, SIGNAL(triggered()), mErase, SLOT(map()));
+        mErase->setMapping(erase, filePath);
+        connect(mErase, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(eraseItem(const QString &)));
+    }else{
+        QAction *eraseOfAlbum = new QAction("Supprimer de l'album", parentWidget());
+        myMenu.addAction(eraseOfAlbum);
+        connect(eraseOfAlbum, SIGNAL(triggered()), this, SLOT(deleteToAlbum()));
+    }
 
     myMenu.exec(globalPos);
+}
+
+void ImageItem::deleteToAlbum(){
+    int idImage = Database::getImageId(filePath);
+    Database::removeImage(idImage);
 }
 
 void ImageItem::on_ImageLabel_doubleClicked()
