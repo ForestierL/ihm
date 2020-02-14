@@ -7,7 +7,6 @@
 #include "editionwindow.h"
 #include "checkingwindow.h"
 #include "ui_mainwindow.h"
-
 #include "filepropertieswindow.h"
 
 #include "pathvisit.h"
@@ -92,10 +91,14 @@ private:
     QLabel *statusMessage;
     bool newAlbum = false;
 
+    bool isFilterFormDisplayed = false;
+    QFrame *currentFilterForm;
+
     int currentDisplayedAlbumId;
 
     void createActions();
     void addRecentsAlbumToMenuFichier(void);
+    void deleteFilterForm(void);
 
 };
 #endif // MAINWINDOW_H
