@@ -64,7 +64,7 @@ void ImageItem::createContentFolder(QString dirPath)
     imageLabel->setFixedSize(100,100);
 
     imageLabel->setAlignment(Qt::AlignCenter);
-    auto icon = QFileIconProvider().icon(filePath);
+    auto icon = QFileIconProvider().icon(QFileIconProvider::Folder);
     imageLabel->setPixmap(icon.pixmap(100,100));
 
     connect(imageLabel, SIGNAL(doubleClicked()), this, SLOT(on_dir_doubleClicked()));
