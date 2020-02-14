@@ -433,12 +433,12 @@ void MainWindow::addToAlbum(const QString path)
 
 void MainWindow::informations(const QString path)
 {
-    FilePropertiesWindow w(this, actualFile);
-    if(path != "")
+    if(path != ""){
         FilePropertiesWindow w(this, path);
-    w.show();
-    QEventLoop eventLoop;
-    eventLoop.exec();
+        w.show();
+        QEventLoop eventLoop;
+        eventLoop.exec();
+    }
 }
 
 void MainWindow::eraseItem(const QString path)

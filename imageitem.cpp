@@ -60,12 +60,13 @@ void ImageItem::createContentFolder(QString dirPath)
     //charger une image de dossier
 //    QFileIconProvider::Folder
     imageLabel  = new ClickableLabel();
-    //imageLabel->setStyleSheet("background-color: #7f7f7f;");
-    imageLabel->setFixedSize(100,100);
+//    imageLabel->setStyleSheet("background-color: #7f7f7f;");
+    imageLabel->setFixedSize(30,30);
 
     imageLabel->setAlignment(Qt::AlignCenter);
     auto icon = QFileIconProvider().icon(QFileIconProvider::Folder);
-    imageLabel->setPixmap(icon.pixmap(100,100));
+    imageLabel->setPixmap(icon.pixmap(30,30));
+
 
     connect(imageLabel, SIGNAL(doubleClicked()), this, SLOT(on_dir_doubleClicked()));
 
