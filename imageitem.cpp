@@ -19,6 +19,7 @@ QString shortText(QString text, int size = 30)
 ImageItem::ImageItem(QWidget *parent, QString filePath, int id, bool smoothImage) : QWidget(parent)
 {
     //qDebug()<< (ItemList)parent;
+    par=parent;
     this->id = id;
     QFile file(filePath);
     if(!file.exists())
@@ -281,9 +282,11 @@ void ImageItem::setDisabledDown(bool disabled)
 }
 
 void ImageItem::move_up(){
+    qobject_cast<ItemList*>(par)->moveUp(id);
 }
 
 void ImageItem::move_down(){
+    qobject_cast<ItemList*>(par)->moveDown(id);
 }
 
 

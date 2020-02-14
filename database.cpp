@@ -31,7 +31,7 @@ Database* Database::getInstance()
         QString db_path = QDir::currentPath();
         qDebug() <<db_path;    //current path
         db_path =  db_path + QString("/lumipic.db");
-        Database::instance = new Database("/Users/romaincolonnadistria/Desktop/ihm/lumipic.db"); //todo: modifier
+        Database::instance = new Database("C:\\ihm\\lumipic.db"); //todo: modifier
     }
 
     return Database::instance;

@@ -52,7 +52,7 @@ private:
     QLabel *note;
     QLabel *color;
     QLabel *feeling;
-
+    QWidget *par;
     //from mover
 public:
     void initMover();
