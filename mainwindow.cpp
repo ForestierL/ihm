@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
+    ui->elementListView->hide(); //remplacé par itemlist
 
     displayAlbum();
     createActions();
@@ -240,7 +241,7 @@ bool MainWindow::updateCurrentPath(QString path) {
 
     lineEditPath->setText(path);
 
-    itemList->reloadWith(path,false, true, true);
+    itemList->reloadWith(path,false, true, false);
     qDebug() << "updateCurrentPath" << itemList->getImageItems().size();
 //    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
     statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
