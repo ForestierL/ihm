@@ -23,6 +23,7 @@ SOURCES += \
     database.cpp \
     dominantcolorcalculator.cpp \
     editionwindow.cpp \
+    filtermenu.cpp \
     imageitem.cpp \
     itemlist.cpp \
     main.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     database.h \
     dominantcolorcalculator.h \
     editionwindow.h \
+    filtermenu.h \
     imageitem.h \
     itemlist.h \
     mainwindow.h \
