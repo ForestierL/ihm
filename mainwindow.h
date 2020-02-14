@@ -32,6 +32,7 @@ public:
     void getChildAndSetStyle(QObject *, QString);
     void setTheme();
     Ui::MainWindow* getUI(void);
+    void reloadImageItem();
 
 public slots:
     void openEditor(const QString path = "");
