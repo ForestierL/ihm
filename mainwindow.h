@@ -53,6 +53,7 @@ private slots:
     void up_clicked();
     void createNewButtonAlbum(QString name);
     void create_album(const QString&);
+    void getImageFromFilter(const QString &color, const QString &feeling, const QString &score);
 
     void recent_folder();
     void new_album();
@@ -90,6 +91,8 @@ private:
     PathVisit *pathVisit;
     QLabel *statusMessage;
     bool newAlbum = false;
+
+    int currentDisplayedAlbumId;
 
     void createActions();
     void addRecentsAlbumToMenuFichier(void);

@@ -1,18 +1,18 @@
-#ifndef FILTERMENU_H
-#define FILTERMENU_H
+#ifndef FILTERFORM_H
+#define FILTERFORM_H
 
 #include "mainwindow.h"
-#include "qhoversensitivebutton.h"
 
+#include <QObject>
 #include <QHBoxLayout>
 #include <QComboBox>
-#include <QPushButton>
 
-class FilterMenu : public QHBoxLayout
+
+class FilterForm : public QHBoxLayout
 {
     Q_OBJECT
 public:
-    FilterMenu(MainWindow *parent);
+    explicit FilterForm(MainWindow *parent);
 
 private:
     void initContent(void);
@@ -33,6 +33,7 @@ protected slots:
 signals:
     void runFilter(const QString &color, const QString &feeling, const QString &score);
 
+
 };
 
-#endif // FILTERMENU_H
+#endif // FILTERFORM_H

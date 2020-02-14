@@ -32,7 +32,7 @@ public:
     static int getImagePosition(int imageId, int albumId);
     static bool isImageInAlbum(int imageId, int albumId);
     static QVector<QString> getInfoImage(int idImage);
-    static QVector<QString> getImageFromFilter(const QString &color, const QString &feeling, const QString &score);
+    static QVector<QString> getImageFromFilter(int albumId, const QString &color, const QString &feeling, const QString &score);
 
     static QVector<int> getAlbumInImageOrderByPosition(int albumId);
 

@@ -1,12 +1,13 @@
-#include "filtermenu.h"
+#include "filterform.h"
 
-FilterMenu::FilterMenu(MainWindow *parent) : QHBoxLayout()
+FilterForm::FilterForm(MainWindow *parent) : QHBoxLayout()
 {
     initContent();
     _parent = parent;
+
 }
 
-void FilterMenu::initContent()
+void FilterForm::initContent()
 {
     initColorComboBox();
     initFeelingComboBox();
@@ -18,15 +19,15 @@ void FilterMenu::initContent()
     addWidget(_score);
     addWidget(_doFilter);
 
-    connect(_doFilter, SIGNAL(clicked()), this, SLOT(emitParamFilter));
+    connect(_doFilter, SIGNAL(clicked()), this, SLOT(emitParamFilter()));
 }
 
-void FilterMenu::emitParamFilter()
+void FilterForm::emitParamFilter()
 {
     emit runFilter(_color->currentText(), _feeling->currentText(), _score->currentText());
 }
 
-void FilterMenu::initColorComboBox()
+void FilterForm::initColorComboBox()
 {
     _color = new QComboBox();
     _color->addItem("---");
@@ -43,9 +44,15 @@ void FilterMenu::initColorComboBox()
     _color->addItem("Violet");
     _color->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     _color->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+    QSize size;
+    size.setWidth(150);
+    size.setHeight(25);
+    _color->setMinimumSize(size);
+    _color->setMaximumSize(size);
 }
 
-void FilterMenu::initFeelingComboBox()
+void FilterForm::initFeelingComboBox()
 {
     _feeling = new QComboBox();
     _feeling->addItem("---");
@@ -57,9 +64,15 @@ void FilterMenu::initFeelingComboBox()
     _feeling->addItem("Tristesse");
     _feeling->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     _feeling->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+    QSize size;
+    size.setWidth(150);
+    size.setHeight(25);
+    _feeling->setMinimumSize(size);
+    _feeling->setMaximumSize(size);
 }
 
-void FilterMenu::initScoreComboBox()
+void FilterForm::initScoreComboBox()
 {
     _score = new QComboBox();
     _score->addItem("---");
@@ -71,9 +84,21 @@ void FilterMenu::initScoreComboBox()
     _score->addItem("5");
     _score->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     _score->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
+
+    QSize size;
+    size.setWidth(150);
+    size.setHeight(25);
+    _score->setMinimumSize(size);
+    _score->setMaximumSize(size);
 }
 
-void FilterMenu::initDoFilterButton()
+void FilterForm::initDoFilterButton()
 {
     _doFilter = new QHoverSensitiveButton(nullptr, "filter");
+
+    QSize size;
+    size.setWidth(25);
+    size.setHeight(25);
+    _doFilter->setMinimumSize(size);
+    _doFilter->setMaximumSize(size);
 }
