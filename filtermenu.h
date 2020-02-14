@@ -10,6 +10,7 @@
 
 class FilterMenu : public QHBoxLayout
 {
+    Q_OBJECT
 public:
     FilterMenu(MainWindow *parent);
 
@@ -26,8 +27,11 @@ private:
     QComboBox *_score;
     QHoverSensitiveButton *_doFilter;
 
+protected slots:
+    void emitParamFilter(void);
+
 signals:
-    void runFilter(QString &color, QString &feeling, QString &score);
+    void runFilter(const QString &color, const QString &feeling, const QString &score);
 
 };
 

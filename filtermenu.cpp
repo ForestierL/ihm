@@ -18,7 +18,12 @@ void FilterMenu::initContent()
     addWidget(_score);
     addWidget(_doFilter);
 
-    //connect(_doFilter, SIGNAL(clicked()), _parent, SLOT(une_fonction_dans_mainwindow_qui_execute_la_requete_de_selection()));
+    connect(_doFilter, SIGNAL(clicked()), this, SLOT(emitParamFilter));
+}
+
+void FilterMenu::emitParamFilter()
+{
+    emit runFilter(_color->currentText(), _feeling->currentText(), _score->currentText());
 }
 
 void FilterMenu::initColorComboBox()
