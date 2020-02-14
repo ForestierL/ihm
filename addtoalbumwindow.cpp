@@ -36,8 +36,15 @@ void AddToAlbumWindow::ok_clicked()
         else
         {
             bool result = Database::addImageToAlbum(_currentImageid, albumId);
-            if(!result){
+            if(!result)
+            {
                 QMessageBox::question(this, "Erreur lors de l'ajout", "Image ou album invalide..", QMessageBox ::Ok);
+            }
+            else
+            {
+                QString msg = "Album: ";
+                msg.append(albumName);
+                QMessageBox::information(this, "Succes", "Image ajouté avec succées", QMessageBox ::Ok);
             }
         }
     }

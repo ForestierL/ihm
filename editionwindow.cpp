@@ -4,6 +4,7 @@
 #include "qhoversensitivebutton.h"
 #include "resizewindow.h"
 #include "mainwindow.h"
+#include "addtoalbumwindow.h"
 
 #include <QLabel>
 #include <QPushButton>
@@ -248,7 +249,16 @@ void EditionWindow::saveAs()
 }
 
 void EditionWindow::addToAlbum(){
-    qDebug() << imagePath;
+
+    int imageId = Database::getImageId(imagePath);
+    if(imageId != -1)
+    {
+        AddToAlbumWindow w(this, imageId);
+        w.show();
+
+        QEventLoop eventLoop;
+        eventLoop.exec();
+    }
 }
 
 // **************** Modifications de l'image ******************//
