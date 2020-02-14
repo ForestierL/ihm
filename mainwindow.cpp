@@ -88,6 +88,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 //    ui->elementListView->show();
 
     addRecentsAlbumToMenuFichier();
+    this->setWindowTitle("LumiPix");
 }
 
 void MainWindow::addRecentsAlbumToMenuFichier()

@@ -168,6 +168,7 @@ void EditionWindow::createContents()
     QImageReader *reader = new QImageReader(imagePath);
     reader->setAutoTransform(true);
     QImage srcImage = reader->read();
+    this->setWindowTitle(QString("LumiPix - %1").arg(imagePath));
     dstImage = srcImage;
 
     if (srcImage.isNull()) {

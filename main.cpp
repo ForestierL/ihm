@@ -20,19 +20,26 @@ int main(int argc, char *argv[])
     a.installTranslator(&translator);
 
     MainWindow w;
-    new themeApplier(w);
     w.show();
 
     w.checkAllPath();
 
     // Load an application style
     QSettings s("config.ini",QSettings::IniFormat);
+    qDebug() << s.value("theme").toString();
+    qDebug() << s.value("theme").toString().isEmpty();
+    qDebug() << s.value("theme").toString().isNull();
+    if(s.value("theme").toString().isEmpty()){
+        s.setValue("theme", "light");
+    }
     QFile styleFile(":/Ressources/" + s.value("theme").toString());
     styleFile.open(QFile::ReadOnly);
 
     // Apply the loaded stylesheet
     QString style(styleFile.readAll());
     a.setStyleSheet(style);
+
+    new themeApplier(w);
 
     return a.exec();
 }

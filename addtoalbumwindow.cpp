@@ -6,6 +6,7 @@ AddToAlbumWindow::AddToAlbumWindow(QWidget *parent) :
     ui(new Ui::AddToAlbumWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Ajouter à un album");
 }
 
 AddToAlbumWindow::~AddToAlbumWindow()

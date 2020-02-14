@@ -30,6 +30,7 @@ FilePropertiesWindow::FilePropertiesWindow(QWidget *parent, QString itemPath) : 
     }
     qDebug() << "Image id : " << idImage;
     createContents();
+    this->setWindowTitle("Propriétés");
 }
 
 void FilePropertiesWindow::showEvent(QShowEvent* event){

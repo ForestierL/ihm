@@ -10,6 +10,7 @@ CreateAlbumWindow::CreateAlbumWindow(MainWindow *parent) :
     this->parent = parent;
 
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(ok_clicked()));
+    this->setWindowTitle("Créé un album");
 }
 
 void CreateAlbumWindow::ok_clicked()
