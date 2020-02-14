@@ -1,5 +1,5 @@
 #include "itemlist.h"
-
+#include "mainwindow.h"
 
 QVector<QString> selectAllImageInDir(QString dirPath, bool recursive = false){
     qDebug() << "selectAllImageInDir >> " << dirPath;
@@ -80,6 +80,7 @@ void ItemList::reloadWith(QString folderPath, bool recursive, bool showFolder, b
 
 void ItemList::reloadWith(QVector<QString> paths, bool recursive, bool showFolder, bool arrows)
 {
+    inAlbum = arrows;
     this->paths = paths;
     recreateContent(paths, arrows);
 }
@@ -147,6 +148,17 @@ QVector<ImageItem *> ItemList::getImageItems() const
 void ItemList::moveTo(int currentIndex, int finalIndex)
 {
     imageItems.move(currentIndex, finalIndex);
+
+    QString imageCurrent(imageItems.at(currentIndex)->getFilePath());
+    QString imageFinal(imageItems.at(finalIndex)->getFilePath());
+    int idCurrent = Database::getImageId(imageCurrent);
+    int idFinal = Database::getImageId(imageFinal);
+    QString album = qobject_cast<MainWindow*>(this->parent->parent()->parent()->parent()->parent())->getAlbumActuel();
+    int idAlbum = Database::getAlbumId(album);
+    qDebug() << Database::getAlbumInImageOrderByPosition(idAlbum);
+    Database::updatePositionInAlbum(idCurrent, idAlbum, currentIndex);
+    Database::updatePositionInAlbum(idFinal, idAlbum, finalIndex);
+    qDebug() << Database::getAlbumInImageOrderByPosition(idAlbum);
 
     paths.clear();
     for(int i=0; i<imageItems.size(); i++)

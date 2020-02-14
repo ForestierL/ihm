@@ -65,7 +65,7 @@ void FilterForm::initFeelingComboBox()
     _feeling->addItem("Tristesse");
     _feeling->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     _feeling->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
-    _color->setToolTip("Trier par émotion");
+    _feeling->setToolTip("Trier par émotion");
 
     QSize size;
     size.setWidth(150);
@@ -86,7 +86,7 @@ void FilterForm::initScoreComboBox()
     _score->addItem("5");
     _score->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     _score->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
-    _color->setToolTip("Trier par note");
+    _score->setToolTip("Trier par note");
 
     QSize size;
     size.setWidth(150);
@@ -104,5 +104,6 @@ void FilterForm::initDoFilterButton()
     size.setHeight(25);
     _doFilter->setMinimumSize(size);
     _doFilter->setMaximumSize(size);
-    _color->setToolTip("Lancer le filtrage");
+    _doFilter->setToolTip("Lancer le filtrage");
+    _doFilter->setDisabled(true);
 }

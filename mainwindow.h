@@ -34,6 +34,8 @@ public:
     Ui::MainWindow* getUI(void);
     void reloadImageItem();
 
+    QString getAlbumActuel() const;
+
 public slots:
     void openEditor(const QString path = "");
 
@@ -100,6 +102,9 @@ private:
     void createActions();
     void addRecentsAlbumToMenuFichier(void);
     void deleteFilterForm(void);
+
+    QString albumActuel;
+    bool inAlbum;
 
 };
 #endif // MAINWINDOW_H

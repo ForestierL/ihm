@@ -38,7 +38,7 @@ void AddToAlbumWindow::ok_clicked()
             bool result = Database::addImageToAlbum(_currentImageid, albumId);
             if(!result)
             {
-                QMessageBox::question(this, "Erreur lors de l'ajout", "Image ou album invalide..", QMessageBox ::Ok);
+                QMessageBox::question(this, "Erreur lors de l'ajout", "Image déjà présente dans l'album..", QMessageBox ::Ok);
             }
             else
             {

@@ -289,11 +289,12 @@ void ImageItem::setDisabledDown(bool disabled)
 }
 
 void ImageItem::move_up(){
-    qobject_cast<ItemList*>(par)->moveUp(id);
+    qDebug() << parentGlobal;
+    qobject_cast<ItemList*>(parentGlobal)->moveUp(id);
 }
 
 void ImageItem::move_down(){
-    qobject_cast<ItemList*>(par)->moveDown(id);
+    qobject_cast<ItemList*>(parentGlobal)->moveDown(id);
 }
 
 
@@ -310,15 +311,18 @@ void ImageItem::ctxMenu(const QPoint &pos)
     connect(mOpen, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(openEditor(const QString &)));
 
     myMenu.addSeparator();
-    QAction *add = new QAction("Ajouter à un album", parentWidget());
-    if(qobject_cast<ItemList*>(parentGlobal)->inAlbum){
-        add->setText("Ajouter à un autre album");
+
+    if(!qobject_cast<ItemList*>(parentGlobal)->inAlbum){
+        QAction *add = new QAction("Ajouter à un album", parentWidget());
+        if(qobject_cast<ItemList*>(parentGlobal)->inAlbum){
+            add->setText("Ajouter à un autre album");
+        }
+        myMenu.addAction(add);
+        QSignalMapper *mAdd = new QSignalMapper();
+        connect(add, SIGNAL(triggered()), mAdd, SLOT(map()));
+        mAdd->setMapping(add, filePath);
+        connect(mAdd, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(addToAlbum(const QString &)));
     }
-    myMenu.addAction(add);
-    QSignalMapper *mAdd = new QSignalMapper();
-    connect(add, SIGNAL(triggered()), mAdd, SLOT(map()));
-    mAdd->setMapping(add, filePath);
-    connect(mAdd, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(addToAlbum(const QString &)));
 
     QAction *info = new QAction("Informations", parentWidget());
     myMenu.addAction(info);

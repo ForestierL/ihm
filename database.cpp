@@ -31,7 +31,7 @@ Database* Database::getInstance()
         QString db_path = QDir::currentPath();
         qDebug() <<db_path;    //current path
         db_path =  db_path + QString("/lumipic.db");
-        Database::instance = new Database("C:\\ihm\\lumipic.db"); //todo: modifier
+        Database::instance = new Database("E:/Documents/GitHub/ihm/lumipic.db"); //todo: modifier
     }
 
     return Database::instance;
@@ -500,7 +500,8 @@ int sqlQuerySize(QSqlQuery &query)
 QString Database::getImageFilePath(int idImage){
     Database::getInstance();
 
-    QSqlQuery query("SELECT filePath FROM Image WHERE idImage = :idImage");
+    QSqlQuery query;
+    query.prepare("SELECT filePath FROM Image WHERE idImage = :idImage");
     query.bindValue(":idImage",idImage);
 
     if(query.exec()){
@@ -513,7 +514,27 @@ QString Database::getImageFilePath(int idImage){
     }
 }
 
+bool Database::updatePositionInAlbum(int imageId, int albumId, int newPosition){
 
+    Database::getInstance();
+
+    QSqlQuery query;
+    query.prepare("UPDATE linkImageAlbum SET positionInAlbum = :positionInAlbum WHERE idAlbum = :idAlbum AND idImage = :idImage");
+    query.bindValue(":positionInAlbum", newPosition);
+    query.bindValue(":idImage", imageId);
+    query.bindValue(":idAlbum", albumId);
+
+    if(query.exec())
+    {
+        qDebug() << "EXEC !!!!!!!!!!!";
+        return true;
+    }
+    else
+    {
+        Database::lastErrorMessage.append(" : Erreur lors de la requête.");
+        return false;
+    }
+}
 
 /*
 CREATE TABLE Album (idAlbum INTEGER CONSTRAINT pk_idAlbum PRIMARY KEY AUTOINCREMENT,

@@ -8,6 +8,7 @@
 #include "themeapplier.h"
 #include"createalbumwindow.h"
 #include "filterform.h"
+#include "addtoalbumwindow.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -145,8 +146,8 @@ void MainWindow::new_album(){
     eventLoop.exec();
 }
 void MainWindow::add_to_album(){
-
 }
+
 void MainWindow::close(){
     QMainWindow::close();
 }
@@ -231,6 +232,7 @@ MainWindow::~MainWindow()
 }
 
 bool MainWindow::updateCurrentPath(QString path) {
+    inAlbum = false;
     QListView *elementListView = ui->elementListView;
     QTreeView *dirTreeView = ui->dirTreeView;
     QLineEdit *lineEditPath = ui->lePath;
@@ -429,9 +431,17 @@ void MainWindow::openDirectory()
     updateCurrentPath(actualFile);
 }
 
-void MainWindow::addToAlbum(const QString path)
+void MainWindow::addToAlbum(QString path)
 {
-    qDebug() << "AddToAlbum";
+    int imageId = Database::getImageId(path);
+    if(imageId != -1)
+    {
+        AddToAlbumWindow w(this, imageId);
+        w.show();
+
+        QEventLoop eventLoop;
+        eventLoop.exec();
+    }
 }
 
 void MainWindow::informations(const QString path)
@@ -614,14 +624,19 @@ void MainWindow::open_album(const QString& albumName){
         deleteFilterForm();
 
     QString name = albumName;
-
-    currentDisplayedAlbumId = Database::getAlbumId(name);;
+    inAlbum = true;
+    albumActuel = name;
+    qDebug() << "getting albumId";
+    currentDisplayedAlbumId = Database::getAlbumId(name);
+    qDebug() << "getting all images";
     QVector<int> idImages = Database::getAlbumInImageOrderByPosition(currentDisplayedAlbumId);
     QVector<QString> allPath;
     for(int i =0;i<idImages.size();i++){
+        qDebug() << "getting image path";
         QString filepath = Database::getImageFilePath(idImages[i]);
         allPath.append(filepath);
     }
+    qDebug() << "reload with";
     itemList->reloadWith(allPath, false, false, true);
     qDebug() << "openAlbum" << itemList->getImageItems().size();
 //    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
@@ -643,6 +658,11 @@ void MainWindow::deleteFilterForm()
     currentFilterForm = nullptr;
 
     isFilterFormDisplayed = false;
+}
+
+QString MainWindow::getAlbumActuel() const
+{
+    return albumActuel;
 }
 
 void MainWindow::getImageFromFilter(const QString &color, const QString &feeling, const QString &score)
@@ -681,8 +701,12 @@ Ui::MainWindow* MainWindow::getUI(void)
 }
 
 void MainWindow::reloadImageItem(){
-    QString path =pathVisit->getCurrentPath();
-    itemList->reloadWith(path,false, true, false);
+    if(inAlbum){
+        open_album(albumActuel);
+    } else {
+        QString path = pathVisit->getCurrentPath();
+        itemList->reloadWith(path,false, true, false);
+    }
 }
 
 
