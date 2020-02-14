@@ -322,7 +322,7 @@ void ImageItem::ctxMenu(const QPoint &pos)
     myMenu.exec(globalPos);
 }
 
-void ImageItem::on_ImageLabel_doubleClicked()
+void ImageItem::on_ImageLabel_doubleClicked(/*const QString path*/)
 {
-
+    qobject_cast<MainWindow*>(parent())->openEditor(filePath);
 }
