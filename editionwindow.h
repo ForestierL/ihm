@@ -51,6 +51,7 @@ private:
     QImage newImage;
 
 
+
 protected slots:
     void resizeImage(int);
     void addToAlbum();
@@ -65,6 +66,7 @@ protected slots:
 
     void save(void);
     void saveAs(void);
+    void close(void);
 
 
 }; //class EditionWindow

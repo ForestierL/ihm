@@ -216,6 +216,7 @@ void EditionWindow::initConnects(){
     /******** Connections du menu  ********/
     connect(ui->saveAct, SIGNAL(triggered()), this, SLOT(save()));
     connect(ui->saveAsAct, SIGNAL(triggered()), this, SLOT(saveAs()));
+    connect(ui->closeAct, SIGNAL(triggered()),this, SLOT(close()));
 }
 
 /**
@@ -451,6 +452,10 @@ void EditionWindow::resetImage(){
     actualImageWidth = srcImage.width() * zoomSlider->value()/100;
     actualImageHeigth = srcImage.height() * zoomSlider->value()/100;
     imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
+}
+
+void EditionWindow::close(){
+    QMainWindow::close();
 }
 
 /**
