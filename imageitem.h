@@ -71,6 +71,7 @@ private slots:
     void move_up();
     void ctxMenu(const QPoint &pos);
     void on_ImageLabel_doubleClicked(/*const QString*/);
+    void on_dir_doubleClicked();
 
 signals:
 
