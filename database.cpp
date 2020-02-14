@@ -10,6 +10,10 @@ int sqlQuerySize(QSqlQuery &query);
 QString Database::lastErrorMessage;
 Database *Database::instance;
 
+/**
+ * @brief Database::Database Constructeur de la classe.
+ * @param path Chemin du fichier de base de donnees.
+ */
 Database::Database(const QString& path)
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
@@ -25,6 +29,11 @@ Database::Database(const QString& path)
     }
 }
 
+/**
+ * @brief Database::getInstance Créer la connection a la base de donnees seulement si aucune
+ * connexion n'est établie.
+ * @return Renvoi une instance de database.
+ */
 Database* Database::getInstance()
 {
     if(Database::instance == nullptr){
@@ -38,6 +47,11 @@ Database* Database::getInstance()
 }
 
 /***************************************** ALBUM *********************************************/
+/**
+ * @brief Database::getAlbumId Récupère en base de donnees l'identifiant unique de l'album.
+ * @param name Nom de l'album.
+ * @return
+ */
 int Database::getAlbumId(QString &name)
 {
     Database::getInstance();
@@ -54,6 +68,11 @@ int Database::getAlbumId(QString &name)
     }
 }
 
+/**
+ * @brief Database::getAlbumsOrderByName Récupère en base de donnees la liste des noms d'albums
+ * en les triant par ordre alphabetique.
+ * @return Liste contenant le noms de chaque albums.
+ */
 QVector<QString> Database::getAlbumsOrderByName()
 {
     Database::getInstance();
@@ -71,7 +90,11 @@ QVector<QString> Database::getAlbumsOrderByName()
     }
 }
 
-
+/**
+ * @brief Database::getAlbumsOrderByName Récupère en base de donnees la liste des noms d'albums
+ * en les triant par date de dernière modification.
+ * @return Liste contenant le noms de chaque albums.
+ */
 QVector<QString> Database::getAlbumsOrderByLastModification()
 {
     Database::getInstance();
@@ -89,7 +112,11 @@ QVector<QString> Database::getAlbumsOrderByLastModification()
     }
 }
 
-
+/**
+ * @brief Database::createAlbum Crée un nouvel album en base de donnees.
+ * @param name Nom du nouvel album.
+ * @return True si l'ajout a réussi, false sinon.
+ */
 bool Database::createAlbum(QString &name){
     Database::getInstance();
 
@@ -116,6 +143,11 @@ bool Database::createAlbum(QString &name){
     }
 }
 
+/**
+ * @brief Database::createAlbum Supprime un album de la base de donnees.
+ * @param name Nom de l'album a supprimer.
+ * @return True si la suppression a réussi, false sinon.
+ */
 bool Database::removeAlbum(int id){
     Database::getInstance();
 
@@ -132,6 +164,12 @@ bool Database::removeAlbum(int id){
     }
 }
 
+/**
+ * @brief Database::updateNameAlbumMet a jour le nom d'un album en base de donnees.
+ * @param newName Nouveau nom.
+ * @param id Identifiant de l'album.
+ * @return True si la modification a ete effectue, false sinon.
+ */
 bool Database::updateNameAlbum(QString &newName,int &id){
     Database::getInstance();
 
@@ -149,6 +187,11 @@ bool Database::updateNameAlbum(QString &newName,int &id){
     }
 }
 
+/**
+ * @brief Database::updateLastModifDate Met a jour la date de dernière modification d'un album.
+ * @param id Album a mettre a jour.
+ * @return True si la modification a ete effectue, false sinon.
+ */
 bool Database::updateLastModifDate(int &id){
     Database::getInstance();
 
@@ -170,6 +213,15 @@ bool Database::updateLastModifDate(int &id){
 
 
 /***************************************** IMAGE *********************************************/
+/**
+ * @brief Database::addImage Ajoute une image en base de donnees.
+ * @param imagePath Chemin de l'image.
+ * @param score Note de l'image.
+ * @param comment Commentaire de l'image.
+ * @param dominantColor Couleur principale de l'image.
+ * @param feeling Ressenti de l'image.
+ * @return True si l'ajout a ete effectue, false sinon.
+ */
 bool Database::addImage(QString &imagePath, int score, QString &comment, QString &dominantColor, QString &feeling)
 {
     Database::getInstance();
@@ -177,7 +229,7 @@ bool Database::addImage(QString &imagePath, int score, QString &comment, QString
     int imageId;
     if((imageId = getImageId(imagePath)) > 0){// vérifi que l'image n'est pas déja presente dans la BDD
         Database::lastErrorMessage = __FUNCTION__;
-        Database::lastErrorMessage.append(": Image déja présente en base de données.");
+        Database::lastErrorMessage.append(": Image déja présente en base de donnees.");
         return false;
     }
 
@@ -199,6 +251,12 @@ bool Database::addImage(QString &imagePath, int score, QString &comment, QString
     }
 }
 
+/**
+ * @brief Database::addImageToAlbum Ajoute une image présente en base de donnees a un album.
+ * @param imageId Identifiant de l'image.
+ * @param albumId Identifiant de l'album.
+ * @return True si l'ajout a ete effectue, false sinon.
+ */
 bool Database::addImageToAlbum(int imageId, int albumId)
 {
     Database::getInstance();
@@ -227,6 +285,11 @@ bool Database::addImageToAlbum(int imageId, int albumId)
     }
 }
 
+/**
+ * @brief Database::getImageId Recupere l'identifiant d'une image.
+ * @param filePath Chemin de l'image.
+ * @return Identifiant de l'image.
+ */
 int Database::getImageId(QString &filePath)
 {
     Database::getInstance();
@@ -251,6 +314,11 @@ int Database::getImageId(QString &filePath)
     }
 }
 
+/**
+ * @brief Database::removeImage Supprime une image de la base de donnees.
+ * @param imageId Identifiant de l'image a supprimer.
+ * @return True si la suppression a ete effectuee, false sinon.
+ */
 bool Database::removeImage(int imageId)
 {
     Database::getInstance();
@@ -268,6 +336,11 @@ bool Database::removeImage(int imageId)
     }
 }
 
+/**
+ * @brief Database::getLastImagePosition Recupere la possition de la derniere image d'un album.
+ * @param albumId Identifiant de l'album.
+ * @return Possition de la derniere image.
+ */
 int Database::getLastImagePosition(int albumId)
 {
     Database::getInstance();
@@ -287,6 +360,16 @@ int Database::getLastImagePosition(int albumId)
     return false;
 }
 
+/**
+ * @brief Database::updateImage Met a jour les information d'une image en base de donnees.
+ * @param idImage Identifiant de l'image a mettre a jour.
+ * @param filePath Nouveau chemin.
+ * @param score Nouvelle note.
+ * @param comment Nouveau commentaire.
+ * @param dominantColor Nouvelle couleur principale.
+ * @param feeling Nouveau ressenti.
+ * @return True si la modification a ete effectue, false sinon.
+ */
 bool Database::updateImage(int idImage, QString &filePath, int score, QString &comment, QString &dominantColor, QString &feeling)
 {
     if(idImage == -1)
@@ -318,6 +401,12 @@ bool Database::updateImage(int idImage, QString &filePath, int score, QString &c
     return true;
 }
 
+/**
+ * @brief Database::updateImagePath Met a jour le chemin d'une image.
+ * @param idImage Identifiant de l'image a mettre a jour.
+ * @param filePath Nouveau chemin.
+ * @return True si la modification a ete effectue, false sinon.
+ */
 bool Database::updateImagePath(int idImage, QString &filePath)
 {
     if(idImage == -1)
@@ -350,6 +439,15 @@ bool Database::updateImagePath(int idImage, QString &filePath)
     }
 }
 
+/**
+ * @brief Database::getImageFromFilter Récupere le chemin des images presentes dans un album si elles correspondent
+ * aux critères.
+ * @param albumId Identifiant de l'album.
+ * @param color Couleur principale voulu.
+ * @param feeling Ressenti voulu.
+ * @param score Note voulue.
+ * @return Liste des chemains d'image correspondantent aux critere.
+ */
 QVector<QString> Database::getImageFromFilter(int albumId, const QString &color, const QString &feeling, const QString &score)
 {
     Database::getInstance();
@@ -381,7 +479,10 @@ QVector<QString> Database::getImageFromFilter(int albumId, const QString &color,
 /*********************************************************************************************/
 
 
-
+/**
+ * @brief Database::getAllImagePath recupere le chemin de chaques images presentes en base de donnees.
+ * @return Liste des chemins.
+ */
 QVector<QString> Database::getAllImagePath()
 {
     Database::getInstance();

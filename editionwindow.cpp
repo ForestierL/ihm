@@ -21,6 +21,10 @@
 #include <QtMath>
 
 
+/**
+ * @brief EditionWindow::EditionWindow Constructeur de la classe EditionWindow.
+ * @param parent Désigne le QWidget parent de l'objet
+ */
 EditionWindow::EditionWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::EditionWindow)
 {
     ui->setupUi(this);
@@ -45,6 +49,10 @@ void EditionWindow::showEvent(QShowEvent* event){
     new themeApplier(*this);
 }
 
+/**
+ * @brief EditionWindow::createToolBar Initialise la barre d'outil avec tout les objets qui la compose.
+ * @return Renvoi une QFrame contenant tout les objets de la barre d'outil.
+ */
 QFrame* EditionWindow::createToolBar(void)
 {
     /********* Composants de la tool bar *********/
@@ -92,7 +100,10 @@ QFrame* EditionWindow::createToolBar(void)
     return toolBarFrame;
 }
 
-
+/**
+ * @brief EditionWindow::createStatusBar Initialise la barre de status avec tout les objets qui la compose.
+ * @return Renvoi une QFrame contenant tout les objets de la barre de status.
+ */
 QFrame* EditionWindow::createStatusBar(void)
 {
     /******** Composant de la status bar ********/
@@ -139,7 +150,9 @@ QFrame* EditionWindow::createStatusBar(void)
     return statusFrame;
 }
 
-
+/**
+ * @brief EditionWindow::createContents Initialise le contenue de la fenetre.
+ */
 void EditionWindow::createContents()
 {
     /******** Récupération de l'image ********/
@@ -183,6 +196,10 @@ void EditionWindow::createContents()
     }
 }
 
+/**
+ * @brief EditionWindow::resizeImage Permet de redimensionner l'image.
+ * @param percent Pourcentage de redimensionnement.
+ */
 void EditionWindow::resizeImage(int percent)
 {
     /******** Zoom ********/
@@ -192,12 +209,18 @@ void EditionWindow::resizeImage(int percent)
     imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
 }
 
+/**
+ * @brief EditionWindow::initConnects Réalise les connections necessaire au fonctionnement des boutons de sauvegarde.
+ */
 void EditionWindow::initConnects(){
     /******** Connections du menu  ********/
     connect(ui->saveAct, SIGNAL(triggered()), this, SLOT(save()));
     connect(ui->saveAsAct, SIGNAL(triggered()), this, SLOT(saveAs()));
 }
 
+/**
+ * @brief EditionWindow::initBackground Applique une couleur au fond de la fenetre.
+ */
 void EditionWindow::initBackground()
 {
     /******** Initialisation du fond ********/
@@ -210,11 +233,19 @@ void EditionWindow::initBackground()
     setPalette(palette);
 }
 
+/**
+ * @brief EditionWindow::setImage Modifie le chemin de l'image que la fentre affichera.
+ * @param fileName Chemin de l'image a afficher.
+ */
 void EditionWindow::setImage(const QString &fileName)
 {
     this->imagePath = fileName;
 }
 
+/**
+ * @brief EditionWindow::save Permet la sauvegarde de l'image. Ecrase l'image initiale avec la nouvelle
+ * image modifiée.
+ */
 void EditionWindow::save()
 {
     /******** Sauvegarde de l'image (écrase le fichier d'origine) ********/
@@ -231,6 +262,10 @@ void EditionWindow::save()
     }
 }
 
+/**
+ * @brief EditionWindow::saveAs Permet la sauvegarde de l'image. Enregistre l'image a un
+ * nouvel emplacement.
+ */
 void EditionWindow::saveAs()
 {
     /******** Sauvegarde de l'image (crée une copie) ********/
@@ -248,6 +283,10 @@ void EditionWindow::saveAs()
     }
 }
 
+/**
+ * @brief EditionWindow::addToAlbum Ouvre une fentetre permettant l'ajout de l'image courant a un
+ * album au choix.
+ */
 void EditionWindow::addToAlbum(){
 
     int imageId = Database::getImageId(imagePath);
@@ -414,6 +453,10 @@ void EditionWindow::resetImage(){
     imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
 }
 
+/**
+ * @brief EditionWindow::~EditionWindow Détruit la fentre ainsi que tous les objets
+ * qui la compose.
+ */
 EditionWindow::~EditionWindow()
 {
     delete ui;
