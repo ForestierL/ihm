@@ -66,6 +66,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     pathVisit = new PathVisit(mainPath);
     itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
 
+    setStatusBar();
+    setNavButtons();
     updateCurrentPath(mainPath);
 
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -238,6 +240,9 @@ bool MainWindow::updateCurrentPath(QString path) {
     lineEditPath->setText(path);
 
     itemList->reloadWith(path,false, true, true);
+    qDebug() << "updateCurrentPath" << itemList->getImageItems().size();
+//    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
+    statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
 
     pathVisit->addPath(path);
     //itemList->reloadWith(path,false, true, true);
@@ -334,7 +339,7 @@ void MainWindow::setStatusBar() {
     layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(0);
 
-    QLabel *statusMessage = new QLabel("0 élement selectionné", statusFrame);
+    statusMessage = new QLabel("0 élement selectionné", statusFrame);
     statusMessage->setToolTip("Nombre total d'élements");
 
     QFrame *frame = new QFrame(statusFrame);
@@ -597,7 +602,10 @@ void MainWindow::open_album(const QString& albumName){
         QString filepath = Database::getImageFilePath(idImages[i]);
         allPath.append(filepath);
     }
-    itemList->reloadWith(allPath,false, false, true);
+    itemList->reloadWith(allPath, false, false, true);
+    qDebug() << "openAlbum" << itemList->getImageItems().size();
+//    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
+    statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
 }
 
 void MainWindow::allImage_clicked()
@@ -606,6 +614,9 @@ void MainWindow::allImage_clicked()
     if (reponse == QMessageBox::Yes) {
         QString path = pathVisit->getCurrentPath();
         itemList->reloadWith(path,true, false, false);
+        qDebug() << "allImageClicked" << itemList->getImageItems().size();
+//        statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
+        statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
     }
 
     QFrame *filterFrame = new QFrame();

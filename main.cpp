@@ -20,8 +20,6 @@ int main(int argc, char *argv[])
     a.installTranslator(&translator);
 
     MainWindow w;
-    w.setStatusBar();
-    w.setNavButtons();
     new themeApplier(w);
     w.show();
 

@@ -137,6 +137,11 @@ void ItemList::moverParameter() {
         imageItems.last()->setDisabledDown(true);
 }
 
+QVector<ImageItem *> ItemList::getImageItems() const
+{
+    return imageItems;
+}
+
 void ItemList::moveTo(int currentIndex, int finalIndex)
 {
     imageItems.move(currentIndex, finalIndex);

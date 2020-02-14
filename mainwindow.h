@@ -86,6 +86,7 @@ private:
     QFileSystemModel *fileModel;
     QString actualFile;
     PathVisit *pathVisit;
+    QLabel *statusMessage;
     bool newAlbum = false;
 
     void createActions();
