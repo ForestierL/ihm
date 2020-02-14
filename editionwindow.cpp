@@ -46,7 +46,7 @@ QFrame* EditionWindow::createToolBar(void)
 {
     /********* Composant de la tool bar *********/
     QHoverSensitiveButton *returnButton = new QHoverSensitiveButton(this, "previous");
-    returnButton->setToolTip("Annuler dernière modification");
+    returnButton->setToolTip("Annuler toutes les modifications");
     connect(returnButton, SIGNAL(clicked()), this, SLOT(resetImage()));
 
     QHoverSensitiveButton *rotateButton = new QHoverSensitiveButton(this, "rotate");
@@ -282,7 +282,7 @@ void EditionWindow::mousePressEvent(QMouseEvent *event){
         rect.setCoords(px,py,px,py);
         QPainter painter(&dstImage);
         painter.drawImage(0,0, dstImage);
-        QBrush brush(Qt::cyan, Qt::Dense6Pattern);
+        QBrush brush(Qt::cyan, Qt::Dense4Pattern);
         painter.drawRect(rect);
         painter.fillRect(rect, brush);
         imageLabel->setPixmap(QPixmap::fromImage(dstImage).scaled(actualImageWidth, actualImageHeigth, Qt::KeepAspectRatio));
