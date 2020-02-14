@@ -51,14 +51,7 @@
     <addaction name="separator"/>
     <addaction name="closeAct"/>
    </widget>
-   <widget class="QMenu" name="menuedition">
-    <property name="title">
-     <string>Edition</string>
-    </property>
-    <addaction name="actiontruc"/>
-   </widget>
    <addaction name="menufichier"/>
-   <addaction name="menuedition"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizeGripEnabled">

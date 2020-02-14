@@ -523,7 +523,14 @@ CREATE TABLE Image (idImage INTEGER CONSTRAINT pk_idImage PRIMARY KEY AUTOINCREM
                     score INTEGER (1),
                     comment STRING,
                     dominantColor STRING,
-                    feeling STRING);
+                    feeling STRING,
+                    isverticalMirror BOOLEAN,
+                    ishorizontalMirror BOOLEAN,
+                    rotateDegre INTEGER(2),
+                    xCrop DOUBLE NOT NULL,
+                    yCrop DOUBLE NOT NULL,
+                    widthCrop DOUBLE NOT NULL,
+                    heightCrop DOUBLE NOT NULL);
 
 
 CREATE TABLE linkImageAlbum (idAlbum INTEGER NOT NULL,

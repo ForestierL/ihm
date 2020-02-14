@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     addtoalbumwindow.cpp \
     albumbutton.cpp \
+    clickablelabel.cpp \
     createalbumwindow.cpp \
     database.cpp \
     dominantcolorcalculator.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
 HEADERS += \
     addtoalbumwindow.h \
     albumbutton.h \
+    clickablelabel.h \
     createalbumwindow.h \
     database.h \
     dominantcolorcalculator.h \

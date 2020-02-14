@@ -18,6 +18,8 @@ public:
     void moveTo(int currentIndex, int finalIndex); // to 0 => prend 0 et décale la suite de 1 jusqu'à l'ancien index
     void moveUp(int currentIndex);
     void moveDown(int currentIndex);
+    QVector<ImageItem *> getImageItems() const;
+
 private:
     void createContent(QVector<QString> paths = {""});
     void recreateContent(QVector<QString> paths = {""}, bool arrow = false);
@@ -27,7 +29,7 @@ private:
     QVector<QString> paths;
     QWidget *parent;
     QGridLayout *selfLayout;
-    QVector<ImageItem*> imageItems;
+    QVector<ImageItem*> imageItems = {};
 signals:
 
 };

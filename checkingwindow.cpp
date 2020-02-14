@@ -34,7 +34,9 @@ void CheckingWindow::initMissingFilesPath(QVector<QString>* missingFilesPath)
     for(int i=0; i < this->missingFilesPath->length(); i++)
     {
         QPushButton *relocate = new QPushButton("Relocaliser");
+        relocate->setToolTip("Relocaliser l'image");
         QPushButton *ignore = new QPushButton("Ignorer");
+        ignore->setToolTip("Ignorer l'image");
 
         buttonsRelocate->append(relocate);
         buttonsIgnore->append(ignore);
@@ -87,7 +89,7 @@ void CheckingWindow::relocate(const int id){
     {
         QString path(missingFilesPath->at(id));
         int idImage = Database::getImageId(path); //todo : warning
-        //Database::updateImagePath(idImage,fichier);
+        Database::updateImagePath(idImage,fichier);
         QMessageBox::information(this, "Fichier", "Vous avez sélectionné :\n" + fichier);
     }
     else

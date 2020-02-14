@@ -35,7 +35,6 @@ void themeApplier::setTheme(QWidget *window){
         if(QWidget *wi = qobject_cast<QWidget*>(window->children().at(i))){
             wi->setStyleSheet(style);
         }
-        qDebug() << window->children().at(i)->metaObject()->className();
         themeApplier::getChildAndSetStyle(window->children().at(i), s.value("theme").toString());
     }
 }
@@ -47,7 +46,6 @@ void themeApplier::getChildAndSetStyle(QObject *obj, QString theme){
     QString style(styleFile.readAll());
     for(int i=0; i < obj->children().size(); i++)
     {
-        qDebug() << obj->children().at(i)->metaObject()->className();
         if(QHoverSensitiveButton *wi = qobject_cast<QHoverSensitiveButton*>(obj->children().at(i))){
             qobject_cast<QWidget*>(obj->children().at(i))->setStyleSheet(style);
             wi->changeIcon();

@@ -11,6 +11,7 @@
 
 int main(int argc, char *argv[])
 {
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication a(argc, argv);
 
     QString locale = QLocale::system().name().section('_', 0, 0);
@@ -19,8 +20,6 @@ int main(int argc, char *argv[])
     a.installTranslator(&translator);
 
     MainWindow w;
-    w.setStatusBar();
-    w.setNavButtons();
     new themeApplier(w);
     w.show();
 

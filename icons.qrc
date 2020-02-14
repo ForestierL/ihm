@@ -65,5 +65,7 @@
         <file>Ressources/recursive-search-light.png</file>
         <file>Ressources/validate-light.png</file>
         <file>Ressources/validate-hover.png</file>
+        <file>Ressources/close-hover.png</file>
+        <file>Ressources/open-hover.png</file>
     </qresource>
 </RCC>

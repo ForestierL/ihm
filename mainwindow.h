@@ -34,14 +34,16 @@ public:
     void setTheme();
     Ui::MainWindow* getUI(void);
 
+public slots:
+    void openEditor(const QString path = "");
+
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
     void on_dirTreeView_clicked(const QModelIndex &index);
-    void openEditor();
     void openDirectory();
-    void addToAlbum();
-    void informations();
-    void eraseItem();
+    void addToAlbum(const QString path = "");
+    void informations(const QString path = "");
+    void eraseItem(const QString path = "");
     bool removeDirectory(QString dirPath = "");
     void showContextMenu(const QPoint&);
     void on_lePath_returnPressed();
@@ -86,6 +88,7 @@ private:
     QFileSystemModel *fileModel;
     QString actualFile;
     PathVisit *pathVisit;
+    QLabel *statusMessage;
     bool newAlbum = false;
 
     void createActions();
