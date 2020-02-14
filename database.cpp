@@ -350,7 +350,7 @@ bool Database::updateImagePath(int idImage, QString &filePath)
     }
 }
 
-QVector<QString> Database::getImageFromFilter(const QString &color, const QString &feeling, const QString &score)
+QVector<QString> Database::getImageFromFilter(int albumId, const QString &color, const QString &feeling, const QString &score)
 {
     Database::getInstance();
 
@@ -359,9 +359,13 @@ QVector<QString> Database::getImageFromFilter(const QString &color, const QStrin
     int scoreInt = score.toInt(); //mettre une vérif sur çà
 
     QSqlQuery query("SELECT filePath FROM Image WHERE "
-                    "score = :score,"
-                    "dominantColor = :color,"
-                    "feeling = :feeling");
+                    "score = :score AND"
+                    "dominantColor = :color AND"
+                    "feeling = :feeling AND"
+                    "idImage IN"
+                        "(SELECT idImage from linkImageAlbum WHERE"
+                        "idAlbum = :idAlbum)");
+    query.bindValue(":idAlbum", albumId);
     query.bindValue(":score", scoreInt);
     query.bindValue(":dominantColor", color);
     query.bindValue(":feeling", feeling);
@@ -523,14 +527,7 @@ CREATE TABLE Image (idImage INTEGER CONSTRAINT pk_idImage PRIMARY KEY AUTOINCREM
                     score INTEGER (1),
                     comment STRING,
                     dominantColor STRING,
-                    feeling STRING,
-                    isverticalMirror BOOLEAN,
-                    ishorizontalMirror BOOLEAN,
-                    rotateDegre INTEGER(2),
-                    xCrop DOUBLE NOT NULL,
-                    yCrop DOUBLE NOT NULL,
-                    widthCrop DOUBLE NOT NULL,
-                    heightCrop DOUBLE NOT NULL);
+                    feeling STRING);
 
 
 CREATE TABLE linkImageAlbum (idAlbum INTEGER NOT NULL,

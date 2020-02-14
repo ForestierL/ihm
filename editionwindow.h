@@ -5,6 +5,7 @@
 #include <QFrame>
 #include <QLabel>
 #include <QGraphicsScene>
+#include <QSlider>
 #include "qhoversensitivebutton.h"
 
 QT_BEGIN_NAMESPACE
@@ -27,20 +28,46 @@ private:
     QFrame* createStatusBar(void);
     QFrame* createToolBar(void);
     void initBackground(void);
+
     void mousePressEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
+
+    void initConnects(void);
 
     Ui::EditionWindow *ui;
     QString imagePath;
     QLabel *imageLabel;
-    QPixmap initialPixMap;
-    QImage dstImage;
+    QSlider *zoomSlider;
+    int windowWidth;
+    int windowHeigth;
+
+    bool crop = false;
+    float actualImageWidth;
+    float actualImageHeigth;
+
+    QPixmap initialPixMap; //
     QRect rect;
-    float initialImageWidth;
-    float initialImageHeigth;
+    QImage dstImage;
+    QImage newImage;
+
+    float initialImageWidth;//
+    float initialImageHeigth;//
+
 
 protected slots:
     void resizeImage(int);
+
     void cropImage();
+    void verticalMirror();
+    void horizontalMirror();
+    void rotateImage();
+    void resizeWindow();
+    void resizePhoto(const int);
+    void resetImage();
+
+    void save(void);
+    void saveAs(void);
 
 
 }; //class EditionWindow

@@ -7,6 +7,7 @@
 #include "imageitem.h"
 #include "themeapplier.h"
 #include"createalbumwindow.h"
+#include "filterform.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -72,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->elementListView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->elementListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
+    ui->elementListView->hide(); //remplacé par itemlist
 
     displayAlbum();
     createActions();
@@ -239,7 +241,7 @@ bool MainWindow::updateCurrentPath(QString path) {
 
     lineEditPath->setText(path);
 
-    itemList->reloadWith(path,false, true, true);
+    itemList->reloadWith(path,false, true, false);
     qDebug() << "updateCurrentPath" << itemList->getImageItems().size();
 //    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
     statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
@@ -403,13 +405,18 @@ void MainWindow::showContextMenu(const QPoint &pos)
 
 void MainWindow::openEditor(const QString path)
 {
+    qDebug() << "-1";
     EditionWindow w(this);
+    qDebug() << "0";
     if(path == "")
         w.setImage(actualFile);
     else
         w.setImage(path);
+    qDebug() << "1";
     w.createContents();
+    qDebug() << "2";
     w.show();
+    qDebug() << "3";
     QEventLoop eventLoop;
     eventLoop.exec();
 }
@@ -600,8 +607,33 @@ void MainWindow::delete_album(const QString& albumName){
 
 void MainWindow::open_album(const QString& albumName){
     QString name = albumName;
-    int idAlbum=Database::getAlbumId(name);
-    QVector<int> idImages = Database::getAlbumInImageOrderByPosition(idAlbum);
+
+    currentDisplayedAlbumId = Database::getAlbumId(name);;
+    QVector<int> idImages = Database::getAlbumInImageOrderByPosition(currentDisplayedAlbumId);
+    QVector<QString> allPath;
+    for(int i =0;i<idImages.size();i++){
+        QString filepath = Database::getImageFilePath(idImages[i]);
+        allPath.append(filepath);
+    }
+    itemList->reloadWith(allPath, false, false, true);
+    qDebug() << "openAlbum" << itemList->getImageItems().size();
+//    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
+    statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
+
+    FilterForm *filterForm = new FilterForm(this);
+    QFrame *filterFrame = new QFrame();
+    filterFrame->setLayout(filterForm);
+
+    connect(filterForm, SIGNAL(runFilter(const QString &, const QString &, const QString &)), this, SLOT(getImageFromFilter(const QString &, const QString &, const QString &)));
+
+    ui->vlList->insertWidget(0, filterFrame);
+}
+
+void MainWindow::getImageFromFilter(const QString &color, const QString &feeling, const QString &score)
+{
+    Database::getImageFromFilter(currentDisplayedAlbumId, color, feeling, score);
+
+    QVector<int> idImages = Database::getAlbumInImageOrderByPosition(currentDisplayedAlbumId);
     QVector<QString> allPath;
     for(int i =0;i<idImages.size();i++){
         QString filepath = Database::getImageFilePath(idImages[i]);
@@ -623,64 +655,6 @@ void MainWindow::allImage_clicked()
 //        statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
         statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
     }
-
-    QFrame *filterFrame = new QFrame();
-    filterFrame->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
-
-    QHBoxLayout *layout = new QHBoxLayout(filterFrame);
-    layout->setContentsMargins(0,0,0,0);
-    layout->setSpacing(0);
-
-    QComboBox *couleur = new QComboBox(filterFrame);
-    couleur->addItem("---");
-    couleur->addItem("Blanc");
-    couleur->addItem("Bleu");
-    couleur->addItem("Cyan");
-    couleur->addItem("Gris");
-    couleur->addItem("Jaune");
-    couleur->addItem("Noir");
-    couleur->addItem("Orange");
-    couleur->addItem("Rouge");
-    couleur->addItem("Rose");
-    couleur->addItem("Vert");
-    couleur->addItem("Violet");
-    couleur->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    couleur->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
-    couleur->setToolTip("Filtrage par couleur");
-
-    QComboBox *feeling = new QComboBox(filterFrame);
-    feeling->addItem("---");
-    feeling->addItem("Colère");
-    feeling->addItem("Dégoût");
-    feeling->addItem("Joie");
-    feeling->addItem("Peur");
-    feeling->addItem("Surprise");
-    feeling->addItem("Tristesse");
-    feeling->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    feeling->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
-    feeling->setToolTip("Filtrage par emotion");
-
-    QComboBox *note = new QComboBox(filterFrame);
-    note->addItem("---");
-    note->addItem("0");
-    note->addItem("1");
-    note->addItem("2");
-    note->addItem("3");
-    note->addItem("4");
-    note->addItem("5");
-    note->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    note->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Minimum);
-    feeling->setToolTip("Filtrage par note");
-
-    QHoverSensitiveButton *okFilter = new QHoverSensitiveButton(filterFrame, "filter");
-    okFilter->setToolTip("Lancer le filtrage");
-
-    layout->addWidget(couleur);
-    layout->addWidget(feeling);
-    layout->addWidget(note);
-    layout->addWidget(okFilter);
-
-    ui->vlList->insertWidget(0, filterFrame);
 }
 
 
