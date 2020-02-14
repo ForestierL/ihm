@@ -405,13 +405,18 @@ void MainWindow::showContextMenu(const QPoint &pos)
 
 void MainWindow::openEditor(const QString path)
 {
+    qDebug() << "-1";
     EditionWindow w(this);
+    qDebug() << "0";
     if(path == "")
         w.setImage(actualFile);
     else
         w.setImage(path);
+    qDebug() << "1";
     w.createContents();
+    qDebug() << "2";
     w.show();
+    qDebug() << "3";
     QEventLoop eventLoop;
     eventLoop.exec();
 }

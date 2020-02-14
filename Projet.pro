@@ -34,7 +34,8 @@ SOURCES += \
     qhoversensitivebutton.cpp \
     checkingwindow.cpp \
     albumline.cpp \
-    themeapplier.cpp
+    themeapplier.cpp \
+    resizewindow.cpp
 
 HEADERS += \
     addtoalbumwindow.h \
@@ -53,7 +54,8 @@ HEADERS += \
     qhoversensitivebutton.h \
     checkingwindow.h \
     albumline.h \
-    themeapplier.h
+    themeapplier.h \
+    resizewindow.h
 
 FORMS += \
     addtoalbumwindow.ui \
@@ -61,7 +63,8 @@ FORMS += \
     editionwindow.ui \
     mainwindow.ui \
     filepropertieswindow.ui \
-    checkingwindow.ui
+    checkingwindow.ui \
+    resizewindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
