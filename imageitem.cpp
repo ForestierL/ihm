@@ -67,6 +67,8 @@ void ImageItem::createContentFolder(QString dirPath)
     auto icon = QFileIconProvider().icon(filePath);
     imageLabel->setPixmap(icon.pixmap(100,100));
 
+    connect(imageLabel, SIGNAL(doubleClicked()), this, SLOT(on_dir_doubleClicked()));
+
     name = new QLabel(extractDirectoryName(dirPath));
     name->setStyleSheet("font-weight: bold;");
     size = new QLabel("Elements : "+QString::number(dir.count()));
@@ -322,7 +324,12 @@ void ImageItem::ctxMenu(const QPoint &pos)
     myMenu.exec(globalPos);
 }
 
-void ImageItem::on_ImageLabel_doubleClicked(/*const QString path*/)
+void ImageItem::on_ImageLabel_doubleClicked()
 {
     qobject_cast<MainWindow*>(parent())->openEditor(filePath);
+}
+
+void ImageItem::on_dir_doubleClicked()
+{
+    qobject_cast<MainWindow*>(parent())->updateCurrentPath(filePath);
 }
