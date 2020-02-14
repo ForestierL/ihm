@@ -18,8 +18,12 @@ QString shortText(QString text, int size = 30)
 
 ImageItem::ImageItem(QWidget *parent, QString filePath, int id, bool smoothImage) : QWidget(parent)
 {
+<<<<<<< HEAD
     //qDebug()<< (ItemList)parent;
     parentGlobal = parent;
+=======
+    par=parent;
+>>>>>>> 893d6e0a26be79b6a5e197a21784816e902136fa
     this->id = id;
     QFile file(filePath);
     if(!file.exists())
@@ -37,6 +41,16 @@ ImageItem::ImageItem(QWidget *parent, QString filePath, int id, bool smoothImage
         else
         {
             isImage = true;
+            int idImage = Database::getImageId(filePath);
+            int timeOut = 2;
+            while(idImage == -1 && timeOut!=0)
+            {
+                QString empty("");
+                QString empty2("---");
+                Database::addImage(filePath,0,empty,empty2,empty2);
+                idImage = Database::getImageId(filePath);
+                timeOut--;
+            }
             createContentFile(filePath, true);
         }
     }
@@ -108,18 +122,15 @@ void ImageItem::createContentFile(QString filePath, bool smoothImage)
     name->setStyleSheet("font-weight: bold;");
     size = new QLabel(QString::number(imageInfo.size().width()) + "x" + QString::number(imageInfo.size().height()));
     date = new QLabel(fileInfo.birthTime().toString("d/MM/yy"));
-    /*Liens avec la bd
-     *
-     * bool loadFromDatabase(); <<<<<<<
+
     int idImage = Database::getImageId(filePath);
     QVector<QString> result = Database::getInfoImage(idImage);
     QString imageScore= result[0];
     QString imageComment= result[1];
     QString imageColor = result[2];
     QString imageFeeling = result[3];
+
     setData("",imageComment,imageScore.toInt(),imageColor,imageFeeling);
-    */
-    setData("","",0,"---","---");
 
     //Image
     imageLabel  = new ClickableLabel();
@@ -282,9 +293,11 @@ void ImageItem::setDisabledDown(bool disabled)
 }
 
 void ImageItem::move_up(){
+    qobject_cast<ItemList*>(par)->moveUp(id);
 }
 
 void ImageItem::move_down(){
+    qobject_cast<ItemList*>(par)->moveDown(id);
 }
 
 
