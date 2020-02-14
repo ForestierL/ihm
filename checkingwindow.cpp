@@ -31,6 +31,9 @@ void CheckingWindow::initMissingFilesPath(QVector<QString>* missingFilesPath)
 //    QLayout* vlMissingList = new QVBoxLayout();
     vlMissingList->setAlignment(Qt::AlignTop);
 
+    if(missingFilesPath->isEmpty())
+        CheckingWindow::close();
+
     for(int i=0; i < this->missingFilesPath->length(); i++)
     {
         QPushButton *relocate = new QPushButton("Relocaliser");
@@ -110,9 +113,8 @@ void CheckingWindow::ignore(const int id, bool all){
         int idImage = Database::getImageId(path);
         Database::removeImage(idImage);
         missingFilesPath->removeAt(id);
-        initMissingFilesPath(missingFilesPath);
+        initMissingFilesPath(missingFilesPath);            
     }
-
 }
 
 void CheckingWindow::on_ignoreAll_clicked()
@@ -126,5 +128,4 @@ void CheckingWindow::on_ignoreAll_clicked()
         }
     }
     QMessageBox::information(this,"Ignorer", "Toutes les images ont été ignorées", QMessageBox ::Ok);
-    CheckingWindow::close();
 }
