@@ -34,10 +34,12 @@ public:
     void setTheme();
     Ui::MainWindow* getUI(void);
 
+public slots:
+    void openEditor(const QString path = "");
+
 private slots:
     void on_elementListView_doubleClicked(const QModelIndex &index);
     void on_dirTreeView_clicked(const QModelIndex &index);
-    void openEditor(const QString path = "");
     void openDirectory();
     void addToAlbum(const QString path = "");
     void informations(const QString path = "");

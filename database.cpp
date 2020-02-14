@@ -31,7 +31,7 @@ Database* Database::getInstance()
         QString db_path = QDir::currentPath();
         qDebug() <<db_path;    //current path
         db_path =  db_path + QString("/lumipic.db");
-        Database::instance = new Database("../ihm/lumipic.db"); //todo: modifier
+        Database::instance = new Database("/Users/romaincolonnadistria/Desktop/ihm/lumipic.db"); //todo: modifier
     }
 
     return Database::instance;
@@ -349,12 +349,37 @@ bool Database::updateImagePath(int idImage, QString &filePath)
         return false;
     }
 }
+
+QVector<QString> Database::getImageFromFilter(const QString &color, const QString &feeling, const QString &score)
+{
+    Database::getInstance();
+
+    QVector<QString> result;
+
+    int scoreInt = score.toInt(); //mettre une vérif sur çà
+
+    QSqlQuery query("SELECT filePath FROM Image WHERE "
+                    "score = :score,"
+                    "dominantColor = :color,"
+                    "feeling = :feeling");
+    query.bindValue(":score", scoreInt);
+    query.bindValue(":dominantColor", color);
+    query.bindValue(":feeling", feeling);
+
+    if(query.exec()){
+        while (query.next()) {
+            result.push_back(query.value(0).toString());
+        }
+    }
+
+    return result;
+}
 /*********************************************************************************************/
 
 
 
 QVector<QString> Database::getAllImagePath()
-{//TODO: tester
+{
     Database::getInstance();
 
     QVector<QString> result;
