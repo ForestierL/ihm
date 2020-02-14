@@ -2,7 +2,6 @@
 #include "mainwindow.h"
 
 QVector<QString> selectAllImageInDir(QString dirPath, bool recursive = false){
-    qDebug() << "selectAllImageInDir >> " << dirPath;
     QDir dir(dirPath);
     QVector<QString> result;
     QStringList list = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
@@ -155,10 +154,8 @@ void ItemList::moveTo(int currentIndex, int finalIndex)
     int idFinal = Database::getImageId(imageFinal);
     QString album = qobject_cast<MainWindow*>(this->parent->parent()->parent()->parent()->parent())->getAlbumActuel();
     int idAlbum = Database::getAlbumId(album);
-    qDebug() << Database::getAlbumInImageOrderByPosition(idAlbum);
     Database::updatePositionInAlbum(idCurrent, idAlbum, currentIndex);
     Database::updatePositionInAlbum(idFinal, idAlbum, finalIndex);
-    qDebug() << Database::getAlbumInImageOrderByPosition(idAlbum);
 
     paths.clear();
     for(int i=0; i<imageItems.size(); i++)

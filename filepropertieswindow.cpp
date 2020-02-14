@@ -2,12 +2,11 @@
 #include "ui_filepropertieswindow.h"
 #include <QMessageBox>
 #include "database.h"
-#include <string>     // std::string, std::stoi
-#include <iostream>   // std::cout
+#include <string>
+#include <iostream>
 #include <QDebug>
 
 #include "database.h"
-#include <QDebug>
 #include <QSettings>
 #include "themeapplier.h"
 #include "dominantcolorcalculator.h"
@@ -51,7 +50,7 @@ QString getFolderPathFromImagePath(QString path)
 }
 
 //retourne l'extention du fichier si sans argument
-//sinon on doit enc*voyer un path, retourne le path complet avec l'extention si elle est manquante
+//sinon on doit envoyer un path, retourne le path complet avec l'extention si elle est manquante
 QString FilePropertiesWindow::getFileExtention(QString namePath)
 {
     if(namePath.isEmpty())
@@ -84,7 +83,7 @@ void FilePropertiesWindow::createContents()
     setEditMode(false);
 
     ui->gridLayout->setAlignment(Qt::AlignTop);
-    this->setFixedSize(this->size()); //fixed size
+    this->setFixedSize(this->size());
 
     ui->note->setNum(0);
 
@@ -135,7 +134,6 @@ bool FilePropertiesWindow::loadFromBDD()
     }
     else
     {
-        //normalement existera toujours
         return false;
     }
 }
@@ -223,18 +221,16 @@ bool FilePropertiesWindow::save()
     ui->path->setText(newPath);
 
     QString color = ui->editColor->text();
-    QString description = ui->description->toPlainText(); //pour faciliter l'intégration du save je laisse la ligne
+    QString description = ui->description->toPlainText();
     QString feeling = ui->editFeelings->currentText();
     int note = ui->editNote->value();
 
-    qDebug() << "updateImage("<<idImage<<", "<<newPath<<", "<<note<<", "<<description<<", "<<color<<", "<<feeling<<");";
     Database::updateImage(idImage, newPath, note, description, color, feeling);
 
     QFile qFile(itemPath);
     qFile.rename(newPath);
     itemPath = newPath;
 
-//    Database::up
     return true;
 }
 
@@ -246,7 +242,6 @@ void FilePropertiesWindow::on_ok_clicked()
     }
     else
     {
-        //save
         if(!save())
         {
             QMessageBox *errorMessage = new QMessageBox(QMessageBox::Warning, "Un problème de sauvegarde est survenu", "Nous ne pouvons pas sauvegarder vos modifications.");
@@ -265,9 +260,7 @@ void FilePropertiesWindow::on_edit_clicked()
 
 void FilePropertiesWindow::calculateColor()
 {
-    qDebug() << "Image color test";
     QString color = DominantColorCalculator::calculate(QImage(itemPath));
-    qDebug() << "color : " << color;
     ui->color->setText(color);
     ui->editColor->setText(color);
 }

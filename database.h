@@ -40,7 +40,7 @@ public:
 
     static QString getImageFilePath(int idImage);
 
-
+    static bool deleteImageInAlbum(int albumId, int imageId);
 
 private:
     Database(const QString& path);

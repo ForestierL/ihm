@@ -6,7 +6,6 @@ PathVisit::PathVisit(QString currentPath)
     this->currentPath = currentPath;
     precedingPath.clear(); //ceux passés
     followingPath.clear(); //ceux qu'on a passé
-    qDebug() << "PathVisit >> PathVisit >> " + currentPath;
 }
 
 //on ajoute un path (clic dessus un dossier par exemple)
@@ -20,14 +19,12 @@ void PathVisit::addPath(QString path)
         precedingPath.append(currentPath);
         followingPath.clear();
         currentPath = path;
-        qDebug() << "PathVisit >> addPath >> " + path;
     }
     else if(currentPath != precedingPath.last())
     {
         precedingPath.append(currentPath);
         followingPath.clear();
         currentPath = path;
-        qDebug() << "PathVisit >> addPath >> " + path;
     }
 }
 
@@ -38,7 +35,6 @@ QString PathVisit::back()
     followingPath.append(currentPath);
     currentPath = precedingPath.last();
     precedingPath.removeLast();
-    qDebug() << "PathVisit >> back >> " + currentPath;
     return currentPath;
 }
 
@@ -49,7 +45,6 @@ QString PathVisit::forward()
     precedingPath.append(currentPath);
     currentPath = followingPath.last();
     followingPath.removeLast();
-    qDebug() << "PathVisit >> forward >> " + currentPath;
     return currentPath;
 }
 

@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>lumipic.db</file>
         <file>Ressources/dark-theme.qss</file>
         <file>Ressources/light-theme.qss</file>
         <file>Ressources/arrow-d-dark.png</file>

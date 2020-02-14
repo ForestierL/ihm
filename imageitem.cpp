@@ -58,20 +58,17 @@ QString extractDirectoryName(QString path)
     QStringList qsl = path.split('/');
     if(qsl.size()<2)
         return path;
-    qsl.removeLast(); //vide
+    qsl.removeLast();
     return qsl.last();
 }
 
 void ImageItem::createContentFolder(QString dirPath)
 {
-    qDebug() << "folder" << dirPath;
     QDir dir(dirPath);
     filePath = dirPath;
 
     //charger une image de dossier
-//    QFileIconProvider::Folder
     imageLabel  = new ClickableLabel();
-//    imageLabel->setStyleSheet("background-color: #7f7f7f;");
     imageLabel->setFixedSize(30,30);
 
     imageLabel->setAlignment(Qt::AlignCenter);
@@ -100,8 +97,6 @@ void ImageItem::createContentFolder(QString dirPath)
 
 void ImageItem::createContentFile(QString filePath, bool smoothImage)
 {
-    //qDebug() << "file ! " <<filePath;
-    //qt.gui.icc: fromIccProfile: failed minimal tag size sanity ??? ça vient de là mais ???
     this->filePath = filePath;
 
     QFileInfo fileInfo(filePath);
@@ -182,7 +177,6 @@ void ImageItem::setupLayout()
         downArrow->setToolTip("Descendre dans l'album");
     }
     for(int i=0; i<8; i++) {
-//        mainLayout->setColumnMinimumWidth(i,size->width()/8);
         mainLayout->setColumnStretch(i, 1);
     }
     mainLayout->setHorizontalSpacing(10);
@@ -246,7 +240,6 @@ void ImageItem::setFeeling(QString feeling)
     this->feeling->setText(feeling);
 }
 
-//from mover
 void ImageItem::initMover()
 {
     upArrow = new QHoverSensitiveButton(NULL,"arrow-u");
@@ -255,7 +248,6 @@ void ImageItem::initMover()
     idEdit = new QLineEdit(QString::number(id));
     idEdit->setAlignment(Qt::AlignCenter);
     idEdit->setFixedWidth(30);
-    //idEdit->hide();
 
     downArrow = new QHoverSensitiveButton(NULL,"arrow-d");
     downArrow->setFixedWidth(30);
@@ -289,7 +281,6 @@ void ImageItem::setDisabledDown(bool disabled)
 }
 
 void ImageItem::move_up(){
-    qDebug() << parentGlobal;
     qobject_cast<ItemList*>(parentGlobal)->moveUp(id);
 }
 
@@ -341,6 +332,7 @@ void ImageItem::ctxMenu(const QPoint &pos)
         connect(mErase, SIGNAL(mapped(const QString &)), parent()->parent()->parent()->parent()->parent(), SLOT(eraseItem(const QString &)));
     }else{
         QAction *eraseOfAlbum = new QAction("Supprimer de l'album", parentWidget());
+        eraseOfAlbum->setDisabled(true);
         myMenu.addAction(eraseOfAlbum);
         connect(eraseOfAlbum, SIGNAL(triggered()), this, SLOT(deleteToAlbum()));
     }
@@ -350,7 +342,10 @@ void ImageItem::ctxMenu(const QPoint &pos)
 
 void ImageItem::deleteToAlbum(){
     int idImage = Database::getImageId(filePath);
-    Database::removeImage(idImage);
+    QString album = qobject_cast<MainWindow*>(parent()->parent()->parent()->parent()->parent())->getAlbumActuel();
+    int idAlbum = Database::getAlbumId(album);
+    Database::deleteImageInAlbum(idImage, idAlbum);
+    qobject_cast<MainWindow*>(parent()->parent()->parent()->parent()->parent())->reloadImageItem();
 }
 
 void ImageItem::on_ImageLabel_doubleClicked()

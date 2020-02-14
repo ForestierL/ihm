@@ -28,8 +28,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
     /*******************/
-    QSplitter *splitter = new QSplitter(); //CQStandardPaths::writableLocation(QStandardPaths::PicturesLocation)réation d'un splitter, permettant de redimensionner l'espace occupé par les widgets enfants
-    splitter->setOrientation(Qt::Vertical); //Mettre l'orientation verticale
+    QSplitter *splitter = new QSplitter();
+    splitter->setOrientation(Qt::Vertical);
     ui->leftLayout->addWidget(splitter);
     QWidget *w1 = new QWidget();
     ui->lAlbums->setParent(nullptr);
@@ -53,7 +53,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->dirTreeView->setHeaderHidden(true);
     for (int i = 1; i < dirModel->columnCount(); ++i)
         ui->dirTreeView->hideColumn(i);
-    // https://stackoverflow.com/questions/14158191/qt-qtreeview-and-custom-model-with-checkbox-columns => ajouter des colones custom (note, feeling)
 
     fileModel = new QFileSystemModel(this);
     fileModel->setFilter(QDir::NoDotAndDotDot | QDir::Files | QDir::AllDirs);
@@ -79,17 +78,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     displayAlbum();
     createActions();
 
-//    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
-
-//    ItemList *itemList = new ItemList(ui->scrollContent_ImageItem, mainPath, true);
-
-//    itemList = new ItemList(ui->scrollContent_ImageItem, mainPath);
-//    itemList->reloadWith(mainPath,false, true, true);
-//    ui->elementListView->hide();
-//    ui->elementListView->show();
-
     addRecentsAlbumToMenuFichier();
-    this->setWindowTitle("LumiPix");
+    this->setWindowTitle("LumiPic");
 }
 
 void MainWindow::addRecentsAlbumToMenuFichier()
@@ -99,6 +89,7 @@ void MainWindow::addRecentsAlbumToMenuFichier()
     {
         QAction *action = new QAction(ui->menu_Albums_r_cents);
         action->setText(recentAlbums.at(i));
+        action->setDisabled(true);
         ui->menu_Albums_r_cents->addAction(recentAlbums.at(i));
     }
 }
@@ -139,8 +130,6 @@ void MainWindow::recent_folder(){
 
 void MainWindow::new_album(){
     CreateAlbumWindow w(this);
-    //w.setImagePath(path);
-
     w.show();
     QEventLoop eventLoop;
     eventLoop.exec();
@@ -158,9 +147,6 @@ void MainWindow::rename(){
 
     Database::getInstance();
     QVector<QString> v = Database::getAlbumsOrderByLastModification();
-    for(int i = 0; i < v.size(); i++){
-        qDebug() << v[i];
-    }
 
     createActions();
 
@@ -178,7 +164,7 @@ void MainWindow::small_icons(){
 
 }
 void MainWindow::medium_icons(){
-//
+
 }
 void MainWindow::big_icons(){
 
@@ -243,14 +229,10 @@ bool MainWindow::updateCurrentPath(QString path) {
     dirTreeView->setCurrentIndex(dirModel->setRootPath(path));
 
     lineEditPath->setText(path);
-    //itemList->reloadWith(path,false, true, true);
     itemList->reloadWith(path,false, true, false);
-    qDebug() << "updateCurrentPath" << itemList->getImageItems().size();
-//    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
     statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
 
     pathVisit->addPath(path);
-    //itemList->reloadWith(path,false, true, true);
 
     return true;
 }
@@ -282,7 +264,6 @@ void MainWindow::on_lePath_returnPressed()
     QDir pathDir(dirPath);
     if (pathDir.exists())
     {
-        qDebug() << "DIR " + dirPath;
         updateCurrentPath(dirPath);
     }
 }
@@ -366,15 +347,11 @@ void MainWindow::setStatusBar() {
     layout->addWidget(icone);
 
     ui->statusbar->addWidget(statusFrame, 1);
-//    statusFrame->setStyleSheet("background-color: red;");
-//    statusMessage->setStyleSheet("background-color: green;");
-//    frame->setStyleSheet("background-color: yellow;");
 }
 
 
 void MainWindow::showContextMenu(const QPoint &pos)
 {
-    // Handle global position
     QPoint globalPos = ui->elementListView->mapToGlobal(pos);
     QModelIndex itemPos = ui->elementListView->indexAt(pos);
     if(!itemPos.isValid())
@@ -383,7 +360,6 @@ void MainWindow::showContextMenu(const QPoint &pos)
     }
     actualFile = ui->lePath->text() + "/" + itemPos.data().toUrl().toString();
 
-    // Create menu and insert some actions
     QDir pathDir(actualFile);
     QMenu myMenu;
 
@@ -410,18 +386,13 @@ void MainWindow::showContextMenu(const QPoint &pos)
 
 void MainWindow::openEditor(const QString path)
 {
-    qDebug() << "-1";
     EditionWindow w(this);
-    qDebug() << "0";
     if(path == "")
         w.setImage(actualFile);
     else
         w.setImage(path);
-    qDebug() << "1";
     w.createContents();
-    qDebug() << "2";
     w.show();
-    qDebug() << "3";
     QEventLoop eventLoop;
     eventLoop.exec();
 }
@@ -491,7 +462,6 @@ bool MainWindow::removeDirectory(QString dirPath){
         {
             if(!QFile::remove(fileInfo.filePath()))
             {
-                qDebug() << "Unable to remove file : " << fileInfo.filePath();
                 return false;
             }
         }
@@ -577,7 +547,7 @@ void MainWindow::generateCreateAlbumLine(){
     if(!newAlbum){
         newAlbum = true;
         // Création du sous-layout horizontal => label + bouton
-        AlbumLine *layout = new AlbumLine();//QHBoxLayout();
+        AlbumLine *layout = new AlbumLine();
 
         connect(layout, SIGNAL(validated(const QString&)), this, SLOT(create_album(const QString&)));
 
@@ -626,20 +596,14 @@ void MainWindow::open_album(const QString& albumName){
     QString name = albumName;
     inAlbum = true;
     albumActuel = name;
-    qDebug() << "getting albumId";
     currentDisplayedAlbumId = Database::getAlbumId(name);
-    qDebug() << "getting all images";
     QVector<int> idImages = Database::getAlbumInImageOrderByPosition(currentDisplayedAlbumId);
     QVector<QString> allPath;
     for(int i =0;i<idImages.size();i++){
-        qDebug() << "getting image path";
         QString filepath = Database::getImageFilePath(idImages[i]);
         allPath.append(filepath);
     }
-    qDebug() << "reload with";
     itemList->reloadWith(allPath, false, false, true);
-    qDebug() << "openAlbum" << itemList->getImageItems().size();
-//    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
     statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
 
     FilterForm *filterform = new FilterForm(this);
@@ -676,8 +640,6 @@ void MainWindow::getImageFromFilter(const QString &color, const QString &feeling
         allPath.append(filepath);
     }
     itemList->reloadWith(allPath, false, false, true);
-    qDebug() << "openAlbum" << itemList->getImageItems().size();
-//    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
     statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
 }
 
@@ -687,8 +649,6 @@ void MainWindow::allImage_clicked()
     if (reponse == QMessageBox::Yes) {
         QString path = pathVisit->getCurrentPath();
         itemList->reloadWith(path,true, false, false);
-        qDebug() << "allImageClicked" << itemList->getImageItems().size();
-//        statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
         statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
     }
 }

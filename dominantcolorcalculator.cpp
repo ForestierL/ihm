@@ -5,7 +5,6 @@
 #include <QPixmap>
 
 QString DominantColorCalculator::calculate(QImage srcImg){
-    qDebug() << "TEST";
     QImage scaledImg = srcImg.scaledToWidth(200);
     QPixmap scaledPix = QPixmap::fromImage(scaledImg);
 
@@ -36,33 +35,33 @@ QString DominantColorCalculator::calculate(QImage srcImg){
                 case 0:
                     switch (converted[2]) {
                     case 0:
-                        noir++;//000
+                        noir++;
                     break;
                     default:
-                        bleu++;//001    002
+                        bleu++;
                     break;
                     }
                 break;
                 case 1:
                     switch (converted[2]) {
                     case 0:
-                        vert++;//010
+                        vert++;
                     break;
                     case 1:
-                        cyan++;//011
+                        cyan++;
                     break;
                     case 2:
-                        bleu++;//012
+                        bleu++;
                     break;
                     }
                 break;
                 case 2:
                     switch (converted[2]) {
                     case 2:
-                        cyan++;//022
+                        cyan++;
                     break;
                     default:
-                        vert++;//020    021
+                        vert++;
                     break;
                     }
                 break;
@@ -73,36 +72,36 @@ QString DominantColorCalculator::calculate(QImage srcImg){
                 case 0:
                     switch (converted[2]) {
                     case 0:
-                        rouge++;//100
+                        rouge++;
                     break;
                     case 1:
-                        rose++;//101
+                        rose++;
                     break;
                     case 2:
-                        violet++;//102
+                        violet++;
                     break;
                     }
                 break;
                 case 1:
                     switch (converted[2]) {
                     case 0:
-                        vert++;//110
+                        vert++;
                     break;
                     case 1:
-                        gris++;//111
+                        gris++;
                     break;
                     case 2:
-                        violet++;//112
+                        violet++;
                     break;
                     }
                 break;
                 case 2:
                     switch (converted[2]) {
                     case 2:
-                        cyan++;//122
+                        cyan++;
                     break;
                     default:
-                        vert++;//120    121
+                        vert++;
                     break;
                     }
                 break;
@@ -113,30 +112,30 @@ QString DominantColorCalculator::calculate(QImage srcImg){
                 case 0:
                     switch (converted[2]) {
                     case 0:
-                        rouge++;//200
+                        rouge++;
                     break;
                     default:
-                        rose++;//201    202
+                        rose++;
                     break;
                     }
                 break;
                 case 1:
                     switch (converted[2]) {
                     case 2:
-                        rose++;//212
+                        rose++;
                     break;
                     default:
-                        orange++;//210  211
+                        orange++;
                     break;
                     }
                 break;
                 case 2:
                     switch (converted[2]) {
                     case 2:
-                        blanc++;//222
+                        blanc++;
                     break;
                     default:
-                        jaune++;//220    221
+                        jaune++;
                     break;
                     }
                 break;
@@ -150,12 +149,10 @@ QString DominantColorCalculator::calculate(QImage srcImg){
     QString names[11] = {"Noir", "Bleu", "Vert", "Cyan", "Rouge", "Rose", "Jaune", "Blanc", "Gris", "Orange", "Violet"};
     int c[11] = {noir, bleu, vert, cyan, rouge, rose, jaune, blanc, gris, orange, violet};
     for(int i = 0; i < 11; i++){
-        //qDebug() << names[i] << " " << c[i];
         if(c[i] > best){
             best = c[i];
             iBest = i;
         }
     }
-    qDebug() << names[iBest] << " " << c[iBest];
     return names[iBest];
 }

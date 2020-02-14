@@ -23,7 +23,6 @@ themeApplier::themeApplier(QDialog &toChange)
 
 void themeApplier::setTheme(QWidget *window){
     QSettings s("config.ini", QSettings::IniFormat);
-    qDebug() << "changing theme to " + s.value("theme").toString();
     QFile styleFile(":/Ressources/" + s.value("theme").toString() + "-theme.qss");
     styleFile.open(QFile::ReadOnly);
 

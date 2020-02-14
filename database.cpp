@@ -19,13 +19,24 @@ Database::Database(const QString& path)
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(path);
 
-    if (!db.open())
+    if (db.open())
     {
-        qDebug() << "Error: connection with database fail";
-    }
-    else
-    {
-        qDebug() << "Database: connection ok";
+        QSqlQuery query = db.exec("CREATE TABLE Album (idAlbum INTEGER CONSTRAINT pk_idAlbum PRIMARY KEY AUTOINCREMENT,"
+                                  "name STRING UNIQUE NOT NULL,"
+                                  "creationDate DATE NOT NULL,"
+                                  "lastModifDate DATE NOT NULL);");
+        query = db.exec("CREATE TABLE Image (idImage INTEGER CONSTRAINT pk_idImage PRIMARY KEY AUTOINCREMENT,"
+                                            "filePath STRING NOT NULL,"
+                                            "score INTEGER (1),"
+                                            "comment STRING,"
+                                            "dominantColor STRING,"
+                                            "feeling STRING);");
+        query = db.exec("CREATE TABLE linkImageAlbum (idAlbum INTEGER NOT NULL,"
+                                                     "idImage INTEGER NOT NULL,"
+                                                     "positionInAlbum INTEGER NOT NULL,"
+                                                     "CONSTRAINT pk_link PRIMARY KEY (idAlbum, idImage),"
+                                                     "FOREIGN KEY (idAlbum) REFERENCES Album(idAlbum),"
+                                                     "FOREIGN KEY (idImage) REFERENCES Album(idImage));");
     }
 }
 
@@ -37,10 +48,7 @@ Database::Database(const QString& path)
 Database* Database::getInstance()
 {
     if(Database::instance == nullptr){
-        QString db_path = QDir::currentPath();
-        qDebug() <<db_path;    //current path
-        db_path =  db_path + QString("/lumipic.db");
-        Database::instance = new Database("E:/Documents/GitHub/ihm/lumipic.db"); //todo: modifier
+        Database::instance = new Database("./lumipic.db");
     }
 
     return Database::instance;
@@ -227,7 +235,7 @@ bool Database::addImage(QString &imagePath, int score, QString &comment, QString
     Database::getInstance();
 
     int imageId;
-    if((imageId = getImageId(imagePath)) > 0){// vérifi que l'image n'est pas déja presente dans la BDD
+    if((imageId = getImageId(imagePath)) > 0){
         Database::lastErrorMessage = __FUNCTION__;
         Database::lastErrorMessage.append(": Image déja présente en base de donnees.");
         return false;
@@ -278,7 +286,6 @@ bool Database::addImageToAlbum(int imageId, int albumId)
     if(query.exec()){
         return true;
     } else {
-        //QSqlError error = query.lastError();
         Database::lastErrorMessage = __FUNCTION__;
         Database::lastErrorMessage.append(": Erreur lors de l'insertion.");
         return false;
@@ -305,7 +312,7 @@ int Database::getImageId(QString &filePath)
             return query.value(0).toInt();
         } else {
             Database::lastErrorMessage.append(": Plusieurs images correspondent au nom de fichier.");
-            return -1; //ajouté par loic
+            return -1;
         }
     } else {
         Database::lastErrorMessage = __FUNCTION__;
@@ -414,7 +421,6 @@ bool Database::updateImagePath(int idImage, QString &filePath)
 
     Database::getInstance();
 
-    qDebug() << idImage << " : " << filePath;
     QSqlQuery query;
     query.prepare("UPDATE Image "
                   "SET filePath =  :filePath,"
@@ -432,7 +438,6 @@ bool Database::updateImagePath(int idImage, QString &filePath)
     }
     else
     {
-        qDebug() << query.lastError();
         Database::lastErrorMessage = __FUNCTION__;
         Database::lastErrorMessage.append(" : Erreur lors de la requête.");
         return false;
@@ -454,7 +459,7 @@ QVector<QString> Database::getImageFromFilter(int albumId, const QString &color,
 
     QVector<QString> result;
 
-    int scoreInt = score.toInt(); //mettre une vérif sur çà
+    int scoreInt = score.toInt();
 
     QSqlQuery query("SELECT filePath FROM Image WHERE "
                     "score = :score AND"
@@ -514,8 +519,6 @@ QVector<QString> Database::getInfoImage(int imageId)
             result.push_back(query.value(4).toString());
             result.push_back(query.value(5).toString());
         }
-    }else{
-        qDebug() << "rip";
     }
     return result;
 }
@@ -627,7 +630,25 @@ bool Database::updatePositionInAlbum(int imageId, int albumId, int newPosition){
 
     if(query.exec())
     {
-        qDebug() << "EXEC !!!!!!!!!!!";
+        return true;
+    }
+    else
+    {
+        Database::lastErrorMessage.append(" : Erreur lors de la requête.");
+        return false;
+    }
+}
+
+bool Database::deleteImageInAlbum(int albumId, int imageId){
+    Database::getInstance();
+
+    QSqlQuery query;
+    query.prepare("DELETE FROM linkImageAlbum WHERE idAlbum = :idAlbum AND idImage = :idImage");
+    query.bindValue(":idAlbum", albumId);
+    query.bindValue(":idImage", imageId);
+
+    if(query.exec())
+    {
         return true;
     }
     else

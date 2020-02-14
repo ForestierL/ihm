@@ -75,7 +75,6 @@ DISTFILES += \ \
     icon.ico
 
 RESOURCES += \
-    icons.qrc \
-    lumipic.db
+    icons.qrc
 
 win32:RC_ICONS += icon.ico

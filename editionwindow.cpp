@@ -77,7 +77,7 @@ QFrame* EditionWindow::createToolBar(void)
     connect(trimButton, SIGNAL(clicked()), this, SLOT(cropImage()));
 
     QHoverSensitiveButton *resizeButton = new QHoverSensitiveButton(this, "resize");
-    resizeButton->setToolTip("Redimenssionner");
+    resizeButton->setToolTip("Redimensionner");
     connect(resizeButton, SIGNAL(clicked()), this, SLOT(resizeWindow()));
 
     /********* Création de la tool bar *********/
@@ -159,7 +159,7 @@ void EditionWindow::createContents()
     QImageReader *reader = new QImageReader(imagePath);
     reader->setAutoTransform(true);
     QImage srcImage = reader->read();
-    this->setWindowTitle(QString("LumiPix - %1").arg(imagePath));
+    this->setWindowTitle(QString("LumiPic - %1").arg(imagePath));
     dstImage = srcImage;
 
     if (srcImage.isNull()) {

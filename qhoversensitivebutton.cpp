@@ -7,7 +7,6 @@ QHoverSensitiveButton::QHoverSensitiveButton(QWidget *parent, QString _icon) : Q
 {
     icon = _icon;
     QSettings s("config.ini",QSettings::IniFormat);
-    qDebug() << ":/Ressources/" + icon + "-" + s.value("theme").toString() + ".png";
     setIcon(QIcon(":/Ressources/" + icon + "-" + s.value("theme").toString() + ".png"));
     setMouseTracking(true);
     setAttribute(Qt::WA_Hover);

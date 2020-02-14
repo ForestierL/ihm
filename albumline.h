@@ -26,7 +26,6 @@ private:
 
 private slots:
     void emitSignalClick(void);
-    //void emitSignalEnter(void);
 
 signals:
     void validated(const QString &albumName);

@@ -14,7 +14,6 @@ AlbumButton::AlbumButton(QString &name) : QHBoxLayout()
     addWidget(deleteAlbum);
 
     connect(getButton(), SIGNAL(clicked()), this, SLOT(emitSignalClick()));
-    //connect(getLineEdit(), SIGNAL(returnPressed()), this, SLOT(emitSignalEnter()));
     connect(getPushButton(),SIGNAL(clicked()),this,SLOT(emitSignalOpenAlbum()));
 }
 

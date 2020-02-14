@@ -13,7 +13,7 @@
 CheckingWindow::CheckingWindow(QWidget *parent): QDialog(parent), ui(new Ui::CheckingWindow)
 {
     ui->setupUi(this);
-    setFixedSize(this->size()); //fixed size
+    setFixedSize(this->size());
     this->setWindowTitle("Images manquantes");
 }
 
@@ -29,7 +29,6 @@ void CheckingWindow::initMissingFilesPath(QVector<QString>* missingFilesPath)
     buttonsRelocate = new QVector<QPushButton*>();
     vlMissingList = new QVBoxLayout();
 
-//    QLayout* vlMissingList = new QVBoxLayout();
     vlMissingList->setAlignment(Qt::AlignTop);
 
     if(missingFilesPath->isEmpty())
@@ -83,7 +82,6 @@ void CheckingWindow::initMissingFilesPath(QVector<QString>* missingFilesPath)
     temp->setLayout(vlMissingList);
     ui->scrollArea->setWidget(temp);
     ui->scrollArea->setAlignment(Qt::AlignCenter);
-    //ui->scrollAreaWidgetContents->setLayout(vlMissingList);
 }
 
 
@@ -92,7 +90,7 @@ void CheckingWindow::relocate(const int id){
     if(fichier!="")
     {
         QString path(missingFilesPath->at(id));
-        int idImage = Database::getImageId(path); //todo : warning
+        int idImage = Database::getImageId(path);
         Database::updateImagePath(idImage,fichier);
         QMessageBox::information(this, "Fichier", "Vous avez sélectionné :\n" + fichier);
     }
