@@ -267,6 +267,8 @@ void MainWindow::on_elementListView_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_dirTreeView_clicked(const QModelIndex &index)
 {
+    if(isFilterFormDisplayed)
+        deleteFilterForm();
     QString dirPath = dirModel->fileInfo(index).absoluteFilePath();
     updateCurrentPath(dirPath);
 }
@@ -605,7 +607,11 @@ void MainWindow::delete_album(const QString& albumName){
     }
 }
 
+
 void MainWindow::open_album(const QString& albumName){
+    if(isFilterFormDisplayed)
+        deleteFilterForm();
+
     QString name = albumName;
 
     currentDisplayedAlbumId = Database::getAlbumId(name);;
@@ -620,13 +626,22 @@ void MainWindow::open_album(const QString& albumName){
 //    statusMessage->setText(QString("%1 élément(s)").arg(itemList->getImageItems().size()));
     statusMessage->setText(QString::number(itemList->getImageItems().size()) + QString(" élément(s)"));
 
-    FilterForm *filterForm = new FilterForm(this);
-    QFrame *filterFrame = new QFrame();
-    filterFrame->setLayout(filterForm);
+    FilterForm *filterform = new FilterForm(this);
+    currentFilterForm = new QFrame();
+    currentFilterForm->setLayout(filterform);
 
-    connect(filterForm, SIGNAL(runFilter(const QString &, const QString &, const QString &)), this, SLOT(getImageFromFilter(const QString &, const QString &, const QString &)));
+    connect(filterform, SIGNAL(runFilter(const QString &, const QString &, const QString &)), this, SLOT(getImageFromFilter(const QString &, const QString &, const QString &)));
 
-    ui->vlList->insertWidget(0, filterFrame);
+    ui->vlList->insertWidget(0, currentFilterForm);
+    isFilterFormDisplayed = true;
+}
+
+void MainWindow::deleteFilterForm()
+{
+    delete currentFilterForm;
+    currentFilterForm = nullptr;
+
+    isFilterFormDisplayed = false;
 }
 
 void MainWindow::getImageFromFilter(const QString &color, const QString &feeling, const QString &score)
